@@ -1,4 +1,5 @@
 # Silver Eagle
+## nazewnictwo plików camelCase ( jakasNazwaZmiennej )
 
 ## 📂 Struktura projektu
 Assets/  
