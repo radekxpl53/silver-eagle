@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class AreaSpawnerManager : MonoBehaviour
 {
@@ -9,9 +10,13 @@ public class AreaSpawnerManager : MonoBehaviour
 
     [Header("Objects")]
     public GameObject prefab;
+    private GameObject player;
 
+    private List<GameObject> areas = new List<GameObject>();
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+
         int randomAreaCount = Random.Range(0,3);
 
         for (int i = 0; i < randomAreaCount; i++)
@@ -37,10 +42,8 @@ public class AreaSpawnerManager : MonoBehaviour
 
 
         BoxCollider col = area.GetComponent<BoxCollider>();
-        if (col != null)
-        {
-            col.enabled = false;
-        }
+        col.isTrigger = true;
+        col.enabled = true;
         
         // półprzezroczysty materiał (opcjonalnie)
         Material mat = new Material(Shader.Find("Standard"));
@@ -66,7 +69,54 @@ public class AreaSpawnerManager : MonoBehaviour
                 Random.Range(-areaSize.z / 2f, areaSize.z / 2f)
             );
 
-            Instantiate(prefab, areaCenter + randomPos, Quaternion.identity);
+            GameObject obj = Instantiate(prefab, areaCenter + randomPos, Quaternion.identity);
+
+            InteractableObject io = obj.AddComponent<InteractableObject>();
+            io.manager = this;
+            io.parentArea = area;
+        }
+        
+        area.AddComponent<AreaTrigger>();
+        areas.Add(area);
+    }
+    
+    public void OnObjectInteracted(GameObject currentArea)
+    {
+        // jeśli jest tylko 1 obszar → po prostu dodaj drugi
+        if (areas.Count == 1)
+        {
+            CreateArea();
+            return;
+        }
+
+        // jeśli są 2 obszary → usuń ten, w którym NIE ma gracza
+        if (areas.Count == 2)
+        {
+            foreach (GameObject area in areas)
+            {
+                if (area == currentArea) continue;
+
+                AreaTrigger trigger = area.GetComponent<AreaTrigger>();
+
+                if (!trigger.playerInside)
+                {
+                    areas.Remove(area);
+                    
+                    InteractableObject[] objectsInArea = FindObjectsOfType<InteractableObject>();
+                    foreach (InteractableObject obj in objectsInArea)
+                    {
+                        if (obj.parentArea == area)
+                        {
+                            Destroy(obj.gameObject);
+                        }
+                    }
+                    
+                    Destroy(area);
+                    CreateArea();
+                    break;
+                }
+            }
         }
     }
+
 }
