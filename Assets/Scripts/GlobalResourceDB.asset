@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de6c74fcd34de0368232dca9def9aab, type: 3}
+  m_Name: GlobalResourceDB
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceDatabase
+  commonWeight: 10
+  uncommonWeight: 6
+  rareWeight: 4
+  legendaryWeight: 2
+  EpicWeight: 1
+  Resources:
+  - Name: "Brudny L\xF3d"
+    Rarity: 0
+  - Name: "W\u0119giel"
+    Rarity: 0
+  - Name: Krzemiany
+    Rarity: 0
+  - Name: "Z\u0142om Ferromagnetyczny"
+    Rarity: 0
+  - Name: Boksyt
+    Rarity: 0
+  - Name: "Py\u0142 Regolitowy"
+    Rarity: 0
+  - Name: "Ruda \u017Belaza"
+    Rarity: 1
+  - Name: "Mied\u017A"
+    Rarity: 1
+  - Name: Siarka
+    Rarity: 1
+  - Name: Nikiel
+    Rarity: 1
+  - Name: Lit
+    Rarity: 1
+  - Name: Tytan
+    Rarity: 1
+  - Name: Kobalt
+    Rarity: 1
+  - Name: Srebro
+    Rarity: 2
+  - Name: "Z\u0142oto"
+    Rarity: 2
+  - Name: "Kwarc Przemys\u0142owy"
+    Rarity: 2
+  - Name: Platyna
+    Rarity: 2
+  - Name: Pallad
+    Rarity: 2
+  - Name: Wolfram
+    Rarity: 2
+  - Name: Osmium
+    Rarity: 2
+  - Name: "Diamenty Przemys\u0142owe"
+    Rarity: 3
+  - Name: Rod
+    Rarity: 3
+  - Name: Hel-3
+    Rarity: 3
+  - Name: Void Crystals
+    Rarity: 3
+  - Name: Uran
+    Rarity: 4
+  - Name: Niestabilne izotopy
+    Rarity: 4
+  - Name: "Skroplony wod\xF3r"
+    Rarity: 4
+  - Name: Kontrabanda
+    Rarity: 4
+  - Name: Obca BIomasa
+    Rarity: 4
