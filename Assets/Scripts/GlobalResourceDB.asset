@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceDatabase
   commonWeight: 10
   uncommonWeight: 6
-  rareWeight: 4
+  rareWeight: 3
   legendaryWeight: 2
   EpicWeight: 1
   Resources:
