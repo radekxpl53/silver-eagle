@@ -102,7 +102,7 @@ public class AreaSpawnerManager : MonoBehaviour
                 {
                     areas.Remove(area);
                     
-                    InteractableObject[] objectsInArea = FindObjectsOfType<InteractableObject>();
+                    InteractableObject[] objectsInArea = FindObjectsByType<InteractableObject>(FindObjectsSortMode.None);
                     foreach (InteractableObject obj in objectsInArea)
                     {
                         if (obj.parentArea == area)
