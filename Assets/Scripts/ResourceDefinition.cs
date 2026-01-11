@@ -8,5 +8,7 @@ public class ResourceDefinition
 {
     public string Name;
     public Rarity Rarity;
+    public int optimalTemp;
+    public int tolerance;
 
 }

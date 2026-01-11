@@ -20,59 +20,117 @@ MonoBehaviour:
   Resources:
   - Name: "Brudny L\xF3d"
     Rarity: 0
+    optimalTemp: 150
+    tolerance: 100
   - Name: "W\u0119giel"
     Rarity: 0
+    optimalTemp: 650
+    tolerance: 150
   - Name: Krzemiany
     Rarity: 0
+    optimalTemp: 1100
+    tolerance: 180
   - Name: "Z\u0142om Ferromagnetyczny"
     Rarity: 0
+    optimalTemp: 950
+    tolerance: 180
   - Name: Boksyt
     Rarity: 0
+    optimalTemp: 800
+    tolerance: 150
   - Name: "Py\u0142 Regolitowy"
     Rarity: 0
+    optimalTemp: 400
+    tolerance: 250
   - Name: "Ruda \u017Belaza"
     Rarity: 1
+    optimalTemp: 0
+    tolerance: 0
   - Name: "Mied\u017A"
     Rarity: 1
+    optimalTemp: 0
+    tolerance: 0
   - Name: Siarka
     Rarity: 1
+    optimalTemp: 0
+    tolerance: 0
   - Name: Nikiel
     Rarity: 1
+    optimalTemp: 0
+    tolerance: 0
   - Name: Lit
     Rarity: 1
+    optimalTemp: 0
+    tolerance: 0
   - Name: Tytan
     Rarity: 1
+    optimalTemp: 0
+    tolerance: 0
   - Name: Kobalt
     Rarity: 1
+    optimalTemp: 0
+    tolerance: 0
   - Name: Srebro
     Rarity: 2
+    optimalTemp: 0
+    tolerance: 0
   - Name: "Z\u0142oto"
     Rarity: 2
+    optimalTemp: 0
+    tolerance: 0
   - Name: "Kwarc Przemys\u0142owy"
     Rarity: 2
+    optimalTemp: 0
+    tolerance: 0
   - Name: Platyna
     Rarity: 2
+    optimalTemp: 0
+    tolerance: 0
   - Name: Pallad
     Rarity: 2
+    optimalTemp: 0
+    tolerance: 0
   - Name: Wolfram
     Rarity: 2
+    optimalTemp: 0
+    tolerance: 0
   - Name: Osmium
     Rarity: 2
+    optimalTemp: 0
+    tolerance: 0
   - Name: "Diamenty Przemys\u0142owe"
     Rarity: 3
+    optimalTemp: 0
+    tolerance: 0
   - Name: Rod
     Rarity: 3
+    optimalTemp: 0
+    tolerance: 0
   - Name: Hel-3
     Rarity: 3
+    optimalTemp: 0
+    tolerance: 0
   - Name: Void Crystals
     Rarity: 3
+    optimalTemp: 0
+    tolerance: 0
   - Name: Uran
     Rarity: 4
+    optimalTemp: 0
+    tolerance: 0
   - Name: Niestabilne izotopy
     Rarity: 4
+    optimalTemp: 0
+    tolerance: 0
   - Name: "Skroplony wod\xF3r"
     Rarity: 4
+    optimalTemp: 0
+    tolerance: 0
   - Name: Kontrabanda
     Rarity: 4
+    optimalTemp: 0
+    tolerance: 0
   - Name: Obca BIomasa
     Rarity: 4
+    optimalTemp: 0
+    tolerance: 0
