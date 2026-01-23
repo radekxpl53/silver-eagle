@@ -27,6 +27,18 @@ public class MiningGame : MonoBehaviour
     private float currentProgress = 0.2f;
     private bool isMining = false;
 
+    [Header("Asteroid")]
+    public Asteroid asteroid;
+
+    [Header("Overheat / Instability")]       
+    public float smallErrorRate = 0.1f;     // 10% niestabilności
+    public float criticalErrorRate = 0.3f;  // 30% niestabilności
+    public float instability;
+
+    [Header("Yield")]
+    public float yieldMultiplier = 1f;
+
+
     // Referencja do akcji (możesz ją przypisać w inspektorze lub użyć Keyboard.current)
     private bool isPressingAction => Keyboard.current.spaceKey.isPressed || Pointer.current.press.isPressed;
 
@@ -103,15 +115,56 @@ public class MiningGame : MonoBehaviour
         float halfGreen = greenZone.rect.width / 2;
 
         if (rockX < greenX + halfGreen && rockX > greenX - halfGreen)
-            currentProgress += progressGain * Time.deltaTime;
-        else
+            currentProgress += progressGain * yieldMultiplier * Time.deltaTime;
+        else{
             currentProgress -= progressLoss * Time.deltaTime;
+
+            float distance = Mathf.Abs(rockX - greenX);
+
+            if (distance < halfGreen * 2f)
+                instability += smallErrorRate * Time.deltaTime;
+            else
+                instability += criticalErrorRate * Time.deltaTime;
+        }
+
+        if (instability >= 0.1f && instability < 0.9f)
+        {
+            yieldMultiplier = 1f - instability; // ilość surowców zmniejsza się proporcjonalnie z niestabilnością
+        }
+        else if (instability >= 0.9f)
+        {
+            yieldMultiplier = 0f; // jeżeli przekraczamy 90% niestabilności nie zyskujemy nic (Thermal Shock)
+        }
+        else
+        {
+            yieldMultiplier = 1f; // wydobyto 
+        }
 
         currentProgress = Mathf.Clamp01(currentProgress);
         progressSlider.value = currentProgress;
 
-        if (currentProgress >= 1f) EndGame("WYDOBYTO!");
-        if (currentProgress <= 0f) EndGame("PRZEGRANA!");
+        if (instability >= 0.9f)
+        {
+            ThermalShock();
+            return;
+        }
+
+        instability = Mathf.Clamp01(instability);
+
+        if (currentProgress >= 1f){
+            EndGame("WYDOBYTO!");
+        }
+        if (currentProgress <= 0f){
+            yieldMultiplier = 0;
+            EndGame("PRZEGRANA!");
+        }
+    }
+
+    void ThermalShock()
+    {
+        Debug.Log("THERMAL SHOCK!");
+        EndGame("ASTEROIDA ROZWALONA");
+        // tutaj można dodać logikę obrażenie od odłamków
     }
 
     void EndGame(string message)
@@ -119,5 +172,12 @@ public class MiningGame : MonoBehaviour
         Debug.Log(message);
         isMining = false;
         miningCanvas.SetActive(false);
+
+        foreach (var m in asteroid.materials){
+            Debug.Log(m.material+" "+m.amount*yieldMultiplier);
+        }
+
+        instability = 0f;
+        yieldMultiplier = 1f;
     }
 }
