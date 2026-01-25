@@ -31,8 +31,8 @@ public class MiningGame : MonoBehaviour
     public Asteroid asteroid;
 
     [Header("Overheat / Instability")]       
-    public float smallErrorRate = 0.1f;     // 10% niestabilności
-    public float criticalErrorRate = 0.3f;  // 30% niestabilności
+    public float smallErrorRate = 0.05f;     // 5% niestabilności
+    public float criticalErrorRate = 0.1f;  // 10% niestabilności
     public float instability;
 
     [Header("Yield")]
