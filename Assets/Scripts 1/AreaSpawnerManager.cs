@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 public class AreaSpawnerManager : MonoBehaviour
 {
+    [Header("Resources")]
+    public ResourceDatabase database;
+    
     [Header("Area settings")]
     public Vector3 areaSize = new Vector3(40f, 40f, 40f);
     
@@ -74,6 +77,18 @@ public class AreaSpawnerManager : MonoBehaviour
             InteractableObject io = obj.AddComponent<InteractableObject>();
             io.manager = this;
             io.parentArea = area;
+            
+            int resourceAmount = Random.Range(3, 7);
+            for (int j = 0; j < resourceAmount; j++)
+            {
+                if (database != null)
+                {
+                    // Losujemy surowiec i dodajemy go do listy w tym konkretnym Cubie
+                    ResourceDefinition selected = database.GetRandomResource();
+                    io.assignedResources.Add(selected);
+                }
+            }
+            
         }
         
         area.AddComponent<AreaTrigger>();
