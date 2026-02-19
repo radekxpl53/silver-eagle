@@ -5,7 +5,7 @@ public class InteractableObject : MonoBehaviour
 {
     public AreaSpawnerManager manager;
     public GameObject parentArea;
-    public List<ResourceDefinition> assignedResources = new List<ResourceDefinition>();
+    public List<ResourceStack> lootTable = new List<ResourceStack>();
 
     void OnTriggerEnter(Collider other)
     {
