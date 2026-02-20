@@ -26,9 +26,7 @@ public class MiningGame : MonoBehaviour
     private float rockTargetPos;
     private float currentProgress = 0.2f;
     private bool isMining = false;
-
-    [Header("Asteroid")]
-    public Asteroid asteroid;
+    private Asteroid asteroid;
 
     [Header("Overheat / Instability")]       
     public float smallErrorRate = 0.05f;     // 5% niestabilności
@@ -43,18 +41,12 @@ public class MiningGame : MonoBehaviour
     private bool isPressingAction => Keyboard.current.spaceKey.isPressed || Pointer.current.press.isPressed;
 
     void Update()
+{
+    if (isMining)
     {
-        // Start gry nowym systemem (WasPressedThisFrame zastępuje GetKeyDown)
-        if (!isMining && Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            StartMining();
-        }
-
-        if (isMining)
-        {
-            HandleMining();
-        }
+        HandleMining();
     }
+}
 
     void HandleMining()
     {
@@ -87,15 +79,24 @@ public class MiningGame : MonoBehaviour
     // Pozostałe metody (StartMining, ClampHorizontal, CheckWinCondition, EndGame) 
     // pozostają takie same jak w poprzednim kroku.
 
-    void StartMining()
+    public void StartMinigame(Asteroid targetAsteroid)
     {
+        if (isMining) return;
+
+        asteroid = targetAsteroid;
+
         isMining = true;
         currentProgress = 0.2f;
+        instability = 0f;
+        yieldMultiplier = 1f;
+
         miningCanvas.SetActive(true);
+
         greenZone.anchoredPosition = Vector2.zero;
         rock.anchoredPosition = Vector2.zero;
         greenZoneVelocity = 0;
     }
+
 
     void ClampHorizontal(RectTransform rect)
     {
