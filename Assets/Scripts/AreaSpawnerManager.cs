@@ -7,8 +7,8 @@ public class AreaSpawnerManager : MonoBehaviour
     public ResourceDatabase database;
     
     [Header("Area settings")]
-    public Vector3 areaSize = new Vector3(40f, 40f, 40f);
-    
+    public Vector3 areaSize = new Vector3(300f, 40f, 80f);
+
     public Vector3 worldSpawnSize = new Vector3(500f, 0f, 500f);
 
     [Header("Objects")]
@@ -28,6 +28,15 @@ public class AreaSpawnerManager : MonoBehaviour
         if (!data.hasAsteroidGroup) return;
 
         foreach (BeltSavedData belt in data.belts) {
+            // Najpierw sprawdzamy, czy wszytskie asteroidy w pasie są wykopane
+            int emptyCount = 0;
+            foreach (var ast in belt.asteroids) {
+                if (ast.loot.Count == 0) emptyCount++;
+            }
+
+            // Jeśli tak, to kładziemy na niego lache
+            if (emptyCount == belt.asteroids.Count) continue;
+
             // Stwórz Cube obszaru
             GameObject areaObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             areaObj.transform.position = transform.position + belt.beltCenter;
@@ -36,74 +45,83 @@ public class AreaSpawnerManager : MonoBehaviour
             SetupMaterial(areaObj);
 
             foreach (AsteroidSavedData astData in belt.asteroids) {
+                if (astData.loot.Count == 0) continue;
+
                 Vector3 worldPos = (transform.position + belt.beltCenter) + astData.localPos;
                 GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity, this.transform);
 
-                InteractableObject io = obj.AddComponent<InteractableObject>();
+                InteractableObject io = obj.GetComponent<InteractableObject>();
+                if (io == null) {
+                    io = obj.AddComponent<InteractableObject>();
+                }
+
                 io.manager = this;
                 io.parentArea = areaObj;
                 io.lootTable = astData.loot;
+                io.myBelt = belt;
+                io.myData = astData;
             }
+            areas.Add(areaObj);
         }
     }
 
-    public void CreateArea() {
-        float range = 3400f;
-        Vector3 areaCenter = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
+    //public void CreateArea() {
+    //    float range = 3400f;
+    //    Vector3 areaCenter = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
 
-        GameObject area = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        area.name = "SpawnArea";
-        area.transform.position = areaCenter;
-        area.transform.localScale = areaSize;
-        SetupMaterial(area);
+    //    GameObject area = GameObject.CreatePrimitive(PrimitiveType.Cube);
+    //    area.name = "SpawnArea";
+    //    area.transform.position = areaCenter;
+    //    area.transform.localScale = areaSize;
+    //    SetupMaterial(area);
 
-        int asteroidCount = Random.Range(5, 11);
+    //    int asteroidCount = Random.Range(5, 11);
 
-        for (int i = 0; i < asteroidCount; i++) {
-            GameObject obj = Instantiate(prefab, areaCenter + GetRandomOffset(), Quaternion.identity);
-            InteractableObject io = obj.AddComponent<InteractableObject>();
-            io.manager = this;
-            io.parentArea = area;
+    //    for (int i = 0; i < asteroidCount; i++) {
+    //        GameObject obj = Instantiate(prefab, areaCenter + GetRandomOffset(), Quaternion.identity);
+    //        InteractableObject io = obj.AddComponent<InteractableObject>();
+    //        io.manager = this;
+    //        io.parentArea = area;
 
-            int totalUnits = Random.Range(40, 121);
-            int typesCount = Random.Range(3, 7);
-            int unitsPerSlot = totalUnits / typesCount;
+    //        int totalUnits = Random.Range(40, 121);
+    //        int typesCount = Random.Range(3, 7);
+    //        int unitsPerSlot = totalUnits / typesCount;
 
-            // Lista do pilnowania, żeby surowce w asteroidzie były RÓŻNE
-            List<ResourceDefinition> uniqueResources = new List<ResourceDefinition>();
+    //        // Lista do pilnowania, żeby surowce w asteroidzie były RÓŻNE
+    //        List<ResourceDefinition> uniqueResources = new List<ResourceDefinition>();
 
-            for (int j = 0; j < typesCount; j++) {
-                if (database != null) {
-                    ResourceDefinition selected = null;
-                    int attempts = 0;
+    //        for (int j = 0; j < typesCount; j++) {
+    //            if (database != null) {
+    //                ResourceDefinition selected = null;
+    //                int attempts = 0;
 
-                    while (attempts < 10) {
-                        int roll = Random.Range(0, 100);
-                        int targetStage = currentSectorStage;
+    //                while (attempts < 10) {
+    //                    int roll = Random.Range(0, 100);
+    //                    int targetStage = currentSectorStage;
 
-                        if (roll < 20) targetStage -= 1;
-                        else if (roll >= 90) targetStage += 1;
+    //                    if (roll < 20) targetStage -= 1;
+    //                    else if (roll >= 90) targetStage += 1;
 
-                        targetStage = Mathf.Clamp(targetStage, 0, 4);
+    //                    targetStage = Mathf.Clamp(targetStage, 0, 4);
 
-                        selected = database.GetRandomResource(targetStage);
+    //                    selected = database.GetRandomResource(targetStage);
 
-                        if (selected != null && !uniqueResources.Contains(selected)) {
-                            break;
-                        }
-                        attempts++;
-                    }
+    //                    if (selected != null && !uniqueResources.Contains(selected)) {
+    //                        break;
+    //                    }
+    //                    attempts++;
+    //                }
 
-                    if (selected != null) {
-                        uniqueResources.Add(selected);
-                        io.lootTable.Add(new ResourceStack { definition = selected, amount = unitsPerSlot });
-                    }
-                }
-            }
-        }
-        area.AddComponent<AreaTrigger>();
-        areas.Add(area);
-    }
+    //                if (selected != null) {
+    //                    uniqueResources.Add(selected);
+    //                    io.lootTable.Add(new ResourceStack { definition = selected, amount = unitsPerSlot });
+    //                }
+    //            }
+    //        }
+    //    }
+    //    area.AddComponent<AreaTrigger>();
+    //    areas.Add(area);
+    //}
 
     private Vector3 GetRandomOffset() {
         return new Vector3(
@@ -112,25 +130,31 @@ public class AreaSpawnerManager : MonoBehaviour
             Random.Range(-areaSize.z / 2, areaSize.z / 2)
         );
     }
-    public void OnObjectInteracted(GameObject currentArea)
+    public void OnObjectInteracted(GameObject currentArea, BeltSavedData beltData)
     {
-        // Gdy Gracz zbierze asteroidę → na świecie generuje się nowy pas
-        if (ChunkManager.Instance != null) {
-            ChunkManager.Instance.TrySpawnNewBeltGlobal();
+        // Sprawdzamy ile pasów jest pustych
+        int emptyCount = 0;
+        int totalAsteroids = beltData.asteroids.Count;
+
+        foreach (var ast in beltData.asteroids) {
+            if (ast.loot.Count == 0) emptyCount++;
         }
 
-        InteractableObject[] objectsInArea = FindObjectsByType<InteractableObject>(FindObjectsSortMode.None);
-        bool anyLeft = false;
-        foreach (var obj in objectsInArea) {
-            if (obj.parentArea == currentArea && obj.gameObject != this.gameObject) {
-                anyLeft = true;
-                break;
+
+        // Jak wykopane asteroidy w pasie >80% to tworzy nowy pas na mapie
+        float minedPercentage = (float)emptyCount / totalAsteroids;
+
+        if (minedPercentage >= 0.80f && !beltData.respawnTriggered) {
+            if (ChunkManager.Instance != null) {
+                ChunkManager.Instance.TrySpawnNewBeltGlobal();
             }
+            beltData.respawnTriggered = true; // Blokada, żeby respiło tylko raz
         }
 
-        if (!anyLeft) {
-            areas.Remove(currentArea);
-            Destroy(currentArea);
+        // Jak wykopiemy całe to go usuwa na ament
+        if (emptyCount == totalAsteroids) {
+            if (areas.Contains(currentArea)) areas.Remove(currentArea);
+            if (currentArea != null) Destroy(currentArea);
         }
     }
 

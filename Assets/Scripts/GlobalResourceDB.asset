@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceDatabase
   Resources:
   - Name: "Brudny L\xF3d"
-    Stage: 1
+    Stage: 0
     optimalTemp: 150
     tolerance: 100
     weightsPerStage:
@@ -24,7 +24,7 @@ MonoBehaviour:
     - 31
     - 25
   - Name: "W\u0119giel"
-    Stage: 1
+    Stage: 0
     optimalTemp: 650
     tolerance: 150
     weightsPerStage:
@@ -34,7 +34,7 @@ MonoBehaviour:
     - 23
     - 18
   - Name: Krzemiany
-    Stage: 1
+    Stage: 0
     optimalTemp: 1100
     tolerance: 180
     weightsPerStage:
@@ -44,7 +44,7 @@ MonoBehaviour:
     - 18
     - 14
   - Name: "Z\u0142om Ferromagnetyczny"
-    Stage: 1
+    Stage: 0
     optimalTemp: 950
     tolerance: 200
     weightsPerStage:
@@ -54,7 +54,7 @@ MonoBehaviour:
     - 15
     - 12
   - Name: Boksyt
-    Stage: 1
+    Stage: 0
     optimalTemp: 800
     tolerance: 150
     weightsPerStage:
@@ -64,7 +64,7 @@ MonoBehaviour:
     - 13
     - 10
   - Name: "Py\u0142 Regolitowy"
-    Stage: 1
+    Stage: 0
     optimalTemp: 400
     tolerance: 250
     weightsPerStage:
