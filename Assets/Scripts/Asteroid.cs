@@ -5,14 +5,14 @@ using TMPro;
 
 public class Asteroid : MonoBehaviour
 {
-    public List<AsteroidMaterialEntry> materials;
-    public TextMeshProUGUI info;
+    public List<ResourceStack> materials = new List<ResourceStack>();
+    public TextMeshPro info;
 
     private List<float> GetWeightedTemps()
     {
         float sum = materials.Sum(m => m.amount);
         return materials
-            .Select(m => m.material.baseTemperature * (1 + m.amount / sum))
+            .Select(m => (float)m.definition.optimalTemp * (1f + (float)m.amount / sum))
             .ToList();
     }
 
@@ -31,11 +31,19 @@ public class Asteroid : MonoBehaviour
 
 
     public void showInfoAsteroid(){
+        if (info == null) return;
+
+        // Debug ¿eby nie wyœwietla³o NAN ani pustych list
+        if (materials == null || materials.Count == 0) {
+            info.text = "Skanowanie...";
+            return;
+        }
+
         string textInfo = $"Temperatura: {CalculateTemperature()} \u00B0C" +
         $"\nTolerancja: {ToleranceTemperature()} \u00B0C" +
         $"\nSurowce:\n";
         foreach(var m in materials){
-            textInfo += $"{m.material.materialName} - {m.amount}\n";
+            textInfo += $"{m.definition.Name} - {m.amount}\n";
         }
         info.text = textInfo;
     }

@@ -174,7 +174,7 @@ public class MiningGame : MonoBehaviour
         miningCanvas.SetActive(false);
 
         foreach (var m in asteroid.materials){
-            Debug.Log(m.material+" "+m.amount*yieldMultiplier);
+            Debug.Log(m.definition.Name + " " + (m.amount * yieldMultiplier));
         }
 
         instability = 0f;

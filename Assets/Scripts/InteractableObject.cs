@@ -19,7 +19,8 @@ public class InteractableObject : MonoBehaviour {
                 manager.OnObjectInteracted(parentArea, myBelt);
             }
 
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            Debug.Log("Dotk³eœ asteroide :) UwU");
         }
     }
 }

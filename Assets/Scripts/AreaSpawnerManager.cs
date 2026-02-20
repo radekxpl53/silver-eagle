@@ -60,6 +60,13 @@ public class AreaSpawnerManager : MonoBehaviour
                 io.lootTable = astData.loot;
                 io.myBelt = belt;
                 io.myData = astData;
+                
+
+                Asteroid asteroidVisual = obj.GetComponent<Asteroid>();
+                if (asteroidVisual != null) {
+                    asteroidVisual.materials = astData.loot;
+                    asteroidVisual.showInfoAsteroid(); 
+                }
             }
             areas.Add(areaObj);
         }
