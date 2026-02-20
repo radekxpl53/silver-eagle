@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 public class Move : MonoBehaviour
 {
     [SerializeField] public float speed = 10.0f;
-    [SerializeField] private GameObject MapGrid;
-    private bool isPressed = false;
+    //[SerializeField] private GameObject MapGrid;
+    //private bool isPressed = false;
 
     void Start()
     {
@@ -38,10 +38,10 @@ public class Move : MonoBehaviour
         {
             transform.Translate(Vector3.down * Time.deltaTime * speed);
         }
-        if (Keyboard.current.mKey.wasPressedThisFrame)
-        {
-            isPressed = !isPressed;
-            MapGrid.SetActive(isPressed);
-        }
+        //if (Keyboard.current.mKey.wasPressedThisFrame)
+        //{
+        //    isPressed = !isPressed;
+        //    MapGrid.SetActive(isPressed);
+        //}
     }
 }
