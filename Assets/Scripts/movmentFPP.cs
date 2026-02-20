@@ -1,18 +1,18 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.InputSystem;
-
 
 [RequireComponent(typeof(Rigidbody))]
 public class fppLatanie : MonoBehaviour
 {
     [Header("PARAMETRY BAZOWE")]
-    public float baseMass = 20000f;
-    public float cargoCapacity = 15000f;
-    public float maxMainThrust = 120000f;
+    public float baseMass = 100000f;          // Masa Statku
+    public float cargoCapacity = 80000f;      // Pojemno≈õƒá ≈Åadowni
+    public float maxMainThrust = 800000f;     // Si≈Ça CiƒÖgu G≈Ç√≥wnego
 
-    [Header("SI£Y OBROTU")]
-    public float maneuverForce = 5000f;
-    public float rollForce = 30000f;
+    [Header("SI≈ÅY HAMOWANIA I MANEWR√ìW")]
+    public float brakeThrust = 400000f;       // Si≈Ça Hamowania
+    public float maneuverForce = 250000f;     // Si≈Ça Manewrowa
+    public float rollForce = 250000f;         // Roll
 
     [Header("ILOSC LADUNKU")]
     [Range(0f, 1f)]
@@ -29,45 +29,60 @@ public class fppLatanie : MonoBehaviour
     public Transform cameraTransform;
 
     private Rigidbody rb;
+    private float previousLoadPercent = -1f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        rb.linearDamping = 0.8f;
+        rb.linearDamping = 0.5f;
 
-        // Ukrycie kursora
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        UpdatePhysics();
     }
 
     void Update()
     {
-        //MOC SILNIKOW SCROLEM
+        // === MOC SILNIK√ìW ===
         if (Mouse.current != null)
         {
             float scroll = Mouse.current.scroll.y.ReadValue() * throttleSensitivity;
             currentThrottle = Mathf.Clamp(currentThrottle + scroll, 0f, 100f);
         }
 
-        //AKTUALIZACJA FIZYKI MASY
-        float currentCargoMass = cargoCapacity * currentLoadPercent;
-        rb.mass = baseMass + currentCargoMass;
+        if (Mathf.Abs(currentLoadPercent - previousLoadPercent) > 0.001f)
+        {
+            UpdatePhysics();
+            previousLoadPercent = currentLoadPercent;
+        }
+    }
+
+    private void UpdatePhysics()
+    {
+        rb.mass = baseMass + cargoCapacity * currentLoadPercent;
+
         rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
     }
 
     void FixedUpdate()
     {
-        //CI•G SILNIKA
+        // === CIƒÑG G≈Å√ìWNY ===
         float currentThrustForce = maxMainThrust * (currentThrottle / 100f);
         rb.AddRelativeForce(Vector3.forward * currentThrustForce);
 
-        //ZMIENNE STEROWANIA
+        // === HAMOWANIE ===
+        if (Keyboard.current != null && Keyboard.current.sKey.isPressed)
+        {
+            rb.AddRelativeForce(Vector3.forward * -brakeThrust);
+        }
+
+        // === STEROWANIE MYSZƒÑ + ROLL ===
         float mouseX = 0f;
         float mouseY = 0f;
         float rollInput = 0f;
 
-        //ODCZYT MYSZY
         if (Mouse.current != null)
         {
             Vector2 delta = Mouse.current.delta.ReadValue();
@@ -75,24 +90,19 @@ public class fppLatanie : MonoBehaviour
             mouseY = delta.y * mouseSensitivity * Time.fixedDeltaTime * 50f;
         }
 
-        //ODCZYT KLAWIATURY (A/D - ROLL)
         if (Keyboard.current != null)
         {
             if (Keyboard.current.aKey.isPressed) rollInput = -1f;
             if (Keyboard.current.dKey.isPressed) rollInput = 1f;
         }
 
-        //APLIKOWANIE SI£ OBROTOWYCH
-        // Pitch (X): Mysz gÛra/dÛ≥ (odwrÛcona oú Y myszy dla sterowania samolotowego)
+        // Pitch
         float pitchForce = -mouseY * maneuverForce;
-
-        // Yaw (Y): Mysz lewo/prawo
+        // Yaw
         float yawForce = mouseX * maneuverForce;
-
-        // Roll (Z): Klawisze A/D (minus, øeby D pochyla≥o w prawo)
+        // Roll
         float rollTorque = -rollInput * rollForce;
 
-        Vector3 rotacja = new Vector3(pitchForce, yawForce, rollTorque);
-        rb.AddRelativeTorque(rotacja);
+        rb.AddRelativeTorque(new Vector3(pitchForce, yawForce, rollTorque));
     }
 }

@@ -6,19 +6,19 @@ public class kameraTpp : MonoBehaviour
     public Transform target;
 
     [Header("Ustawienia Orbity")]
-    public float distance = 15.0f;
-    public float sensitivity = 0.5f;
-    public float yMinLimit = -20f;
-    public float yMaxLimit = 80f;
+    [SerializeField] private float distance = 15.0f;
+    [SerializeField] private float sensitivity = 0.5f;
+    [SerializeField] private float yMinLimit = -20f;
+    [SerializeField] private float yMaxLimit = 80f;
 
-    private float mouseX = 0.0f;
-    private float mouseY = 0.0f;
+    [SerializeField] private float mouseX = 0.0f;
+    [SerializeField] private float mouseY = 0.0f;
 
 
-    private float currentX = 0.0f;
-    private float currentY = 0.0f;
+    [SerializeField] private float currentX = 0.0f;
+    [SerializeField] private float currentY = 0.0f;
 
-    private float smoothSpeed = 10f;
+    [SerializeField] private float smoothSpeed = 10f;
 
     void Start()
     {
@@ -33,7 +33,6 @@ public class kameraTpp : MonoBehaviour
         {
             Vector2 mouseDelta = Mouse.current.delta.ReadValue();
 
-            // Nowy system zwraca pixele, skalujemy lekko
             mouseX += mouseDelta.x * sensitivity * 0.5f;
             mouseY -= mouseDelta.y * sensitivity * 0.5f;
 
@@ -47,7 +46,6 @@ public class kameraTpp : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
 
         // Pozycja: Punkt celu - (kierunek * dystans)
-        // Dodajemy Vector3.up * 2, ¿eby kamera patrzy³a nieco nad œrodek statku
         Vector3 position = target.position - (rotation * Vector3.forward * distance);
 
         transform.rotation = rotation;
