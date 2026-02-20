@@ -1,14 +1,12 @@
 using System;
 
-[Serializable] 
-public enum Rarity { Common, Uncommon,  Rare, Epic,  Legendary }
-
 [Serializable]
 public class ResourceDefinition
 {
     public string Name;
-    public Rarity Rarity;
-    public int optimalTemp;
-    public int tolerance;
+    public int Stage;
+    public float optimalTemp;
+    public float tolerance;
+    public float[] weightsPerStage = new float[5];
+} 
 
-}

@@ -5,25 +5,34 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewResourceDatabase", menuName = "Tutorial/Resource Database")]
 public class ResourceDatabase : ScriptableObject
 {
-    [Header("Globalne Wagi Rzadkości")]
-    public int commonWeight = 10;
-    public int uncommonWeight = 6;
-    public int rareWeight = 4;
-    public int legendaryWeight = 2;
-    public int EpicWeight = 1;
 
     [Header("Lista Surowców")]
     public List<ResourceDefinition> Resources = new List<ResourceDefinition>();
 
-    public int GetWeightForRarity(Rarity rarity)
+    public ResourceDefinition GetRandomResource(int sectorStage)
     {
-        switch (rarity)
-        {
-            case Rarity.Common: return commonWeight;
-            case Rarity.Uncommon: return uncommonWeight;
-            case Rarity.Rare: return rareWeight;
-            case Rarity.Legendary: return legendaryWeight;
-            default: return 0;
+
+        float totalWeight = 0f;
+
+        
+
+        foreach (ResourceDefinition res in Resources) {
+            totalWeight += res.weightsPerStage[sectorStage];
         }
+
+        if (totalWeight <= 0) {
+            return Resources[0];
+        }
+
+        float roll = Random.Range(0f, totalWeight);
+
+        foreach (ResourceDefinition res in Resources) {
+            if (roll <= res.weightsPerStage[sectorStage]) {
+                return res;
+            } else {
+                roll -= res.weightsPerStage[sectorStage];
+            }
+        }
+        return Resources[0];
     }
 }

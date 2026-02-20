@@ -12,125 +12,294 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6c74fcd34de0368232dca9def9aab, type: 3}
   m_Name: GlobalResourceDB
   m_EditorClassIdentifier: Assembly-CSharp::ResourceDatabase
-  commonWeight: 10
-  uncommonWeight: 6
-  rareWeight: 3
-  legendaryWeight: 2
-  EpicWeight: 1
   Resources:
   - Name: "Brudny L\xF3d"
-    Rarity: 0
+    Stage: 0
     optimalTemp: 150
     tolerance: 100
+    weightsPerStage:
+    - 60
+    - 48
+    - 38
+    - 31
+    - 25
   - Name: "W\u0119giel"
-    Rarity: 0
+    Stage: 0
     optimalTemp: 650
     tolerance: 150
+    weightsPerStage:
+    - 45
+    - 36
+    - 29
+    - 23
+    - 18
   - Name: Krzemiany
-    Rarity: 0
+    Stage: 0
     optimalTemp: 1100
     tolerance: 180
+    weightsPerStage:
+    - 35
+    - 28
+    - 22
+    - 18
+    - 14
   - Name: "Z\u0142om Ferromagnetyczny"
-    Rarity: 0
+    Stage: 0
     optimalTemp: 950
-    tolerance: 180
+    tolerance: 200
+    weightsPerStage:
+    - 30
+    - 24
+    - 19
+    - 15
+    - 12
   - Name: Boksyt
-    Rarity: 0
+    Stage: 0
     optimalTemp: 800
     tolerance: 150
+    weightsPerStage:
+    - 25
+    - 20
+    - 16
+    - 13
+    - 10
   - Name: "Py\u0142 Regolitowy"
-    Rarity: 0
+    Stage: 0
     optimalTemp: 400
     tolerance: 250
+    weightsPerStage:
+    - 20
+    - 16
+    - 13
+    - 10
+    - 8
   - Name: "Ruda \u017Belaza"
-    Rarity: 1
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 1
+    optimalTemp: 1650
+    tolerance: 110
+    weightsPerStage:
+    - 0
+    - 50
+    - 40
+    - 32
+    - 26
   - Name: "Mied\u017A"
-    Rarity: 1
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 1
+    optimalTemp: 1350
+    tolerance: 100
+    weightsPerStage:
+    - 0
+    - 40
+    - 32
+    - 26
+    - 20
   - Name: Siarka
-    Rarity: 1
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 1
+    optimalTemp: 1200
+    tolerance: 120
+    weightsPerStage:
+    - 0
+    - 30
+    - 24
+    - 19
+    - 15
   - Name: Nikiel
-    Rarity: 1
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 1
+    optimalTemp: 1800
+    tolerance: 100
+    weightsPerStage:
+    - 0
+    - 35
+    - 28
+    - 22
+    - 18
   - Name: Lit
-    Rarity: 1
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 1
+    optimalTemp: 1500
+    tolerance: 90
+    weightsPerStage:
+    - 0
+    - 20
+    - 16
+    - 13
+    - 10
   - Name: Tytan
-    Rarity: 1
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 1
+    optimalTemp: 2200
+    tolerance: 90
+    weightsPerStage:
+    - 0
+    - 15
+    - 12
+    - 10
+    - 8
   - Name: Kobalt
-    Rarity: 1
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 1
+    optimalTemp: 2000
+    tolerance: 80
+    weightsPerStage:
+    - 0
+    - 12
+    - 10
+    - 8
+    - 6
   - Name: Srebro
-    Rarity: 2
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 2
+    optimalTemp: 2400
+    tolerance: 70
+    weightsPerStage:
+    - 0
+    - 0
+    - 40
+    - 32
+    - 26
   - Name: "Z\u0142oto"
-    Rarity: 2
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 2
+    optimalTemp: 2600
+    tolerance: 60
+    weightsPerStage:
+    - 0
+    - 0
+    - 35
+    - 28
+    - 22
   - Name: "Kwarc Przemys\u0142owy"
-    Rarity: 2
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 2
+    optimalTemp: 3200
+    tolerance: 80
+    weightsPerStage:
+    - 0
+    - 0
+    - 30
+    - 24
+    - 19
   - Name: Platyna
-    Rarity: 2
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 2
+    optimalTemp: 3000
+    tolerance: 60
+    weightsPerStage:
+    - 0
+    - 0
+    - 25
+    - 20
+    - 16
   - Name: Pallad
-    Rarity: 2
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 2
+    optimalTemp: 2800
+    tolerance: 70
+    weightsPerStage:
+    - 0
+    - 0
+    - 20
+    - 16
+    - 13
   - Name: Wolfram
-    Rarity: 2
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 2
+    optimalTemp: 3800
+    tolerance: 40
+    weightsPerStage:
+    - 0
+    - 0
+    - 12
+    - 10
+    - 8
   - Name: Osmium
-    Rarity: 2
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 2
+    optimalTemp: 3500
+    tolerance: 50
+    weightsPerStage:
+    - 0
+    - 0
+    - 7
+    - 6
+    - 4
   - Name: "Diamenty Przemys\u0142owe"
-    Rarity: 3
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 3
+    optimalTemp: 4200
+    tolerance: 40
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 25
+    - 20
   - Name: Rod
-    Rarity: 3
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 3
+    optimalTemp: 4000
+    tolerance: 50
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 20
+    - 16
   - Name: Hel-3
-    Rarity: 3
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 3
+    optimalTemp: 400
+    tolerance: 30
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 15
+    - 12
   - Name: Void Crystals
-    Rarity: 3
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 3
+    optimalTemp: 5000
+    tolerance: 50
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 5
+    - 3
   - Name: Uran
-    Rarity: 4
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 4
+    optimalTemp: 5000
+    tolerance: 50
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 30
   - Name: Niestabilne izotopy
-    Rarity: 4
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 4
+    optimalTemp: 4500
+    tolerance: 60
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 25
   - Name: "Skroplony wod\xF3r"
-    Rarity: 4
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 4
+    optimalTemp: 200
+    tolerance: 40
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 20
   - Name: Kontrabanda
-    Rarity: 4
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 4
+    optimalTemp: 3000
+    tolerance: 100
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 10
   - Name: Obca BIomasa
-    Rarity: 4
-    optimalTemp: 0
-    tolerance: 0
+    Stage: 4
+    optimalTemp: 800
+    tolerance: 25
+    weightsPerStage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 5
