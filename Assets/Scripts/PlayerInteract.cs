@@ -1,34 +1,63 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-public class PlayerInteract : MonoBehaviour
-{
-    public float range = 5; // długość lasera
-    public MiningGame miningGame;
-    private Asteroid asteroid;
-    void Update()
-    {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            Vector3 direction = Vector3.forward;
-            Ray theRay = new Ray(transform.position, transform.TransformDirection(direction * range));
-            Debug.DrawRay(transform.position, transform.TransformDirection(direction * range));
-            if(Physics.Raycast(theRay, out RaycastHit hit, range))
-            {
-                asteroid = hit.collider.GetComponent<Asteroid>();
-                if(hit.collider.tag == "Asteroid")
-                {
-                    Debug.Log("Wciśnij E");
-                    return;
-                }
+public class PlayerInteract : MonoBehaviour {
+    public float range = 20f;
+
+    void Update() {
+        // LOG 1: Czy Unity w ogóle widzi, że klikasz E?
+        if (Keyboard.current.eKey.wasPressedThisFrame) {
+            Debug.Log("Naciśnięto klawisz E");
+
+            Ray rayRight = new Ray(transform.position, transform.right);
+            Ray rayLeft = new Ray(transform.position, -transform.right);
+            RaycastHit hit;
+
+            // Wizualizacja laserów w oknie Scene
+            Debug.DrawRay(transform.position, transform.right * range, Color.yellow, 2f);
+            Debug.DrawRay(transform.position, -transform.right * range, Color.yellow, 2f);
+
+            // Sprawdzamy prawą stronę
+            if (Physics.Raycast(rayRight, out hit, range)) {
+                TryStartMining(hit);
             }
-            asteroid = null;
+            // Sprawdzamy lewą stronę
+            else if (Physics.Raycast(rayLeft, out hit, range)) {
+                TryStartMining(hit);
+            }
+            else {
+                Debug.Log("Lasery boczne w nic nie trafiły. Podleć bliżej asteroidy burtą!");
+            }
         }
+    }
 
-        if (asteroid != null && Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            miningGame.StartMinigame(asteroid);
-            asteroid = null; 
+    void TryStartMining(RaycastHit hit) {
+        Debug.Log("Laser w coś trafił: " + hit.collider.name);
+
+        if (hit.collider.CompareTag("Asteroid")) {
+            Asteroid target = hit.collider.GetComponent<Asteroid>();
+
+            InteractableObject io = hit.collider.GetComponent<InteractableObject>();
+            if (target != null) {
+                MiningData.currentAsteroidLoot = target.materials;
+                MiningData.currentAsteroidObject = target;
+
+                MiningData.currentManager = io.manager;
+                MiningData.currentBelt = io.myBelt;
+                MiningData.currentArea = io.parentArea;
+
+                SceneManager.LoadScene("MiningScene", LoadSceneMode.Additive);
+
+                // Zmieniamy stan gry na Mining
+                GameManager.Instance.ChangeState(GameState.Mining);
+            }
+            else {
+                Debug.LogError("Obiekt ma tag Asteroid, ale brakuje mu skryptu Asteroid.cs!");
+            }
+        }
+        else {
+            Debug.Log("Trafiony obiekt nie ma tagu 'Asteroid'. Ma tag: " + hit.collider.tag);
         }
     }
 }

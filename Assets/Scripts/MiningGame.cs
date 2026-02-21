@@ -1,6 +1,7 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem; // Wymagane dla nowego systemu
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MiningGame : MonoBehaviour
 {
@@ -76,25 +77,13 @@ public class MiningGame : MonoBehaviour
         CheckWinCondition();
     }
 
-    // Pozostałe metody (StartMining, ClampHorizontal, CheckWinCondition, EndGame) 
-    // pozostają takie same jak w poprzednim kroku.
-
-    public void StartMinigame(Asteroid targetAsteroid)
-    {
-        if (isMining) return;
-
-        asteroid = targetAsteroid;
-
+    public void StartMinigame() {
         isMining = true;
+        miningCanvas.SetActive(true);
+
         currentProgress = 0.2f;
         instability = 0f;
         yieldMultiplier = 1f;
-
-        miningCanvas.SetActive(true);
-
-        greenZone.anchoredPosition = Vector2.zero;
-        rock.anchoredPosition = Vector2.zero;
-        greenZoneVelocity = 0;
     }
 
 
@@ -168,17 +157,48 @@ public class MiningGame : MonoBehaviour
         // tutaj można dodać logikę obrażenie od odłamków
     }
 
+    void Start() {
+        if (MiningData.currentAsteroidLoot != null) {
+            StartMinigame();
+        }
+        else {
+            Debug.LogWarning("Brak danych o asteroidzie! Wracam do głównej sceny.");
+            SceneManager.LoadScene("TwojaNazwaGlownejSceny");
+        }
+    }
+
     void EndGame(string message)
     {
         Debug.Log(message);
         isMining = false;
-        miningCanvas.SetActive(false);
 
-        foreach (var m in asteroid.materials){
-            Debug.Log(m.definition.Name + " " + (m.amount * yieldMultiplier));
+        if (message == "WYDOBYTO!") {
+            if (MiningData.currentAsteroidObject != null) {
+                // Wydupcamy ją z rejestru
+                if (MiningData.currentAsteroidLoot != null) {
+                    MiningData.currentAsteroidLoot.Clear();
+                }
+
+                if (MiningData.currentManager != null) {
+                    Debug.Log("DEBUG: Informuję przekaźnik o wydobyciu");
+                    MiningData.currentManager.OnObjectInteracted(MiningData.currentArea, MiningData.currentBelt);
+                }
+
+                // Niszczymy obiekt w świecie gry
+                Destroy(MiningData.currentAsteroidObject.gameObject);
+                Debug.Log("Obiekt asteroidy usunięty z głównej sceny");
+            }
         }
 
-        instability = 0f;
-        yieldMultiplier = 1f;
+        // Wywalamy dane z przekaźnika
+        MiningData.currentAsteroidObject = null;
+        MiningData.currentAsteroidLoot = null;
+        MiningData.currentManager = null;
+        MiningData.currentArea = null;
+        MiningData.currentBelt = null;
+
+        // Przełącamy sinlgetona na eksporacje i wywalamy scerne z miningu
+        GameManager.Instance.ChangeState(GameState.Exploration);
+        SceneManager.UnloadSceneAsync("MiningScene");
     }
 }

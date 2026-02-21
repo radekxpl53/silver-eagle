@@ -14,6 +14,7 @@ public class Move : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.currentState != GameState.Exploration) return;
         if (Keyboard.current.wKey.isPressed)
         {
             transform.Translate(Vector3.forward * Time.deltaTime * speed);

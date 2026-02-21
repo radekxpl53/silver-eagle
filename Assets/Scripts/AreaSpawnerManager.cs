@@ -71,72 +71,6 @@ public class AreaSpawnerManager : MonoBehaviour
             areas.Add(areaObj);
         }
     }
-
-    //public void CreateArea() {
-    //    float range = 3400f;
-    //    Vector3 areaCenter = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
-
-    //    GameObject area = GameObject.CreatePrimitive(PrimitiveType.Cube);
-    //    area.name = "SpawnArea";
-    //    area.transform.position = areaCenter;
-    //    area.transform.localScale = areaSize;
-    //    SetupMaterial(area);
-
-    //    int asteroidCount = Random.Range(5, 11);
-
-    //    for (int i = 0; i < asteroidCount; i++) {
-    //        GameObject obj = Instantiate(prefab, areaCenter + GetRandomOffset(), Quaternion.identity);
-    //        InteractableObject io = obj.AddComponent<InteractableObject>();
-    //        io.manager = this;
-    //        io.parentArea = area;
-
-    //        int totalUnits = Random.Range(40, 121);
-    //        int typesCount = Random.Range(3, 7);
-    //        int unitsPerSlot = totalUnits / typesCount;
-
-    //        // Lista do pilnowania, żeby surowce w asteroidzie były RÓŻNE
-    //        List<ResourceDefinition> uniqueResources = new List<ResourceDefinition>();
-
-    //        for (int j = 0; j < typesCount; j++) {
-    //            if (database != null) {
-    //                ResourceDefinition selected = null;
-    //                int attempts = 0;
-
-    //                while (attempts < 10) {
-    //                    int roll = Random.Range(0, 100);
-    //                    int targetStage = currentSectorStage;
-
-    //                    if (roll < 20) targetStage -= 1;
-    //                    else if (roll >= 90) targetStage += 1;
-
-    //                    targetStage = Mathf.Clamp(targetStage, 0, 4);
-
-    //                    selected = database.GetRandomResource(targetStage);
-
-    //                    if (selected != null && !uniqueResources.Contains(selected)) {
-    //                        break;
-    //                    }
-    //                    attempts++;
-    //                }
-
-    //                if (selected != null) {
-    //                    uniqueResources.Add(selected);
-    //                    io.lootTable.Add(new ResourceStack { definition = selected, amount = unitsPerSlot });
-    //                }
-    //            }
-    //        }
-    //    }
-    //    area.AddComponent<AreaTrigger>();
-    //    areas.Add(area);
-    //}
-
-    private Vector3 GetRandomOffset() {
-        return new Vector3(
-            Random.Range(-areaSize.x / 2, areaSize.x / 2),
-            Random.Range(-areaSize.y / 2, areaSize.y / 2),
-            Random.Range(-areaSize.z / 2, areaSize.z / 2)
-        );
-    }
     public void OnObjectInteracted(GameObject currentArea, BeltSavedData beltData)
     {
         // Sprawdzamy ile pasów jest pustych
@@ -151,7 +85,9 @@ public class AreaSpawnerManager : MonoBehaviour
         // Jak wykopane asteroidy w pasie >80% to tworzy nowy pas na mapie
         float minedPercentage = (float)emptyCount / totalAsteroids;
 
+        Debug.Log($"Pas: {beltData.beltCenter} | Wydobyto: {emptyCount}/{totalAsteroids} ({minedPercentage * 100}%)");
         if (minedPercentage >= 0.80f && !beltData.respawnTriggered) {
+            Debug.Log("DEBUG: WARUNEK 80% SPEŁNIONY!");
             if (ChunkManager.Instance != null) {
                 ChunkManager.Instance.TrySpawnNewBeltGlobal();
             }
@@ -160,28 +96,29 @@ public class AreaSpawnerManager : MonoBehaviour
 
         // Jak wykopiemy całe to go usuwa na ament
         if (emptyCount == totalAsteroids) {
+            Debug.Log("Pas całkowicie wyczyszczony. Usuwam strefę.");
             if (areas.Contains(currentArea)) areas.Remove(currentArea);
             if (currentArea != null) Destroy(currentArea);
         }
     }
 
     public void SetupMaterial(GameObject area) {
+        // To nam wywala żeby laser ze statku nie łapał cube tylko zawsze asteroide
+        area.layer = 2;
+
+        // Musi to być, bo nie da sie wleciec w strefe
         BoxCollider col = area.GetComponent<BoxCollider>();
         col.isTrigger = true;
         col.enabled = true;
 
-        // półprzezroczysty materiał (opcjonalnie)
-        Material mat = new Material(Shader.Find("Standard"));
-        mat.color = new Color(0f, 1f, 0f, 0.2f);
-        mat.SetFloat("_Mode", 3);
-        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        mat.SetInt("_ZWrite", 0);
-        mat.DisableKeyword("_ALPHATEST_ON");
-        mat.EnableKeyword("_ALPHABLEND_ON");
-        mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        mat.renderQueue = 3000;
-        area.GetComponent<Renderer>().material = mat;
-    }
+        MeshRenderer mr = area.GetComponent<MeshRenderer>();
+        if (mr != null) {
+            mr.enabled = false;
+        }
 
+        MeshFilter mf = area.GetComponent<MeshFilter>();
+        if (mf != null) {
+            Destroy(mf);
+        }
+    }
 }
