@@ -4,7 +4,8 @@ public enum GameState {
     Exploration,
     Mining,
     Fighting,
-    Menu
+    Menu,
+    Console,
 }
 
 public class GameManager : MonoBehaviour {
