@@ -34,6 +34,9 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
     
     public void ResumeGame()
@@ -41,19 +44,26 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void QuitGame()
     {
         Debug.Log("Quitting game...");
-        Application.Quit();
+            #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                        Application.Quit();
+            #endif
     }
-    
+
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
         isPaused = false;
-        SceneManager.LoadScene("MainMenuTempalte");
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void OptionsMenu()

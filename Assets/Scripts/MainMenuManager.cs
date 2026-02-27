@@ -9,12 +9,16 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button loadGameButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitButton;
-
+    [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private GameObject mainMenuPanel;
     // debug variable for testing
     [SerializeField] private bool saveFileExists = true;
 
     private void Start()
     {
+        mainMenuPanel.SetActive(true);
+        optionsPanel.SetActive(false);
+
         if (newGameButton != null)
             newGameButton.onClick.AddListener(OnNewGameClicked);
         
@@ -31,6 +35,8 @@ public class MainMenuManager : MonoBehaviour
     private void OnNewGameClicked()
     {
         Debug.Log("Starting new game...");
+        // To jest do zmiany jak zmerguje branche
+        SceneManager.LoadScene("GameScene");
     }
 
     private void OnLoadGameClicked()
@@ -46,9 +52,16 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    private void OnOptionsClicked()
+    public void OnOptionsClicked()
     {
-        Debug.Log("Opening options menu...");
+        Debug.Log("PRZYCISK DZIA£A!");
+        mainMenuPanel.SetActive(false);
+        optionsPanel.SetActive(true);
+    }
+
+    public void ShowMenu() {
+        optionsPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
     }
 
     private void OnQuitClicked()
