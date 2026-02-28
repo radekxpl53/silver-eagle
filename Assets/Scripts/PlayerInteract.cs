@@ -35,7 +35,9 @@ public class PlayerInteract : MonoBehaviour {
     void TryStartMining(RaycastHit hit) {
         Debug.Log("Laser w coś trafił: " + hit.collider.name);
 
-        if (hit.collider.CompareTag("Asteroid")) {
+        
+
+        if (hit.collider.CompareTag("Asteroid") && GameManager.Instance.currentState == GameState.Exploration) {
             Asteroid target = hit.collider.GetComponent<Asteroid>();
 
             InteractableObject io = hit.collider.GetComponent<InteractableObject>();
@@ -55,6 +57,9 @@ public class PlayerInteract : MonoBehaviour {
             else {
                 Debug.LogError("Obiekt ma tag Asteroid, ale brakuje mu skryptu Asteroid.cs!");
             }
+        }
+        else if (GameManager.Instance.currentState == GameState.Mining) {
+            Debug.Log("Przecież już kopiesz lol");
         }
         else {
             Debug.Log("Trafiony obiekt nie ma tagu 'Asteroid'. Ma tag: " + hit.collider.tag);

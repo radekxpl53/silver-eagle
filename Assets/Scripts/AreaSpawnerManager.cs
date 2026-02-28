@@ -12,7 +12,7 @@ public class AreaSpawnerManager : MonoBehaviour
     public Vector3 worldSpawnSize = new Vector3(500f, 0f, 500f);
 
     [Header("Objects")]
-    public GameObject prefab;
+    public GameObject[] prefabs;
     private GameObject player;
 
     private List<GameObject> areas = new List<GameObject>();
@@ -48,7 +48,7 @@ public class AreaSpawnerManager : MonoBehaviour
                 if (astData.loot.Count == 0) continue;
 
                 Vector3 worldPos = (transform.position + belt.beltCenter) + astData.localPos;
-                GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity, this.transform);
+                GameObject obj = Instantiate(prefabs[Random.Range(0, prefabs.Length)], worldPos, Quaternion.identity, this.transform);
 
                 InteractableObject io = obj.GetComponent<InteractableObject>();
                 if (io == null) {
