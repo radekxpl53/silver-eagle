@@ -2,19 +2,23 @@ using UnityEngine;
 
 public class enemyAI : MonoBehaviour
 {
+    public enum EnemyState { Idle, Chase, Fight }
+
+    [Header("Stan AI")]
+    public EnemyState currentState = EnemyState.Idle;
+
     [Header("Parametry Fizyczne (bazowane na Excelu)")]
-    // Przeciwnik jest l�ejszy (40t) i ma lepszy stosunek mocy do masy ni� Tw�j transportowiec
     public float mass = 40000f;          // kg
-    public float mainThrust = 600000f;   // N (Si�a ci�gu)
-    public float rotationSpeed = 2.5f;   // Pr�dko�� obrotu (zamiast Si�y Manewrowej dla uproszczenia AI)
-    public float linearDrag = 0.5f;      // Op�r liniowy (z Twojego pliku)
-    public float angularDrag = 1.2f;     // Op�r obrotu (z Twojego pliku)
+    public float mainThrust = 600000f;   // N (Siła ciągu)
+    public float rotationSpeed = 2.5f;   // Prędkość obrotu
+    public float linearDrag = 0.5f;      // Opór liniowy
+    public float angularDrag = 1.2f;     // Opór obrotu
 
     [Header("Logika AI")]
     public Transform playerTarget;
-    public float detectionRange = 500f;  // Du�y zasi�g w kosmosie
+    public float detectionRange = 500f;  // Duży zasięg w kosmosie
     public float attackRange = 100f;     // Dystans otwarcia ognia
-    public float stopDistance = 30f;     // Dystans hamowania (�eby si� nie zderzy�)
+    public float stopDistance = 30f;     // Dystans hamowania
 
     private Rigidbody rb;
     private float nextAttackTime;
@@ -23,11 +27,10 @@ public class enemyAI : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        // Aplikujemy ustawienia fizyczne do Rigidbody
         rb.mass = mass;
-        rb.linearDamping = linearDrag;         // "Hamowanie" w przestrzeni (pseudo-atmosfera lub systemy stabilizacji)
-        rb.angularDamping = angularDrag; // Stabilizacja obrotu
-        rb.useGravity = false;        // Wy��czamy grawitacj� (jeste�my w kosmosie!)
+        rb.linearDamping = linearDrag;
+        rb.angularDamping = angularDrag;
+        rb.useGravity = false;
 
         if (playerTarget == null)
         {
@@ -36,51 +39,71 @@ public class enemyAI : MonoBehaviour
         }
     }
 
-    void FixedUpdate() // Fizyk� obliczamy w FixedUpdate!
+    void FixedUpdate()
     {
         if (playerTarget == null) return;
 
         float distance = Vector3.Distance(transform.position, playerTarget.position);
 
-        if (distance < detectionRange)
+        // Maszyna Stanów
+        switch (currentState)
         {
-            FaceTarget(); // Obracaj si� do gracza
-            MoveToTarget(distance); // Zarz�dzaj ci�giem silnik�w
+            case EnemyState.Idle:
+                // Przejście do stanu Chase jeśli gracz wejdzie w zasięg
+                if (distance < detectionRange)
+                {
+                    currentState = EnemyState.Chase;
+                }
+                break;
 
-            if (distance < attackRange)
-            {
+            case EnemyState.Chase:
+                FaceTarget();
+                MoveToTarget(distance);
+
+                // Przejścia ze stanu Chase
+                if (distance < attackRange)
+                {
+                    currentState = EnemyState.Fight;
+                }
+                else if (distance >= detectionRange)
+                {
+                    // Gracz uciekł z zasięgu wracamy do patrolowania
+                    currentState = EnemyState.Idle;
+                }
+                break;
+
+            case EnemyState.Fight:
+                FaceTarget(); // W trakcie walki też patrzymy na gracza
+                MoveToTarget(distance); // utrzymywać optymalny dystans/manewrować
                 TryAttack();
-            }
+
+                // Przejścia ze stanu Fight
+                if (distance >= attackRange)
+                {
+                    // Gracz odleciał za daleko na strzał wracamy do pościgu
+                    currentState = EnemyState.Chase;
+                }
+                break;
         }
     }
 
     void FaceTarget()
     {
-        // Oblicz kierunek do gracza
         Vector3 directionToPlayer = (playerTarget.position - transform.position).normalized;
-
-        // P�ynny obr�t w stron� gracza (Quaternion.Slerp)
-        // W pe�nej symulacji u�yliby�my AddTorque, ale dla AI Slerp jest stabilniejszy
         Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.fixedDeltaTime * rotationSpeed);
     }
 
     void MoveToTarget(float distance)
     {
-        // Sprawd�, czy dzi�b statku jest skierowany (mniej wi�cej) w stron� gracza
         float angleToPlayer = Vector3.Angle(transform.forward, playerTarget.position - transform.position);
 
-        // Je�li patrzymy na gracza i jeste�my za daleko -> PE�NA MOC
         if (distance > stopDistance && angleToPlayer < 20f)
         {
-            // F = ma (Unity robi to za nas przez AddForce)
             rb.AddRelativeForce(Vector3.forward * mainThrust);
         }
-        // Je�li jeste�my za blisko -> HAMOWANIE (Wsteczny ci�g)
         else if (distance <= stopDistance)
         {
-            // Symulacja hamowania (reverse thrusters)
-            // U�ywamy si�y hamowania, np. 50% g��wnego ci�gu
             rb.AddRelativeForce(Vector3.back * (mainThrust * 0.5f));
         }
     }
@@ -89,15 +112,13 @@ public class enemyAI : MonoBehaviour
     {
         if (Time.time > nextAttackTime)
         {
-            // Raycast, �eby sprawdzi� czy faktycznie mamy "czysty strza�"
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange))
             {
                 if (hit.transform == playerTarget)
                 {
-                    Debug.Log("Pew Pew! Strza� laserem w gracza.");
-                    // Tu wstawisz instancjonowanie pocisku
-                    nextAttackTime = Time.time + 1.0f; // Strza� co 1 sekund�
+                    Debug.Log("Pew Pew! Strzał laserem w gracza.");
+                    nextAttackTime = Time.time + 1.0f;
                 }
             }
         }
