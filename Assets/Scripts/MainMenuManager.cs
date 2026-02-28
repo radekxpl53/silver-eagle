@@ -35,8 +35,7 @@ public class MainMenuManager : MonoBehaviour
     private void OnNewGameClicked()
     {
         Debug.Log("Starting new game...");
-        // To jest do zmiany jak zmerguje branche
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("GameManager");
     }
 
     private void OnLoadGameClicked()
