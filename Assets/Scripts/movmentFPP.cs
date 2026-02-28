@@ -45,6 +45,7 @@ public class fppLatanie : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.currentState != GameState.Exploration) return;
         // === MOC SILNIKÓW ===
         if (Mouse.current != null)
         {
