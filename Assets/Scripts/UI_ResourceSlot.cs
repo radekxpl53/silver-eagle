@@ -26,7 +26,7 @@ public class UI_ResourceSlot : MonoBehaviour
             
         }
     }
-if (nameText != null) nameText.text = data.Name;
-    if (amountText != null) amountText.text = amount.ToString();
+    if (nameText != null) nameText.text = data.Name;
+    if (amountText != null) amountText.text = "amount: " + amount.ToString();
     }
 }

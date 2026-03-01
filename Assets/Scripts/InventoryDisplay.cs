@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; 
+
 public class InventoryDisplay : MonoBehaviour
 {
-
     public GameObject slotPrefab;
     public Transform container;
 
@@ -15,14 +15,21 @@ public class InventoryDisplay : MonoBehaviour
 
         foreach (ResourceStack stack in resources)
         {
-
-            if (stack.definition != null)
+            if (stack.definition != null && stack.amount > 0)
             {
                 GameObject newSlot = Instantiate(slotPrefab, container);
-            
-                newSlot.GetComponent<UI_ResourceSlot>().Setup(stack.definition, stack.amount);
+                
+                var slotScript = newSlot.GetComponent<UI_ResourceSlot>();
+                if (slotScript != null)
+                {
+                    slotScript.Setup(stack.definition, stack.amount);
+                }
             }
         }
-    } 
 
+        if (container is RectTransform rect)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+        }
+    } 
 }

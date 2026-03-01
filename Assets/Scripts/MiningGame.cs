@@ -173,6 +173,25 @@ public class MiningGame : MonoBehaviour
         isMining = false;
 
         if (message == "WYDOBYTO!") {
+            PlayerInventory inventory = FindFirstObjectByType<PlayerInventory>();
+            
+            if (inventory != null && MiningData.currentAsteroidLoot != null) 
+            {
+                foreach (ResourceStack stack in MiningData.currentAsteroidLoot) 
+                {
+                    // Obliczamy ile faktycznie udało się odzyskać (zaokrąglamy w górę)
+                    int finalAmount = Mathf.CeilToInt(stack.amount * yieldMultiplier);
+                    
+                    if (finalAmount > 0)
+                    {
+                        inventory.AddResource(stack.definition, finalAmount);
+                        Debug.Log($"Dodano do ekwipunku: {stack.definition.Name} x{finalAmount} (Efektywność: {yieldMultiplier*100}%)");
+                    }
+                }
+            }
+
+//##########################
+
             if (MiningData.currentAsteroidObject != null) {
                 // Wydupcamy ją z rejestru
                 if (MiningData.currentAsteroidLoot != null) {
