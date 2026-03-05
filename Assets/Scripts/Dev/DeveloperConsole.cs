@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class DeveloperConsole : MonoBehaviour
 {
+    public static DeveloperConsole Instance { get; private set; }
+
     [Header("UI References")]
     [SerializeField] private GameObject consoleUI;
     [SerializeField] private TMP_InputField consoleInput;
@@ -19,6 +21,10 @@ public class DeveloperConsole : MonoBehaviour
 
     private Dictionary<string, Action<String[]>> commands = new Dictionary<string, Action<String[]>>();
     private Queue<String> logQueue = new Queue<string>();
+
+    private void Awake() {
+        Instance = this;
+    }
 
     private void Start()
     {
