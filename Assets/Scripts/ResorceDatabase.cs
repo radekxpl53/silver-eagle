@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+// Ta linijka pozwoli Ci stworzyć bazę kliknięciem w Unity
 [CreateAssetMenu(fileName = "NewResourceDatabase", menuName = "Tutorial/Resource Database")]
 public class ResourceDatabase : ScriptableObject
 {
