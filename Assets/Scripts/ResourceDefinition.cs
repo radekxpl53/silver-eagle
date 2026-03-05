@@ -8,7 +8,5 @@ public class ResourceDefinition
     public float optimalTemp;
     public float tolerance;
     public float[] weightsPerStage = new float[5];
-    public int basePrice;
-    public float weight;
 } 
 
