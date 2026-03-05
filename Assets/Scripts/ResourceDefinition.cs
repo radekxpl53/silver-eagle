@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class ResourceDefinition
@@ -7,6 +8,7 @@ public class ResourceDefinition
     public int Stage;
     public float optimalTemp;
     public float tolerance;
+    public Sprite Icon;
     public float[] weightsPerStage = new float[5];
     public int basePrice;
     public float weight;

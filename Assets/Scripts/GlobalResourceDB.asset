@@ -17,6 +17,7 @@ MonoBehaviour:
     Stage: 0
     optimalTemp: 150
     tolerance: 100
+    Icon: {fileID: 0}
     weightsPerStage:
     - 60
     - 48
@@ -29,6 +30,7 @@ MonoBehaviour:
     Stage: 0
     optimalTemp: 650
     tolerance: 150
+    Icon: {fileID: 0}
     weightsPerStage:
     - 45
     - 36
@@ -41,6 +43,7 @@ MonoBehaviour:
     Stage: 0
     optimalTemp: 1100
     tolerance: 180
+    Icon: {fileID: 0}
     weightsPerStage:
     - 35
     - 28
@@ -53,6 +56,7 @@ MonoBehaviour:
     Stage: 0
     optimalTemp: 950
     tolerance: 200
+    Icon: {fileID: 0}
     weightsPerStage:
     - 30
     - 24
@@ -65,6 +69,7 @@ MonoBehaviour:
     Stage: 0
     optimalTemp: 800
     tolerance: 150
+    Icon: {fileID: 0}
     weightsPerStage:
     - 25
     - 20
@@ -77,6 +82,7 @@ MonoBehaviour:
     Stage: 0
     optimalTemp: 400
     tolerance: 250
+    Icon: {fileID: 0}
     weightsPerStage:
     - 20
     - 16
@@ -89,6 +95,7 @@ MonoBehaviour:
     Stage: 1
     optimalTemp: 1650
     tolerance: 110
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 50
@@ -101,6 +108,7 @@ MonoBehaviour:
     Stage: 1
     optimalTemp: 1350
     tolerance: 100
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 40
@@ -113,6 +121,7 @@ MonoBehaviour:
     Stage: 1
     optimalTemp: 1200
     tolerance: 120
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 30
@@ -125,6 +134,7 @@ MonoBehaviour:
     Stage: 1
     optimalTemp: 1800
     tolerance: 100
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 35
@@ -137,6 +147,7 @@ MonoBehaviour:
     Stage: 1
     optimalTemp: 1500
     tolerance: 90
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 20
@@ -149,42 +160,40 @@ MonoBehaviour:
     Stage: 1
     optimalTemp: 2200
     tolerance: 90
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 15
     - 12
     - 10
     - 8
-    basePrice: 140
-    weight: 4.5
-  - Name: Kobalt
-    Stage: 1
-    optimalTemp: 2000
-    tolerance: 80
-    weightsPerStage:
-    - 0
-    - 12
-    - 10
-    - 8
-    - 6
-    basePrice: 130
-    weight: 8.9
   - Name: Srebro
     Stage: 2
     optimalTemp: 2400
     tolerance: 70
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
     - 40
     - 32
     - 26
-    basePrice: 280
-    weight: 10.5
+  - Name: Kobalt
+    Stage: 1
+    optimalTemp: 2000
+    tolerance: 80
+    Icon: {fileID: 0}
+    weightsPerStage:
+    - 0
+    - 12
+    - 10
+    - 8
+    - 6
   - Name: "Z\u0142oto"
     Stage: 2
     optimalTemp: 2600
     tolerance: 60
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -197,6 +206,7 @@ MonoBehaviour:
     Stage: 2
     optimalTemp: 3200
     tolerance: 80
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -209,6 +219,7 @@ MonoBehaviour:
     Stage: 2
     optimalTemp: 3000
     tolerance: 60
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -221,6 +232,7 @@ MonoBehaviour:
     Stage: 2
     optimalTemp: 2800
     tolerance: 70
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -233,6 +245,7 @@ MonoBehaviour:
     Stage: 2
     optimalTemp: 3800
     tolerance: 40
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -245,6 +258,7 @@ MonoBehaviour:
     Stage: 2
     optimalTemp: 3500
     tolerance: 50
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -257,6 +271,7 @@ MonoBehaviour:
     Stage: 3
     optimalTemp: 4200
     tolerance: 40
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -269,6 +284,7 @@ MonoBehaviour:
     Stage: 3
     optimalTemp: 4000
     tolerance: 50
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -281,6 +297,7 @@ MonoBehaviour:
     Stage: 3
     optimalTemp: 400
     tolerance: 30
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -293,6 +310,7 @@ MonoBehaviour:
     Stage: 3
     optimalTemp: 5000
     tolerance: 50
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -305,6 +323,7 @@ MonoBehaviour:
     Stage: 4
     optimalTemp: 5000
     tolerance: 50
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -317,6 +336,7 @@ MonoBehaviour:
     Stage: 4
     optimalTemp: 4500
     tolerance: 60
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -329,6 +349,7 @@ MonoBehaviour:
     Stage: 4
     optimalTemp: 200
     tolerance: 40
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -341,6 +362,7 @@ MonoBehaviour:
     Stage: 4
     optimalTemp: 3000
     tolerance: 100
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
@@ -353,6 +375,7 @@ MonoBehaviour:
     Stage: 4
     optimalTemp: 800
     tolerance: 25
+    Icon: {fileID: 0}
     weightsPerStage:
     - 0
     - 0
