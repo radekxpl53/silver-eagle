@@ -37,6 +37,8 @@ public class InventoryToggle : MonoBehaviour
         if (isOpen)
         {
 
+            //zatrzymanie gry 
+            Time.timeScale = 0f;    
             PlayerInventory inv = Object.FindFirstObjectByType<PlayerInventory>();
             if (inv != null) inv.RefreshUI();
             
@@ -46,6 +48,8 @@ public class InventoryToggle : MonoBehaviour
         }
         else
         {
+            //wznowienie gry
+            Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
