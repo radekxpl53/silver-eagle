@@ -10,5 +10,7 @@ public class ResourceDefinition
     public float tolerance;
     public Sprite Icon;
     public float[] weightsPerStage = new float[5];
+    public int basePrice;
+    public float weight;
 } 
 
