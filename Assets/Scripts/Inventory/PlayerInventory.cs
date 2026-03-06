@@ -36,7 +36,7 @@ public class PlayerInventory : MonoBehaviour
         if (shipStats == null) return false;
 
         float totalWeightToAdd = def.weight * amount;
-        return(shipStats.CurrentCargo + totalWeightToAdd <= shipStats.MaxCargo);
+        return(shipStats.AddCargo(totalWeightToAdd));
 
     }
    public void AddResource(ResourceDefinition definition, int amountToAdd)

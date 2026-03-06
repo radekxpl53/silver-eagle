@@ -193,4 +193,5 @@ public class ShipStats : MonoBehaviour {
 
     public float GetMaxHP() { return MaxHP; }
     public float GetMaxEnergy() { return MaxEnergy; }
+    public float GetMaxCargo() { return MaxCargo; }
 }

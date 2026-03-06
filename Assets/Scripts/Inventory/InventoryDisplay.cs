@@ -45,7 +45,7 @@ public class InventoryDisplay : MonoBehaviour
 
         //pobieranie danych z shipStats
         float current = shipStats.CurrentCargo;
-        float max = shipStats.MaxCargo;
+        float max = shipStats.GetMaxCargo();
 
         cargoSlider.maxValue = max;
         cargoSlider.value = current;
