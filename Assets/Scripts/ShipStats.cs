@@ -169,4 +169,7 @@ public class ShipStats : MonoBehaviour {
     public void GetEnergyCommand(string[] args) {
         Debug.Log("Aktualny stan paliwa wynosi: " + CurrentEnergy + "/" + MaxEnergy);
     }
+
+    public float GetMaxHP() { return MaxHP; }
+    public float GetMaxEnergy() { return MaxEnergy; }
 }
