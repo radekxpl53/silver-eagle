@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerInventory : MonoBehaviour
 {
     public List<ResourceStack> myItems = new List<ResourceStack>();
+    public ShipStats shipStats;
     public InventoryDisplay uiDisplay;
+
 
     void Start()
     {
@@ -26,33 +28,63 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    // sprawdzenie czy jest miejsce
+
+    public bool CanFit(ResourceDefinition def, int amount)
+
+    {
+        if (shipStats == null) return false;
+
+        float totalWeightToAdd = def.weight * amount;
+        return(shipStats.CurrentCargo + totalWeightToAdd <= shipStats.MaxCargo);
+
+    }
    public void AddResource(ResourceDefinition definition, int amountToAdd)
     {
-        if (amountToAdd <= 0) return; 
+        if (amountToAdd <= 0) return;
+        float weightUnit = definition.weight;
+        //zmienne do testu czy dziala
+        float weightToAdd = definition.weight * amountToAdd;
+        float totalWeight = weightUnit * amountToAdd;
+        //
+        Debug.Log($"[Inventory] Próba dodania: {definition.Name}. Waga jedn.: {weightUnit}, Razem: {totalWeight}");
+        if (shipStats == null) {
+                    Debug.LogError("BŁĄD: ShipStats nie jest podpięte do PlayerInventory!");
+                    return;
+                }
 
-        ResourceStack existingStack = myItems.Find(stack => stack.definition == definition);
-
-        if (existingStack != null)
+        if (shipStats.AddCargo(weightToAdd))
         {
-            existingStack.amount += amountToAdd;
+            ResourceStack existingStack = myItems.Find(stack => stack.definition == definition);
+
+            if (existingStack != null)
+            {
+                existingStack.amount += amountToAdd;
+            }
+            else
+            {
+                myItems.Add(new ResourceStack { definition = definition, amount = amountToAdd });
+                
+                myItems.Sort((a, b) => a.definition.Name.CompareTo(b.definition.Name));
+            }
+
+            
+            RefreshUI();
+        
+            Debug.Log($"<color=green>INVENTORY:</color> Dodano {definition.Name} x{amountToAdd}");
         }
         else
         {
-            myItems.Add(new ResourceStack { definition = definition, amount = amountToAdd });
-            
-            myItems.Sort((a, b) => a.definition.Name.CompareTo(b.definition.Name));
+            Debug.Log("BRAK MIEJSCA W ŁADOWNI!");
         }
-
-        
-        RefreshUI();
-        
-        Debug.Log($"<color=green>INVENTORY:</color> Dodano {definition.Name} x{amountToAdd}");
     }
     public void RefreshUI()
     {
         if (uiDisplay != null)
         {
             uiDisplay.ShowMinedResources(myItems);
+            uiDisplay.UpdateCargoUI();
         }
     }
+
 }

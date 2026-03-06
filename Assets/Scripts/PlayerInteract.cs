@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInteract : MonoBehaviour {
     public float range = 20f;
-
+    public ShipStats shipStats;
     void Update() {
         // LOG 1: Czy Unity w ogóle widzi, że klikasz E?
         if (Keyboard.current.eKey.wasPressedThisFrame) {
@@ -38,6 +38,14 @@ public class PlayerInteract : MonoBehaviour {
         
 
         if (hit.collider.CompareTag("Asteroid") && GameManager.Instance.currentState == GameState.Exploration) {
+            if (shipStats != null) {
+                // sprawdzenie czy magazyn jest pełny
+                if (shipStats.CurrentCargo >= shipStats.MaxCargo) {
+                    Debug.LogWarning("<color=red> Brak miejsca w ładowni Opróżnij magazyn, aby kopać.</color>");
+                    // WarningPopup.Instance.Show("CARGO FULL");
+                    return; 
+                }
+            }
             Asteroid target = hit.collider.GetComponent<Asteroid>();
 
             InteractableObject io = hit.collider.GetComponent<InteractableObject>();
