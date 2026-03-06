@@ -23,12 +23,6 @@ public class SaveDataJSON : MonoBehaviour
         Debug.Log(json);
 
         string path = Application.persistentDataPath + "/SaveData.json";
-        if(!File.Exists(path))
-        {
-            Debug.Log("Save file not found");
-            return;
-        }
-
         using(StreamWriter writer = new StreamWriter(path))
         {
             writer.Write(json);
@@ -41,12 +35,6 @@ public class SaveDataJSON : MonoBehaviour
         string json = string.Empty;
 
         string path = Application.persistentDataPath + "/SaveData.json";
-        if(!File.Exists(path))
-        {
-            Debug.Log("Save file not found");
-            return;
-        }
-
         using(StreamReader reader = new StreamReader(path))
         {
             json = reader.ReadToEnd();
