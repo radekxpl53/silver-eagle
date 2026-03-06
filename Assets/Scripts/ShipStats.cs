@@ -82,7 +82,6 @@ public class ShipStats : MonoBehaviour {
             else {
                 CurrentEnergy -= amount;
             }
-            Debug.Log("Ustawiono wartość Paliwa na: " + CurrentEnergy);
         }
         else {
             Debug.Log("Nie możesz spalić mniej niż 0 jednostek paliwa");
@@ -191,4 +190,7 @@ public class ShipStats : MonoBehaviour {
     public void GetEnergyCommand(string[] args) {
         Debug.Log("Aktualny stan paliwa wynosi: " + CurrentEnergy + "/" + MaxEnergy);
     }
+
+    public float GetMaxHP() { return MaxHP; }
+    public float GetMaxEnergy() { return MaxEnergy; }
 }
