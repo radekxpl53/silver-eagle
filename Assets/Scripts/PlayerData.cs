@@ -50,7 +50,7 @@ public class PlayerData
         {
             if(_instance == null)
             {
-                _instance = new PlayerData(0, 0, new Vector3(0, 0, 0), 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
+                _instance = new PlayerData(100, 0, Vector3.zero, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
             }
 
             return _instance;
@@ -134,6 +134,29 @@ public class PlayerData
 
         OnDataChange?.Invoke(hp, credits, position, speed, maneuverability, acceleration, cargoHold, durability, 
         shield, militaryScanner, laserTemperature, drillDurability, asteroidReport, sectorInformation, fastTravel, repairDrones, repairKits);
+    }
+
+    public void ResetData()
+    {
+        SetPlayerData(
+            0,
+            0,
+            Vector3.zero,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            false,
+            false,
+            false,
+            false,
+            false
+        );
     }
 
 }
