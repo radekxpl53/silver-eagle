@@ -10,9 +10,6 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
-
-    [Header("--- SMIERĆ STATKU ---")]
-    public UnityEvent OnDestroyed;                    // ← podłącz tutaj okno porażki
     public bool IsDestroyed { get; private set; }
 
     [Header("--- SKRYPTY STERUJĄCE DO ZABLOKOWANIA ---")]
@@ -33,10 +30,11 @@ public class ShipStats : MonoBehaviour {
     {
         if (damage > 0f)
         {
-            CurrentHP -= damage;
-            if (CurrentHP <= 0)
+            CurrentHP = CurrentHP - damage;
+            Debug.Log("Ustawiono wartość HP na: " + CurrentHP);
+            if (CurrentHP <= 0f)
             {
-                CurrentHP = 0;
+                CurrentHP = 0f;
                 if (!IsDestroyed)
                 {
                     IsDestroyed = true;
@@ -44,7 +42,6 @@ public class ShipStats : MonoBehaviour {
                 }
                 Debug.Log("Statek zniszczony!");
             }
-            Debug.Log("Ustawiono wartość HP na: " + CurrentHP);
         }
         else
         {
@@ -57,13 +54,7 @@ public class ShipStats : MonoBehaviour {
         Debug.Log("<color=red>STATEK ZNISZCZONY!</color>");
 
         // 1. Blokada sterowania
-        foreach (var script in controlScriptsToDisable)
-        {
-            if (script != null) script.enabled = false;
-        }
-
-        // 2. Globalny event (okno porażki)
-        OnDestroyed?.Invoke();
+        GameManager.Instance.ChangeState(GameState.GameOver);
     }
 
     public void Heal(float amount) {

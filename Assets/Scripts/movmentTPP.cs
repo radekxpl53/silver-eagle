@@ -58,7 +58,7 @@ public class latanieTpp : MonoBehaviour
         float turnInput = 0f;
         float verticalInput = 0f;
 
-        if (Keyboard.current != null)
+        if (Keyboard.current != null && (GameManager.Instance.currentState == GameState.Exploration || GameManager.Instance.currentState == GameState.Fighting))
         {
             if (Keyboard.current.wKey.isPressed) gasInput = 1f;
             if (Keyboard.current.sKey.isPressed) gasInput = -1f;

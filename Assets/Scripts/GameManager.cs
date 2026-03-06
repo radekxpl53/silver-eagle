@@ -44,24 +44,4 @@ public class GameManager : MonoBehaviour
         currentState = newState;
         Debug.Log($"<color=yellow>GameState zmieniony na: <b>{newState}</b></color>");
     }
-
-
-    public void ExplodeShip()
-    {
-        Debug.Log("<color=red>STATEK ZNISZCZONY! PRZEGRANA!</color>");
-
-        // Zmieñ stan gry na GameOver
-        ChangeState(GameState.GameOver);
-
-        // okno pora¿ki
-        if (loseScreen != null)
-        {
-            loseScreen.SetActive(true);
-            Time.timeScale = 0f;  // Zatrzymaj grê
-        }
-        else
-        {
-            Debug.LogWarning("Brak LoseScreen podpiêtego w GameManager!");
-        }
-    }
 }

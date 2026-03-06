@@ -31,6 +31,7 @@ public class DamageCollision : MonoBehaviour
 
         // <<< INTEGRACJA Z SHIPSTATS >>>
         if (shipStats != null)
+            Debug.Log("Damage z DamageCollision.cs" + damage);
             shipStats.TakeDamage(damage);
 
         // Debug + efekty
