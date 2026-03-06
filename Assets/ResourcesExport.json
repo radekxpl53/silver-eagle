@@ -1,0 +1,439 @@
+{
+    "Resources": [
+        {
+            "Name": "Brudny Lód",
+            "Stage": 0,
+            "optimalTemp": 150.0,
+            "tolerance": 100.0,
+            "weightsPerStage": [
+                60.0,
+                48.0,
+                38.0,
+                31.0,
+                25.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Węgiel",
+            "Stage": 0,
+            "optimalTemp": 650.0,
+            "tolerance": 150.0,
+            "weightsPerStage": [
+                45.0,
+                36.0,
+                29.0,
+                23.0,
+                18.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Krzemiany",
+            "Stage": 0,
+            "optimalTemp": 1100.0,
+            "tolerance": 180.0,
+            "weightsPerStage": [
+                35.0,
+                28.0,
+                22.0,
+                18.0,
+                14.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Złom Ferromagnetyczny",
+            "Stage": 0,
+            "optimalTemp": 950.0,
+            "tolerance": 200.0,
+            "weightsPerStage": [
+                30.0,
+                24.0,
+                19.0,
+                15.0,
+                12.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Boksyt",
+            "Stage": 0,
+            "optimalTemp": 800.0,
+            "tolerance": 150.0,
+            "weightsPerStage": [
+                25.0,
+                20.0,
+                16.0,
+                13.0,
+                10.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Pył Regolitowy",
+            "Stage": 0,
+            "optimalTemp": 400.0,
+            "tolerance": 250.0,
+            "weightsPerStage": [
+                20.0,
+                16.0,
+                13.0,
+                10.0,
+                8.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Ruda Żelaza",
+            "Stage": 1,
+            "optimalTemp": 1650.0,
+            "tolerance": 110.0,
+            "weightsPerStage": [
+                0.0,
+                50.0,
+                40.0,
+                32.0,
+                26.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Miedź",
+            "Stage": 1,
+            "optimalTemp": 1350.0,
+            "tolerance": 100.0,
+            "weightsPerStage": [
+                0.0,
+                40.0,
+                32.0,
+                26.0,
+                20.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Siarka",
+            "Stage": 1,
+            "optimalTemp": 1200.0,
+            "tolerance": 120.0,
+            "weightsPerStage": [
+                0.0,
+                30.0,
+                24.0,
+                19.0,
+                15.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Nikiel",
+            "Stage": 1,
+            "optimalTemp": 1800.0,
+            "tolerance": 100.0,
+            "weightsPerStage": [
+                0.0,
+                35.0,
+                28.0,
+                22.0,
+                18.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Lit",
+            "Stage": 1,
+            "optimalTemp": 1500.0,
+            "tolerance": 90.0,
+            "weightsPerStage": [
+                0.0,
+                20.0,
+                16.0,
+                13.0,
+                10.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Tytan",
+            "Stage": 1,
+            "optimalTemp": 2200.0,
+            "tolerance": 90.0,
+            "weightsPerStage": [
+                0.0,
+                15.0,
+                12.0,
+                10.0,
+                8.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Kobalt",
+            "Stage": 1,
+            "optimalTemp": 2000.0,
+            "tolerance": 80.0,
+            "weightsPerStage": [
+                0.0,
+                12.0,
+                10.0,
+                8.0,
+                6.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Srebro",
+            "Stage": 2,
+            "optimalTemp": 2400.0,
+            "tolerance": 70.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                40.0,
+                32.0,
+                26.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Złoto",
+            "Stage": 2,
+            "optimalTemp": 2600.0,
+            "tolerance": 60.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                35.0,
+                28.0,
+                22.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Kwarc Przemysłowy",
+            "Stage": 2,
+            "optimalTemp": 3200.0,
+            "tolerance": 80.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                30.0,
+                24.0,
+                19.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Platyna",
+            "Stage": 2,
+            "optimalTemp": 3000.0,
+            "tolerance": 60.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                25.0,
+                20.0,
+                16.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Pallad",
+            "Stage": 2,
+            "optimalTemp": 2800.0,
+            "tolerance": 70.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                20.0,
+                16.0,
+                13.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Wolfram",
+            "Stage": 2,
+            "optimalTemp": 3800.0,
+            "tolerance": 40.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                12.0,
+                10.0,
+                8.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Osmium",
+            "Stage": 2,
+            "optimalTemp": 3500.0,
+            "tolerance": 50.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                7.0,
+                6.0,
+                4.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Diamenty Przemysłowe",
+            "Stage": 3,
+            "optimalTemp": 4200.0,
+            "tolerance": 40.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                25.0,
+                20.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Rod",
+            "Stage": 3,
+            "optimalTemp": 4000.0,
+            "tolerance": 50.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                20.0,
+                16.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Hel-3",
+            "Stage": 3,
+            "optimalTemp": 400.0,
+            "tolerance": 30.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                15.0,
+                12.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Void Crystals",
+            "Stage": 3,
+            "optimalTemp": 5000.0,
+            "tolerance": 50.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                5.0,
+                3.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Uran",
+            "Stage": 4,
+            "optimalTemp": 5000.0,
+            "tolerance": 50.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                30.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Niestabilne izotopy",
+            "Stage": 4,
+            "optimalTemp": 4500.0,
+            "tolerance": 60.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                25.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Skroplony wodór",
+            "Stage": 4,
+            "optimalTemp": 200.0,
+            "tolerance": 40.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                20.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Kontrabanda",
+            "Stage": 4,
+            "optimalTemp": 3000.0,
+            "tolerance": 100.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                10.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        },
+        {
+            "Name": "Obca BIomasa",
+            "Stage": 4,
+            "optimalTemp": 800.0,
+            "tolerance": 25.0,
+            "weightsPerStage": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                5.0
+            ],
+            "basePrice": 0,
+            "weight": 0
+        }
+    ]
+}
