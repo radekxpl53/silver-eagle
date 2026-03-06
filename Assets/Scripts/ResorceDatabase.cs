@@ -35,4 +35,10 @@ public class ResourceDatabase : ScriptableObject
         }
         return Resources[0];
     }
+    [ContextMenu("Eksportuj do JSON")]
+    public void ExportToJSON() {
+        string json = JsonUtility.ToJson(this, true);
+        string sciezka = Application.dataPath + "/ResourcesExport.json";
+        System.IO.File.WriteAllText(sciezka, json);
+    }
 }

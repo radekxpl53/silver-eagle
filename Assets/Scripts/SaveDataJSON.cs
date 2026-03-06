@@ -12,10 +12,19 @@ public class SaveDataJSON : MonoBehaviour
 
     public void SaveData()
     {
+        playerData.position = GameObject.FindGameObjectWithTag("Player").transform.position;
+        
         string json = JsonUtility.ToJson(playerData);
         Debug.Log(json);
 
-        using(StreamWriter writer = new StreamWriter(Application.persistentDataPath + Path.AltDirectorySeparatorChar+ "SaveData.json"))
+        string path = Application.persistentDataPath + "/SaveData.json";
+        if(!File.Exists(path))
+        {
+            Debug.Log("Save file not found");
+            return;
+        }
+
+        using(StreamWriter writer = new StreamWriter(path))
         {
             writer.Write(json);
         }
@@ -25,13 +34,24 @@ public class SaveDataJSON : MonoBehaviour
     public void LoadData()
     {
         string json = string.Empty;
-        using(StreamReader reader = new StreamReader(Application.persistentDataPath + Path.AltDirectorySeparatorChar+ "SaveData.json"))
+
+        string path = Application.persistentDataPath + "/SaveData.json";
+        if(!File.Exists(path))
+        {
+            Debug.Log("Save file not found");
+            return;
+        }
+
+        using(StreamReader reader = new StreamReader(path))
         {
             json = reader.ReadToEnd();
         }
 
         PlayerData data = JsonUtility.FromJson<PlayerData>(json);
-        playerData.SetPlayerData(data.hp, data.credits, data.speed, data.maneuverability, data.acceleration, data.cargoHold, data.durability, 
+
+        GameObject.FindGameObjectWithTag("Player").transform.position = data.position;
+
+        playerData.SetPlayerData(data.hp, data.credits, data.position, data.speed, data.maneuverability, data.acceleration, data.cargoHold, data.durability, 
         data.shield, data.militaryScanner, data.laserTemperature, data.drillDurability, data.asteroidReport, data.sectorInformation, data.fastTravel, data.repairDrones, data.repairKits);
         Debug.Log("Data loaded");
     }

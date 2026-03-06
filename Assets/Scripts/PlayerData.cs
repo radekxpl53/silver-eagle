@@ -5,6 +5,7 @@ public class PlayerData
 {
     public float hp;
     public float credits;
+    public Vector3 position;
     //Silniki(prędkość, skrętność, przyśpieszenie)
     public float speed;
     public float maneuverability; //skrętność
@@ -26,6 +27,7 @@ public class PlayerData
     public delegate void OnPlayerDataChange(
     float hp,
     float credits,
+    Vector3 position,
     float speed,
     float maneuverability,
     float acceleration,
@@ -48,7 +50,7 @@ public class PlayerData
         {
             if(_instance == null)
             {
-                _instance = new PlayerData(100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
+                _instance = new PlayerData(100, 0, new Vector3(0, 0, 0), 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
             }
 
             return _instance;
@@ -58,6 +60,7 @@ public class PlayerData
     private PlayerData(
     float hp,
     float credits,
+    Vector3 position,
     float speed,
     float maneuverability,
     float acceleration,
@@ -75,6 +78,7 @@ public class PlayerData
     {
         this.hp = hp;
         this.credits = credits;
+        this.position = position;
         this.speed = speed;
         this.maneuverability = maneuverability;
         this.acceleration = acceleration;
@@ -94,6 +98,7 @@ public class PlayerData
     public void SetPlayerData(
     float hp,
     float credits,
+    Vector3 position,
     float speed,
     float maneuverability,
     float acceleration,
@@ -111,6 +116,7 @@ public class PlayerData
     {
         this.hp = hp;
         this.credits = credits;
+        this.position = position;
         this.speed = speed;
         this.maneuverability = maneuverability;
         this.acceleration = acceleration;
@@ -126,7 +132,7 @@ public class PlayerData
         this.repairDrones = repairDrones;
         this.repairKits = repairKits;
 
-        OnDataChange?.Invoke(hp, credits, speed, maneuverability, acceleration, cargoHold, durability, 
+        OnDataChange?.Invoke(hp, credits, position, speed, maneuverability, acceleration, cargoHold, durability, 
         shield, militaryScanner, laserTemperature, drillDurability, asteroidReport, sectorInformation, fastTravel, repairDrones, repairKits);
     }
 
