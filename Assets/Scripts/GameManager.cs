@@ -7,24 +7,23 @@ public enum GameState
     Fighting,
     Menu,
     Console,
+    GameOver
 }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public GameState currentState = GameState.Exploration;
 
-    [Header("--- WYTRZYMA£OŒÆ GRACZA ---")]
-    public float maxHullPoints = 1000f; // hp
-    public float currentHullPoints;
+    [Header("--- OKNO PORAZKI ---")]
+    public GameObject loseScreen;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);     // przetrwa zmianê scen
+            DontDestroyOnLoad(gameObject);
             Debug.Log("<color=cyan>GameManager zosta³ zainicjalizowany jako Singleton</color>");
         }
         else
@@ -36,32 +35,33 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Inicjalizacja HP na starcie
-        currentHullPoints = maxHullPoints;
+        
     }
 
     public void ChangeState(GameState newState)
     {
         if (currentState == newState) return;
-
         currentState = newState;
         Debug.Log($"<color=yellow>GameState zmieniony na: <b>{newState}</b></color>");
     }
 
-    // metoda do zarz¹dzania obra¿eniami z poziomu GameManagera
-    public void ApplyDamage(float amount)
-    {
-        currentHullPoints -= amount;
 
-        if (currentHullPoints <= 0)
+    public void ExplodeShip()
+    {
+        Debug.Log("<color=red>STATEK ZNISZCZONY! PRZEGRANA!</color>");
+
+        // Zmieñ stan gry na GameOver
+        ChangeState(GameState.GameOver);
+
+        // okno pora¿ki
+        if (loseScreen != null)
         {
-            currentHullPoints = 0;
-            ExplodeShip();
+            loseScreen.SetActive(true);
+            Time.timeScale = 0f;  // Zatrzymaj grê
         }
-    }
-
-    private void ExplodeShip()
-    {
-        Debug.Log("STATEK ZNISZCZONY!");
+        else
+        {
+            Debug.LogWarning("Brak LoseScreen podpiêtego w GameManager!");
+        }
     }
 }

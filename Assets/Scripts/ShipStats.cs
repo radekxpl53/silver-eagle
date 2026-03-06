@@ -1,5 +1,6 @@
-using System;
+Ôªøusing System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ShipStats : MonoBehaviour {
     public float CurrentHP { get; private set; }
@@ -9,6 +10,13 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
+
+    [Header("--- SMIERƒÜ STATKU ---")]
+    public UnityEvent OnDestroyed;                    // ‚Üê pod≈ÇƒÖcz tutaj okno pora≈ºki
+    public bool IsDestroyed { get; private set; }
+
+    [Header("--- SKRYPTY STERUJƒÑCE DO ZABLOKOWANIA ---")]
+    [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
 
     public void Start() {
         CurrentHP = MaxHP;
@@ -21,18 +29,41 @@ public class ShipStats : MonoBehaviour {
         DeveloperConsole.Instance.AddCommand("get_energy", GetEnergyCommand);
     }
 
-    public void TakeDamage(float damage) {
-        if (damage > 0f) {
-            if (CurrentHP < damage) {
+    public void TakeDamage(float damage)
+    {
+        if (damage > 0f)
+        {
+            CurrentHP -= damage;
+            if (CurrentHP <= 0)
+            {
                 CurrentHP = 0;
+                if (!IsDestroyed)
+                {
+                    IsDestroyed = true;
+                    HandleDestruction();
+                }
                 Debug.Log("Statek zniszczony!");
-            } else {
-                CurrentHP -= damage;
             }
-            Debug.Log("Ustawiono wartoúÊ HP na: " + CurrentHP);
-        } else {
-            Debug.Log("Nie moøesz zadaÊ statkowi mniej niø 0 dmg");
+            Debug.Log("Ustawiono warto≈õƒá HP na: " + CurrentHP);
         }
+        else
+        {
+            Debug.Log("Nie mo≈ºesz zadaƒá statkowi mniej ni≈º 0 dmg");
+        }
+    }
+
+    private void HandleDestruction()
+    {
+        Debug.Log("<color=red>STATEK ZNISZCZONY!</color>");
+
+        // 1. Blokada sterowania
+        foreach (var script in controlScriptsToDisable)
+        {
+            if (script != null) script.enabled = false;
+        }
+
+        // 2. Globalny event (okno pora≈ºki)
+        OnDestroyed?.Invoke();
     }
 
     public void Heal(float amount) {
@@ -44,10 +75,10 @@ public class ShipStats : MonoBehaviour {
             else {
                 CurrentHP += amount;
             }
-            Debug.Log("Ustawiono wartoúÊ HP na: " + CurrentHP);
+            Debug.Log("Ustawiono warto≈õƒá HP na: " + CurrentHP);
         }
         else {
-            Debug.Log("Nie moøesz uleczyÊ statku za mniej niø 0HP");
+            Debug.Log("Nie mo≈ºesz uleczyƒá statku za mniej ni≈º 0HP");
         }
     }
 
@@ -60,10 +91,10 @@ public class ShipStats : MonoBehaviour {
             else {
                 CurrentEnergy -= amount;
             }
-            Debug.Log("Ustawiono wartoúÊ Paliwa na: " + CurrentEnergy);
+            Debug.Log("Ustawiono warto≈õƒá Paliwa na: " + CurrentEnergy);
         }
         else {
-            Debug.Log("Nie moøesz spaliÊ mniej niø 0 jednostek paliwa");
+            Debug.Log("Nie mo≈ºesz spaliƒá mniej ni≈º 0 jednostek paliwa");
         }
     }
 
@@ -76,10 +107,10 @@ public class ShipStats : MonoBehaviour {
             else {
                 CurrentEnergy += amount;
             }
-            Debug.Log("Ustawiono wartoúÊ Paliwa na: " + CurrentEnergy);
+            Debug.Log("Ustawiono warto≈õƒá Paliwa na: " + CurrentEnergy);
         }
         else {
-            Debug.Log("Nie moøesz zatankowaÊ statku za mniej niø 0 jednostek paliwowych");
+            Debug.Log("Nie mo≈ºesz zatankowaƒá statku za mniej ni≈º 0 jednostek paliwowych");
         }
     }
 
@@ -121,12 +152,12 @@ public class ShipStats : MonoBehaviour {
     public void SetHPCommand(string[] args) {
         if (args.Length > 0) {
             int amount = 0;
-            // Parsowanie ze stringa na inta, jak nie jest liczba po s≥owie kluczowym, idzie do else
+            // Parsowanie ze stringa na inta, jak nie jest liczba po s≈Çowie kluczowym, idzie do else
             if (Int32.TryParse(args[0], out amount)) {
                 SetHP(amount);
             }
             else {
-                Debug.Log("Coú posz≥o nie tak, üle wpisa≥eú komende");
+                Debug.Log("Co≈õ posz≈Ço nie tak, ≈∫le wpisa≈Çe≈õ komende");
             }
         }
     }
@@ -137,7 +168,7 @@ public class ShipStats : MonoBehaviour {
                 SetMaxHP(amount);
             }
             else {
-                Debug.Log("Coú posz≥o nie tak, üle wpisa≥eú komende");
+                Debug.Log("Co≈õ posz≈Ço nie tak, ≈∫le wpisa≈Çe≈õ komende");
             }
         }
     }
@@ -148,7 +179,7 @@ public class ShipStats : MonoBehaviour {
                 SetEnergy(amount);
             }
             else {
-                Debug.Log("Coú posz≥o nie tak, üle wpisa≥eú komende");
+                Debug.Log("Co≈õ posz≈Ço nie tak, ≈∫le wpisa≈Çe≈õ komende");
             }
         }
     }
@@ -159,7 +190,7 @@ public class ShipStats : MonoBehaviour {
                 SetMaxEnergy(amount);
             }
             else {
-                Debug.Log("Coú posz≥o nie tak, üle wpisa≥eú komende");
+                Debug.Log("Co≈õ posz≈Ço nie tak, ≈∫le wpisa≈Çe≈õ komende");
             }
         }
     }

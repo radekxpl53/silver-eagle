@@ -1,39 +1,40 @@
 using UnityEngine;
 
-public class damageColision : MonoBehaviour
+public class DamageCollision : MonoBehaviour
 {
-    [Header("--- KALIBRACJA ZDERZEŃ (Dla masy 100t) ---")]
+    [Header("--- KALIBRACJA ZDERZEŃ ---")]
     public float damageThreshold = 20000f;
     public float damageMultiplier = 0.005f;
 
     [Header("--- EFEKTY ---")]
     public ParticleSystem impactParticles;
 
-    void OnCollisionEnter(Collision collision)
+    private ShipStats shipStats;
+
+    private void Start()
     {
-        // 1. OBLICZANIE SIŁY UDERZENIA
+        shipStats = GetComponent<ShipStats>();
+        if (shipStats == null)
+            shipStats = GetComponentInParent<ShipStats>();
+
+        if (shipStats == null)
+            Debug.LogError("Brak ShipStats na statku lub jego rodzicu!");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
         float impactForce = collision.impulse.magnitude;
-
-        //Debug.Log($"<color=orange>TEST KOLIZJI:</color> Dotknięto {collision.gameObject.name}, siła: {impactForce}");
-
         if (impactForce < damageThreshold) return;
 
-        // 2. OBLICZANIE OBRAŻEŃ
-        float damageToTake = (impactForce - damageThreshold) * damageMultiplier;
-        damageToTake = Mathf.Max(0, damageToTake);
+        float damage = (impactForce - damageThreshold) * damageMultiplier;
+        damage = Mathf.Max(0f, damage);
 
-        // 3. PRZEKAZANIE OBRAŻEŃ
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.ApplyDamage(damageToTake);
-        }
-        else
-        {
-            Debug.LogError("Brak GameManagera w scenie!");
-        }
+        // <<< INTEGRACJA Z SHIPSTATS >>>
+        if (shipStats != null)
+            shipStats.TakeDamage(damage);
 
-        // 4. DEBUGOWANIE I EFEKTY
-        Debug.Log($"<color=red>KOLIZJA!</color> Obiekt: {collision.gameObject.name} | Siła (Impuls): {impactForce:F0} | Przekazane obrażenia: {damageToTake:F0}");
+        // Debug + efekty
+        Debug.Log($"<color=red>KOLIZJA!</color> {collision.gameObject.name} | Siła: {impactForce:F0} | Obrażenia: {damage:F1}");
 
         if (impactParticles != null)
         {
