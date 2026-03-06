@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using FMODUnity;
+using FMOD.Studio;
 
 public class InteractableObject : MonoBehaviour {
     public AreaSpawnerManager manager;
@@ -8,7 +10,7 @@ public class InteractableObject : MonoBehaviour {
 
     public AsteroidSavedData myData;
     public BeltSavedData myBelt;
-
+    
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             if (myData != null) {
@@ -20,7 +22,7 @@ public class InteractableObject : MonoBehaviour {
             }
 
             //Destroy(gameObject);
-            Debug.Log("Dotk³eœ asteroide :) UwU");
+            Debug.Log("Dotkï¿½eï¿½ asteroide :) UwU");
         }
     }
 }

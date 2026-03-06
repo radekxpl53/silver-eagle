@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMOD.Studio;
+using FMODUnity;
 
 public class Move : MonoBehaviour
 {

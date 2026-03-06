@@ -16,11 +16,11 @@ public class GameManager : MonoBehaviour {
     private void Awake() {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad(gameObject);     // przetrwa zmianê scen
-            Debug.Log("<color=cyan>GameManager zosta³ zainicjalizowany jako Singleton</color>");
+            DontDestroyOnLoad(gameObject);     // przetrwa zmianï¿½ scen
+            Debug.Log("<color=cyan>GameManager zostaï¿½ zainicjalizowany jako Singleton</color>");
         }
         else {
-            Debug.LogWarning("Drugi GameManager zosta³ zniszczony (duplikat)");
+            Debug.LogWarning("Drugi GameManager zostaï¿½ zniszczony (duplikat)");
             Destroy(gameObject);
         }
     }

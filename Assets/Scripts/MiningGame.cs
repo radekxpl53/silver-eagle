@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem; // Wymagane dla nowego systemu
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+using FMOD.Studio;
 
 public class MiningGame : MonoBehaviour
 {
@@ -37,17 +39,21 @@ public class MiningGame : MonoBehaviour
     [Header("Yield")]
     public float yieldMultiplier = 1f;
 
-
     // Referencja do akcji (możesz ją przypisać w inspektorze lub użyć Keyboard.current)
     private bool isPressingAction => Keyboard.current.spaceKey.isPressed || Pointer.current.press.isPressed;
+    
+    [Header("Audio")]
+    [SerializeField] private EventReference successSfx;
+    private EventInstance laserCollecting;
 
     void Update()
-{
-    if (isMining)
     {
-        HandleMining();
+        if (isMining)
+        {
+            HandleMining();
+        }
+
     }
-}
 
     void HandleMining()
     {
@@ -78,9 +84,16 @@ public class MiningGame : MonoBehaviour
     }
 
     public void StartMinigame() {
+        PLAYBACK_STATE state;
+        laserCollecting.getPlaybackState(out state);
+        if (state != PLAYBACK_STATE.PLAYING)
+        {
+            laserCollecting.start();
+        }
+        
         isMining = true;
         miningCanvas.SetActive(true);
-
+        
         currentProgress = 0.2f;
         instability = 0f;
         yieldMultiplier = 1f;
@@ -158,7 +171,10 @@ public class MiningGame : MonoBehaviour
     }
 
     void Start() {
-        if (MiningData.currentAsteroidLoot != null) {
+        laserCollecting = RuntimeManager.CreateInstance(FMODEvents.instance.laserCollecting);
+        
+        if (MiningData.currentAsteroidLoot != null)
+        {
             StartMinigame();
         }
         else {
@@ -171,6 +187,13 @@ public class MiningGame : MonoBehaviour
     {
         Debug.Log(message);
         isMining = false;
+        
+        if (laserCollecting.isValid())
+        {
+            laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+            RuntimeManager.PlayOneShot(successSfx, transform.position);
+        }
 
         if (message == "WYDOBYTO!") {
             if (MiningData.currentAsteroidObject != null) {
@@ -200,5 +223,14 @@ public class MiningGame : MonoBehaviour
         // Przełącamy sinlgetona na eksporacje i wywalamy scerne z miningu
         GameManager.Instance.ChangeState(GameState.Exploration);
         SceneManager.UnloadSceneAsync("MiningScene");
+    }
+    
+    void OnDestroy()
+    {
+        if (laserCollecting.isValid())
+        {
+            laserCollecting.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            laserCollecting.release();
+        }
     }
 }
