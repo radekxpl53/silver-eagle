@@ -5,6 +5,7 @@ public class PlayerData
 {
     public float hp;
     public int credits;
+    public float energy;
     public Vector3 position;
     //Silniki(prędkość, skrętność, przyśpieszenie)
     public float speed;
@@ -27,6 +28,7 @@ public class PlayerData
     public delegate void OnPlayerDataChange(
     float hp,
     int credits,
+    float energy,
     Vector3 position,
     float speed,
     float maneuverability,
@@ -50,7 +52,7 @@ public class PlayerData
         {
             if(_instance == null)
             {
-                _instance = new PlayerData(0, 0, Vector3.zero, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
+                _instance = new PlayerData(100, 0, 200, Vector3.zero, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
             }
 
             return _instance;
@@ -60,6 +62,7 @@ public class PlayerData
     private PlayerData(
     float hp,
     int credits,
+    float energy,
     Vector3 position,
     float speed,
     float maneuverability,
@@ -78,6 +81,7 @@ public class PlayerData
     {
         this.hp = hp;
         this.credits = credits;
+        this.energy = energy;
         this.position = position;
         this.speed = speed;
         this.maneuverability = maneuverability;
@@ -98,6 +102,7 @@ public class PlayerData
     public void SetPlayerData(
     float hp,
     int credits,
+    float energy,
     Vector3 position,
     float speed,
     float maneuverability,
@@ -116,6 +121,7 @@ public class PlayerData
     {
         this.hp = hp;
         this.credits = credits;
+        this.energy = energy;
         this.position = position;
         this.speed = speed;
         this.maneuverability = maneuverability;
@@ -132,15 +138,16 @@ public class PlayerData
         this.repairDrones = repairDrones;
         this.repairKits = repairKits;
 
-        OnDataChange?.Invoke(hp, credits, position, speed, maneuverability, acceleration, cargoHold, durability, 
+        OnDataChange?.Invoke(hp, credits, energy, position, speed, maneuverability, acceleration, cargoHold, durability, 
         shield, militaryScanner, laserTemperature, drillDurability, asteroidReport, sectorInformation, fastTravel, repairDrones, repairKits);
     }
 
     public void ResetData()
     {
         SetPlayerData(
+            100,
             0,
-            0,
+            200,
             Vector3.zero,
             0,
             0,
