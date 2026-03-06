@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(ShipStats))]
 public class fppLatanie : MonoBehaviour
 {
     [Header("PARAMETRY BAZOWE")]
-    public float baseMass = 100000f;          // Masa Statku
-    public float cargoCapacity = 80000f;      // Pojemność Ładowni
-    public float maxMainThrust = 800000f;     // Siła Ciągu Głównego
+    public float baseMass = 100000f;
+    public float cargoCapacity = 80000f;
+    public float maxMainThrust = 800000f;
 
     [Header("SIŁY HAMOWANIA I MANEWRÓW")]
-    public float brakeThrust = 400000f;       // Siła Hamowania
-    public float maneuverForce = 250000f;     // Siła Manewrowa
-    public float rollForce = 250000f;         // Roll
+    public float brakeThrust = 400000f;
+    public float maneuverForce = 250000f;
+    public float rollForce = 250000f;
+
+    [Header("PALIWO")]
+    public float emergencySpeedMultiplier = 0.3f;
+    public float maxDrainRate = 10f; // Maksymalne spalanie przy 100% przepustnicy
 
     [Header("ILOSC LADUNKU")]
     [Range(0f, 1f)]
@@ -29,11 +33,14 @@ public class fppLatanie : MonoBehaviour
     public Transform cameraTransform;
 
     private Rigidbody rb;
+    private ShipStats shipStats;
     private float previousLoadPercent = -1f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        shipStats = GetComponent<ShipStats>();
+
         rb.useGravity = false;
         rb.linearDamping = 0.5f;
 
@@ -45,8 +52,6 @@ public class fppLatanie : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.currentState != GameState.Exploration) return;
-        // === MOC SILNIKÓW ===
         if (Mouse.current != null)
         {
             float scroll = Mouse.current.scroll.y.ReadValue() * throttleSensitivity;
@@ -63,26 +68,23 @@ public class fppLatanie : MonoBehaviour
     private void UpdatePhysics()
     {
         rb.mass = baseMass + cargoCapacity * currentLoadPercent;
-
         rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
     }
 
     void FixedUpdate()
     {
-        // === CIĄG GŁÓWNY ===
-        float currentThrustForce = maxMainThrust * (currentThrottle / 100f);
+        bool hasFuel = shipStats.CurrentEnergy > 0f;
+        float currentPerformanceMode = hasFuel ? 1f : emergencySpeedMultiplier;
+
+        float currentThrustForce = maxMainThrust * (currentThrottle / 100f) * currentPerformanceMode;
         rb.AddRelativeForce(Vector3.forward * currentThrustForce);
 
-        // === HAMOWANIE ===
         if (Keyboard.current != null && Keyboard.current.sKey.isPressed)
         {
-            rb.AddRelativeForce(Vector3.forward * -brakeThrust);
+            rb.AddRelativeForce(Vector3.forward * -brakeThrust * currentPerformanceMode);
         }
 
-        // === STEROWANIE MYSZĄ + ROLL ===
-        float mouseX = 0f;
-        float mouseY = 0f;
-        float rollInput = 0f;
+        float mouseX = 0f, mouseY = 0f, rollInput = 0f;
 
         if (Mouse.current != null)
         {
@@ -97,13 +99,17 @@ public class fppLatanie : MonoBehaviour
             if (Keyboard.current.dKey.isPressed) rollInput = 1f;
         }
 
-        // Pitch
-        float pitchForce = -mouseY * maneuverForce;
-        // Yaw
-        float yawForce = mouseX * maneuverForce;
-        // Roll
-        float rollTorque = -rollInput * rollForce;
+        float pitchForce = -mouseY * maneuverForce * currentPerformanceMode;
+        float yawForce = mouseX * maneuverForce * currentPerformanceMode;
+        float rollTorque = -rollInput * rollForce * currentPerformanceMode;
 
         rb.AddRelativeTorque(new Vector3(pitchForce, yawForce, rollTorque));
+
+        // ZUŻYCIE PALIWA PROPORCJONALNIE DO MOCY SILNIKA
+        if (currentThrottle > 0f && hasFuel)
+        {
+            float throttlePercent = currentThrottle / 100f;
+            shipStats.UseEnergy(maxDrainRate * throttlePercent * Time.fixedDeltaTime);
+        }
     }
 }
