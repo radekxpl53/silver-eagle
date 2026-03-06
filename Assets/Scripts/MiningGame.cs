@@ -196,20 +196,21 @@ public class MiningGame : MonoBehaviour
         }
 
         if (message == "WYDOBYTO!") {
-            if (MiningData.currentAsteroidObject != null) {
-                // Wydupcamy ją z rejestru
-                if (MiningData.currentAsteroidLoot != null) {
-                    MiningData.currentAsteroidLoot.Clear();
+            PlayerInventory inventory = FindFirstObjectByType<PlayerInventory>();
+            
+            if (inventory != null && MiningData.currentAsteroidLoot != null) 
+            {
+                foreach (ResourceStack stack in MiningData.currentAsteroidLoot) 
+                {
+                    // Obliczamy ile faktycznie udało się odzyskać (zaokrąglamy w górę)
+                    int finalAmount = Mathf.CeilToInt(stack.amount * yieldMultiplier);
+                    
+                    if (finalAmount > 0)
+                    {
+                        inventory.AddResource(stack.definition, finalAmount);
+                        Debug.Log($"Dodano do ekwipunku: {stack.definition.Name} x{finalAmount} (Efektywność: {yieldMultiplier*100}%)");
+                    }
                 }
-
-                if (MiningData.currentManager != null) {
-                    Debug.Log("DEBUG: Informuję przekaźnik o wydobyciu");
-                    MiningData.currentManager.OnObjectInteracted(MiningData.currentArea, MiningData.currentBelt);
-                }
-
-                // Niszczymy obiekt w świecie gry
-                Destroy(MiningData.currentAsteroidObject.gameObject);
-                Debug.Log("Obiekt asteroidy usunięty z głównej sceny");
             }
         }
 

@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(ShipStats))]
 public class latanieTpp : MonoBehaviour
 {
     [Header("PARAMETRY BAZOWE")]
-    [SerializeField] private float baseMass = 100000f;           // Masa Statku
-    [SerializeField] private float cargoCapacity = 80000f;       // Pojemność Ładowni
-    [SerializeField] private float maxMainThrust = 800000f;      // Siła Ciągu Głównego
-    [SerializeField] private float brakeThrust = 400000f;        // Siła Hamowania
-    [SerializeField] private float maneuveringTorque = 250000f;  // Siła Manewrowa
+    [SerializeField] private float baseMass = 100000f;
+    [SerializeField] private float cargoCapacity = 80000f;
+    [SerializeField] private float maxMainThrust = 800000f;
+    [SerializeField] private float brakeThrust = 400000f;
+    [SerializeField] private float maneuveringTorque = 250000f;
+
+    [Header("PALIWO")]
+    [SerializeField] private float emergencySpeedMultiplier = 0.3f; // 30% prędkości bez paliwa
+    [SerializeField] private float normalDrainRate = 5f;            // Spalanie na sekundę
 
     [Header("ILOSC LADUNKU")]
     [Range(0f, 1f)]
@@ -19,11 +24,14 @@ public class latanieTpp : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
 
     private Rigidbody rb;
+    private ShipStats shipStats;
     private float previousLoadPercent = -1f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        shipStats = GetComponent<ShipStats>();
+
         rb.useGravity = false;
         rb.linearDamping = 0.5f;
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
@@ -33,26 +41,22 @@ public class latanieTpp : MonoBehaviour
 
     void FixedUpdate()
     {
-        // aktualizacja masy i dragów gdy zmienimy suwak w trakcie gry
         if (Mathf.Abs(currentLoadPercent - previousLoadPercent) > 0.001f)
         {
             UpdatePhysics();
             previousLoadPercent = currentLoadPercent;
         }
 
-        handleMovment();
+        handleMovement();
     }
 
     private void UpdatePhysics()
     {
-        float totalMass = baseMass + cargoCapacity * currentLoadPercent;
-        rb.mass = totalMass;
-
-        float angularDrag = 1.5f - (1.5f - 0.9f) * currentLoadPercent;
-        rb.angularDamping = angularDrag;
+        rb.mass = baseMass + cargoCapacity * currentLoadPercent;
+        rb.angularDamping = 1.5f - (1.5f - 0.9f) * currentLoadPercent;
     }
 
-    void handleMovment()
+    void handleMovement()
     {
         float gasInput = 0f;
         float turnInput = 0f;
@@ -70,23 +74,34 @@ public class latanieTpp : MonoBehaviour
             if (Keyboard.current.leftShiftKey.isPressed) verticalInput = -1f;
         }
 
+        bool hasFuel = shipStats.CurrentEnergy > 0f;
+        bool isMoving = gasInput != 0 || turnInput != 0 || verticalInput != 0;
+
+        float currentPerformanceMode = hasFuel ? 1f : emergencySpeedMultiplier;
+
         // A. PRZÓD / HAMOWANIE 
         if (gasInput != 0)
         {
-            float currentThrust = (gasInput > 0) ? maxMainThrust : brakeThrust;
-            rb.AddRelativeForce(Vector3.forward * gasInput * currentThrust);
+            float baseThrust = (gasInput > 0) ? maxMainThrust : brakeThrust;
+            rb.AddRelativeForce(Vector3.forward * gasInput * baseThrust * currentPerformanceMode);
         }
 
         // B. SKRĘT
         if (turnInput != 0)
         {
-            rb.AddRelativeTorque(Vector3.up * turnInput * maneuveringTorque);
+            rb.AddRelativeTorque(Vector3.up * turnInput * maneuveringTorque * currentPerformanceMode);
         }
 
         // C. WINDA
         if (verticalInput != 0)
         {
-            rb.AddForce(Vector3.up * verticalInput * liftThrust);
+            rb.AddForce(Vector3.up * verticalInput * liftThrust * currentPerformanceMode);
+        }
+
+        // ZUŻYCIE PALIWA
+        if (isMoving && hasFuel)
+        {
+            shipStats.UseEnergy(normalDrainRate * Time.fixedDeltaTime);
         }
     }
 }
