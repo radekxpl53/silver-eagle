@@ -1,35 +1,47 @@
 using UnityEngine;
 
-public enum GameState {
+public enum GameState
+{
     Exploration,
     Mining,
     Fighting,
     Menu,
     Console,
+    GameOver
 }
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
     public static GameManager Instance;
-
     public GameState currentState = GameState.Exploration;
 
-    private void Awake() {
-        if (Instance == null) {
+    [Header("--- OKNO PORAZKI ---")]
+    public GameObject loseScreen;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
             Instance = this;
-            DontDestroyOnLoad(gameObject);     // przetrwa zmianê scen
+            DontDestroyOnLoad(gameObject);
             Debug.Log("<color=cyan>GameManager zosta³ zainicjalizowany jako Singleton</color>");
         }
-        else {
+        else
+        {
             Debug.LogWarning("Drugi GameManager zosta³ zniszczony (duplikat)");
             Destroy(gameObject);
         }
     }
 
-    public void ChangeState(GameState newState) {
+    private void Start()
+    {
+        
+    }
+
+    public void ChangeState(GameState newState)
+    {
         if (currentState == newState) return;
-
         currentState = newState;
-
         Debug.Log($"<color=yellow>GameState zmieniony na: <b>{newState}</b></color>");
     }
 }
