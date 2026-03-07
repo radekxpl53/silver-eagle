@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -24,14 +25,16 @@ public class SectorData {
 
 public class ChunkManager : MonoBehaviour
 {
+    [SerializeField] private MapDisplay mapDisplay;
+
     public static ChunkManager Instance;
 
     void Awake() {
         Instance = this;
     }
 
-    [SerializeField] private int mapCols = 6;
-    [SerializeField] private int mapRows = 6;
+    public int mapCols { get; private set; } = 6;
+    public int mapRows { get; private set; } = 6;
     // TO jest bardzo do zmiany, bo nie wiem ile daæ ¿eby by³o ok, narazie do testó 4x4x4 km starczy raczej
     [SerializeField] private float sectorSize = 4000f;
     [SerializeField] private Transform player;
@@ -39,7 +42,7 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] private ResourceDatabase resourceDB;
     private GameObject currentSectorObject = null;
 
-    private Dictionary<Vector2Int, SectorData> allSectorData = new Dictionary<Vector2Int, SectorData>();
+    public Dictionary<Vector2Int, SectorData> allSectorData { get; private set; } = new Dictionary<Vector2Int, SectorData>();
 
     private Vector2Int currentPlayerSector = new Vector2Int(-1, -1);
 
@@ -90,6 +93,8 @@ public class ChunkManager : MonoBehaviour
 
         // TEST DO KONSOLI
         DebugMapStats();
+
+        mapDisplay.GenerateMapUI();
     }
 
     public void DebugMapStats() {
@@ -182,7 +187,6 @@ public class ChunkManager : MonoBehaviour
     {
         GenerateWorldData();
         Debug.Log("Wygenerowano bazê danych sektorów: " + allSectorData.Count);
-
     }
 
     void Update()
@@ -235,11 +239,36 @@ public class ChunkManager : MonoBehaviour
         }
     }
 
-    private int GetTotalGroupCount() {
-        int count = 0;
-        foreach (var s in allSectorData.Values) {
-            if (s.hasAsteroidGroup) count++;
+    public List<string> GetSectorStats(SectorData sector) {
+        Dictionary<ResourceDefinition, int> allResources = new Dictionary<ResourceDefinition, int>();
+
+        foreach (var belt in sector.belts) {
+            foreach (var asteroid in belt.asteroids) {
+                foreach (var resource in asteroid.loot) {
+                    if (allResources.ContainsKey(resource.definition)) {
+                        allResources[resource.definition] += resource.amount;
+                    }
+                    else {
+                        allResources.Add(resource.definition, resource.amount);
+                    }
+                }
+            }
         }
-        return count;
+
+        float sum = allResources.Sum(s => s.Value);
+        var top_three = allResources.OrderByDescending(s => s.Value).Take(3);
+
+        List<string> array = new List<string>();
+        if (sum != 0) {
+            array.Add($"£¹cznie: {sum}");
+            foreach (var top in top_three) {
+                float result = (top.Value / sum) * 100;
+                array.Add($"{top.Key.Name}: {result:F0}%");
+            }
+        }
+        else {
+            array.Add("Nic nie znajdujê siê w wybranych sektorze");
+        }
+        return array;
     }
 }
