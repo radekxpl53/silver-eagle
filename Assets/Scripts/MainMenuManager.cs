@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using FMOD.Studio;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -13,9 +14,16 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject mainMenuPanel;
     // debug variable for testing
     [SerializeField] private bool saveFileExists = true;
+    
+    // audio
+    private EventInstance mainMusic;
 
     private void Start()
     {
+        // music
+        mainMusic = AudioManager.instance.CreateInstance(FMODEvents.instance.mainMusic);
+        mainMusic.start();
+        
         mainMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
 
@@ -35,6 +43,10 @@ public class MainMenuManager : MonoBehaviour
     private void OnNewGameClicked()
     {
         Debug.Log("Starting new game...");
+        
+        mainMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        mainMusic.release();
+        
         SceneManager.LoadScene("GameManager");
     }
 
@@ -53,7 +65,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnOptionsClicked()
     {
-        Debug.Log("PRZYCISK DZIA£A!");
+        Debug.Log("PRZYCISK DZIAï¿½A!");
         mainMenuPanel.SetActive(false);
         optionsPanel.SetActive(true);
     }
@@ -72,5 +84,11 @@ public class MainMenuManager : MonoBehaviour
         #else
             Application.Quit();
         #endif
+    }
+    
+    private void OnDestroy()
+    {
+        mainMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        mainMusic.release();
     }
 }

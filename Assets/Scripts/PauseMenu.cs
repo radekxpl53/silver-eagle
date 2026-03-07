@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+using FMOD.Studio;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -8,12 +10,15 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] GameObject pauseMenuPanel;
     [SerializeField] GameObject optionsPanel;
+    
+    // audio
+    private EventInstance mainMusic;
+    
     void Start()
     {
         pauseMenu.SetActive(false);
         pauseMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
-        
     }
 
     // AUTOMATYCZNIE wywoływane przez PlayerInput
@@ -37,6 +42,9 @@ public class PauseMenu : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        
+        mainMusic = AudioManager.instance.CreateInstance(FMODEvents.instance.mainMusic);
+        mainMusic.start();
     }
     
     public void ResumeGame()
@@ -47,6 +55,9 @@ public class PauseMenu : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        mainMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        mainMusic.release();
     }
 
     public void QuitGame()
