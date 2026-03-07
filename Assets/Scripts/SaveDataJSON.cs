@@ -17,6 +17,7 @@ public class SaveDataJSON : MonoBehaviour
     {
         playerData.position = GameObject.FindGameObjectWithTag("Player").transform.position;
         playerData.hp = shipStats.CurrentHP;
+        playerData.energy = shipStats.CurrentEnergy;
         playerData.credits = economyManager.Credits;
         
         string json = JsonUtility.ToJson(playerData);
@@ -47,6 +48,7 @@ public class SaveDataJSON : MonoBehaviour
         playerData.SetPlayerData(data.hp, data.credits, data.energy, data.position, data.speed, data.maneuverability, data.acceleration, data.cargoHold, data.durability, 
         data.shield, data.militaryScanner, data.laserTemperature, data.drillDurability, data.asteroidReport, data.sectorInformation, data.fastTravel, data.repairDrones, data.repairKits);
         shipStats.SetHP(data.hp);
+        shipStats.SetEnergy(data.energy);
         economyManager.SetCredits(data.credits);
         Debug.Log("Data loaded");
     }
