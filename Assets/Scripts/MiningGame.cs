@@ -1,9 +1,10 @@
+using FMOD.Studio;
+using FMODUnity;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem; // Wymagane dla nowego systemu
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using FMODUnity;
-using FMOD.Studio;
+using UnityEngine.UI;
 
 public class MiningGame : MonoBehaviour
 {
@@ -179,7 +180,7 @@ public class MiningGame : MonoBehaviour
         }
         else {
             Debug.LogWarning("Brak danych o asteroidzie! Wracam do głównej sceny.");
-            SceneManager.LoadScene("TwojaNazwaGlownejSceny");
+            SceneManager.LoadScene("GameManager");
         }
     }
 
@@ -210,7 +211,15 @@ public class MiningGame : MonoBehaviour
                         inventory.AddResource(stack.definition, finalAmount);
                         Debug.Log($"Dodano do ekwipunku: {stack.definition.Name} x{finalAmount} (Efektywność: {yieldMultiplier*100}%)");
                     }
+                    
                 }
+                MiningData.currentAsteroidLoot.Clear();
+                if (MiningData.currentManager != null) {
+                    Debug.Log("DEBUG: Informuję przekaźnik o wydobyciu");
+                    MiningData.currentManager.OnObjectInteracted(MiningData.currentArea, MiningData.currentBelt);
+                }
+                Destroy(MiningData.currentAsteroidObject.gameObject);
+                Debug.Log("Obiekt asteroidy usunięty z głównej sceny");
             }
         }
 
