@@ -26,6 +26,13 @@ public class ShipStats : MonoBehaviour {
         DeveloperConsole.Instance.AddCommand("get_energy", GetEnergyCommand);
     }
 
+    public void ResetData()
+    {
+        CurrentHP = MaxHP;
+        CurrentEnergy = MaxEnergy;
+        CurrentCargo = 0;
+    }
+
     public void TakeDamage(float damage)
     {
         if (damage > 0f)

@@ -3,7 +3,6 @@ using UnityEngine;
 public class BaseDropZone : MonoBehaviour
 {
     [SerializeField] private ShipStats shipStats;
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
