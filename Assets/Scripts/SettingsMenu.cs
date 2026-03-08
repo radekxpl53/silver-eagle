@@ -16,11 +16,11 @@ public class SettingsMenu : MonoBehaviour
         resolutions = Screen.resolutions;
 
         if (resolutions.Length == 0) {
-            Debug.LogError("Unity nie znalaz³o ¿adnych rozdzielczoœci!");
+            Debug.LogError("Unity nie znalazï¿½o ï¿½adnych rozdzielczoï¿½ci!");
             return;
         }
 
-        Debug.Log("Znaleziono rozdzielczoœci: " + resolutions.Length);
+        Debug.Log("Znaleziono rozdzielczoï¿½ci: " + resolutions.Length);
 
         resolutionDropdown.ClearOptions();
         
@@ -44,11 +44,10 @@ public class SettingsMenu : MonoBehaviour
     
     public void SetVolume(float volume)
     {
-        Debug.Log("Suwak wysy³a: " + volume);
+        Debug.Log("Suwak wysyï¿½a: " + volume);
         if (volume <= 0.0001f) volume = 0.0001f;
 
-        float dB = Mathf.Log10(volume) * 20;
-        audioMixer.SetFloat("volume", dB);
+        AudioManager.instance.masterVolume = volume;
 
         PlayerPrefs.SetFloat("volume", volume);
     }
