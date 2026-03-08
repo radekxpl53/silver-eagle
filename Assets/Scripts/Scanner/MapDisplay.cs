@@ -31,7 +31,7 @@ public class MapDisplay : MonoBehaviour {
                     Button btn = newSector.GetComponent<Button>();
 
                     btn.onClick.AddListener(btnScript.OnClick);
-                    Debug.Log($"Przypisano klikniêcie do sektora {i}, {j}");
+                    //Debug.Log($"Przypisano klikniêcie do sektora {i}, {j}");
                 }
             }
             isGenerated = true;

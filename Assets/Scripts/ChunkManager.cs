@@ -92,31 +92,31 @@ public class ChunkManager : MonoBehaviour
         }
 
         // TEST DO KONSOLI
-        DebugMapStats();
+        //DebugMapStats();
 
         mapDisplay.GenerateMapUI();
     }
 
-    public void DebugMapStats() {
-        int totalSectorsWithAsteroids = 0;
-        int totalBelts = 0;
-        int totalAsteroids = 0;
+    //public void DebugMapStats() {
+    //    int totalSectorsWithAsteroids = 0;
+    //    int totalBelts = 0;
+    //    int totalAsteroids = 0;
 
-        foreach (var data in allSectorData.Values) {
-            if (data.hasAsteroidGroup) {
-                totalSectorsWithAsteroids++;
-                totalBelts += data.belts.Count;
-                foreach (var belt in data.belts) {
-                    totalAsteroids += belt.asteroids.Count;
-                }
-            }
-        }
+    //    foreach (var data in allSectorData.Values) {
+    //        if (data.hasAsteroidGroup) {
+    //            totalSectorsWithAsteroids++;
+    //            totalBelts += data.belts.Count;
+    //            foreach (var belt in data.belts) {
+    //                totalAsteroids += belt.asteroids.Count;
+    //            }
+    //        }
+    //    }
 
-        Debug.Log("RAPORT GENERACJI ŒWIATA");
-        Debug.Log($"Sektory z asteroidami: {totalSectorsWithAsteroids} / 36");
-        Debug.Log($"£¹czna liczba pasów: {totalBelts}");
-        Debug.Log($"£¹czna liczba asteroid w pamiêci: {totalAsteroids}");
-    }
+    //    Debug.Log("RAPORT GENERACJI ŒWIATA");
+    //    Debug.Log($"Sektory z asteroidami: {totalSectorsWithAsteroids} / 36");
+    //    Debug.Log($"£¹czna liczba pasów: {totalBelts}");
+    //    Debug.Log($"£¹czna liczba asteroid w pamiêci: {totalAsteroids}");
+    //}
 
     private List<ResourceStack> PreGenerateLoot(int stage) {
         List<ResourceStack> generatedLoot = new List<ResourceStack>();
@@ -186,7 +186,7 @@ public class ChunkManager : MonoBehaviour
     void Start()
     {
         GenerateWorldData();
-        Debug.Log("Wygenerowano bazê danych sektorów: " + allSectorData.Count);
+        //Debug.Log("Wygenerowano bazê danych sektorów: " + allSectorData.Count);
     }
 
     void Update()
@@ -215,7 +215,7 @@ public class ChunkManager : MonoBehaviour
         // Zmiana informacji o sektorze
         if (currentPos != currentPlayerSector) {
             currentPlayerSector = currentPos;
-            Debug.Log("Wlecia³em do nowego sektora:" + currentPlayerSector);
+            //Debug.Log("Wlecia³em do nowego sektora:" + currentPlayerSector);
             RefreshSectorView(currentPos);
         }
     }

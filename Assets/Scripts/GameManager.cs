@@ -15,16 +15,13 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameState currentState = GameState.Exploration;
 
-    [Header("--- OKNO PORAZKI ---")]
-    public GameObject loseScreen;
-
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // przetrwa zmianę sceny
-            Debug.Log("<color=cyan>GameManager został zainicjalizowany jako Singleton</color>");
+            //Debug.Log("<color=cyan>GameManager został zainicjalizowany jako Singleton</color>");
         }
         else
         {

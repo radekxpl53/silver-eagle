@@ -42,7 +42,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnNewGameClicked()
     {
-        Debug.Log("Starting new game...");
+        //Debug.Log("Starting new game...");
         
         mainMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         mainMusic.release();
@@ -65,7 +65,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnOptionsClicked()
     {
-        Debug.Log("PRZYCISK DZIA�A!");
+        //Debug.Log("PRZYCISK DZIAŁA!");
         mainMenuPanel.SetActive(false);
         optionsPanel.SetActive(true);
     }
@@ -77,7 +77,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnQuitClicked()
     {
-        Debug.Log("Quitting game...");
+        //Debug.Log("Quitting game...");
         
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
