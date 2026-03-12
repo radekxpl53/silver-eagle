@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,8 +17,11 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
 
     public void Start() {
-        CurrentHP = MaxHP;
-        CurrentEnergy = MaxEnergy;
+
+        if (CurrentHP <= 0) CurrentHP = MaxHP;
+        if (CurrentEnergy <= 0) CurrentEnergy = MaxEnergy;
+        if (CurrentCargo <= 0) CurrentCargo = 0;
+
         DeveloperConsole.Instance.AddCommand("set_hp", SetHPCommand);
         DeveloperConsole.Instance.AddCommand("set_max_hp", SetMaxHPCommand);
         DeveloperConsole.Instance.AddCommand("set_energy", SetEnergyCommand);
@@ -131,6 +135,10 @@ public class ShipStats : MonoBehaviour {
     public void SetHP(float amount) {
         CurrentHP = amount;
         Debug.Log("Poprawnie przypisano " + amount + " HP");
+    }
+    public void SetCargo(float amount) {
+        CurrentCargo = amount;
+        Debug.Log("Poprawnie przypisano " + amount + " Cargo");
     }
     public void SetMaxHP(float amount) {
         MaxHP = amount;
