@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class Restart : MonoBehaviour
 {
-    [SerializeField] private ShipStats shipStats;
+    private ShipStats shipStats;
+    private EconomyManager economyManager;
 
     public void RestartMethod()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        shipStats = player.GetComponent<ShipStats>();
+        economyManager = EconomyManager.Instance;
 
         PlayerData.Instance.ResetData();
         shipStats.ResetData();
+        economyManager.SetCredits(0);
 
         PlayerInventory inventory = player.GetComponent<PlayerInventory>();
         inventory.myItems.Clear();

@@ -6,15 +6,18 @@ using System;
 public class UI_ShipStatus : MonoBehaviour
 {
     private ShipStats shipStats;
+    private EconomyManager economyManager;
     public Slider hp;
     public TextMeshProUGUI hpText;
     public Slider energy;
     public TextMeshProUGUI energyText;
     public Slider cargo;
     public TextMeshProUGUI cargoText;
+    public TextMeshProUGUI credits;
     void Start()
     {
         shipStats = GetComponent<ShipStats>();
+        economyManager = EconomyManager.Instance;
 
         hp.maxValue = shipStats.GetMaxHP();
         hp.value = shipStats.CurrentHP;
@@ -27,6 +30,8 @@ public class UI_ShipStatus : MonoBehaviour
         cargo.maxValue = shipStats.GetMaxCargo();
         cargo.value = shipStats.CurrentCargo;
         cargoText.text = shipStats.CurrentCargo + "/" + shipStats.GetMaxCargo();
+
+        credits.text = "Credits: " + economyManager.Credits;
     }
     public void RefreshUI()
     {
@@ -38,6 +43,8 @@ public class UI_ShipStatus : MonoBehaviour
 
         cargo.value = shipStats.CurrentCargo;
         cargoText.text = Math.Round(shipStats.CurrentCargo) + "/" + shipStats.GetMaxCargo();
+
+        credits.text = "Credits: " + economyManager.Credits;
     }
     void Update()
     {
