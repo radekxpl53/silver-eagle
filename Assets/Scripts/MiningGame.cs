@@ -30,7 +30,8 @@ public class MiningGame : MonoBehaviour
     private float rockTargetPos;
     private float currentProgress = 0.2f;
     private bool isMining = false;
-    private Asteroid asteroid;
+    [Header("Asteroid Explosion")]
+    [SerializeField] private GameObject explosionPrefab;
 
     [Header("Overheat / Instability")]       
     public float smallErrorRate = 0.05f;     // 5% niestabilności
@@ -218,6 +219,19 @@ public class MiningGame : MonoBehaviour
                     Debug.Log("DEBUG: Informuję przekaźnik o wydobyciu");
                     MiningData.currentManager.OnObjectInteracted(MiningData.currentArea, MiningData.currentBelt);
                 }
+
+                if (MiningData.currentAsteroidObject != null && explosionPrefab != null)
+                {
+                    GameObject explosion = Instantiate(
+                        explosionPrefab,
+                        MiningData.currentAsteroidObject.transform.position,
+                        MiningData.currentAsteroidObject.transform.rotation
+                    );
+
+                    Scene asteroidScene = MiningData.currentAsteroidObject.gameObject.scene;
+                    SceneManager.MoveGameObjectToScene(explosion, asteroidScene);
+                }
+
                 Destroy(MiningData.currentAsteroidObject.gameObject);
                 Debug.Log("Obiekt asteroidy usunięty z głównej sceny");
             }
