@@ -30,6 +30,5 @@ public class SellSystem : MonoBehaviour
             inventory.RefreshUI();
 
         }
-        Debug.Log(economyManager.Credits);
     }
 }
