@@ -10,6 +10,12 @@ public class Restart : MonoBehaviour
 
         PlayerData.Instance.ResetData();
         shipStats.ResetData();
+
+        PlayerInventory inventory = player.GetComponent<PlayerInventory>();
+        inventory.myItems.Clear();
+        inventory.RefreshUI();
+
         player.transform.position = PlayerData.Instance.position;
+        player.transform.rotation = Quaternion.identity;
     }
 }

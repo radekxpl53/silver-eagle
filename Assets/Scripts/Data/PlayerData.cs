@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class PlayerData
@@ -6,6 +7,7 @@ public class PlayerData
     public float hp;
     public int credits;
     public float energy;
+    public List<ResourceStack> inventory;
     public Vector3 position;
     //Silniki(prędkość, skrętność, przyśpieszenie)
     public float speed;
@@ -29,6 +31,7 @@ public class PlayerData
     float hp,
     int credits,
     float energy,
+    List<ResourceStack> inventory,
     Vector3 position,
     float speed,
     float maneuverability,
@@ -52,7 +55,7 @@ public class PlayerData
         {
             if(_instance == null)
             {
-                _instance = new PlayerData(100, 0, 200, Vector3.zero, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
+                _instance = new PlayerData(100, 0, 200, new List<ResourceStack>(), Vector3.zero, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
             }
 
             return _instance;
@@ -63,6 +66,7 @@ public class PlayerData
     float hp,
     int credits,
     float energy,
+    List<ResourceStack> inventory,
     Vector3 position,
     float speed,
     float maneuverability,
@@ -82,6 +86,7 @@ public class PlayerData
         this.hp = hp;
         this.credits = credits;
         this.energy = energy;
+        this.inventory = inventory;
         this.position = position;
         this.speed = speed;
         this.maneuverability = maneuverability;
@@ -103,6 +108,7 @@ public class PlayerData
     float hp,
     int credits,
     float energy,
+    List<ResourceStack> inventory,
     Vector3 position,
     float speed,
     float maneuverability,
@@ -122,6 +128,7 @@ public class PlayerData
         this.hp = hp;
         this.credits = credits;
         this.energy = energy;
+        this.inventory = inventory;
         this.position = position;
         this.speed = speed;
         this.maneuverability = maneuverability;
@@ -138,7 +145,7 @@ public class PlayerData
         this.repairDrones = repairDrones;
         this.repairKits = repairKits;
 
-        OnDataChange?.Invoke(hp, credits, energy, position, speed, maneuverability, acceleration, cargoHold, durability, 
+        OnDataChange?.Invoke(hp, credits, energy, inventory, position, speed, maneuverability, acceleration, cargoHold, durability, 
         shield, militaryScanner, laserTemperature, drillDurability, asteroidReport, sectorInformation, fastTravel, repairDrones, repairKits);
     }
 
@@ -148,6 +155,7 @@ public class PlayerData
             100,
             0,
             200,
+            new List<ResourceStack>(),
             Vector3.zero,
             0,
             0,

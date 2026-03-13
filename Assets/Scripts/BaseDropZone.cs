@@ -7,13 +7,16 @@ public class BaseDropZone : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            float hp = shipStats.GetMaxHP();
-            float energy = shipStats.GetMaxEnergy();
-            shipStats.Heal(hp);
-            shipStats.AddEnergy(energy);
-            PlayerData.Instance.energy = energy;
-            PlayerData.Instance.hp = hp;
-            Debug.Log("Zatankowano");
+            if(shipStats.CurrentEnergy != shipStats.GetMaxHP())
+            {
+                float hp = shipStats.GetMaxHP();
+                float energy = shipStats.GetMaxEnergy();
+                shipStats.Heal(hp);
+                shipStats.AddEnergy(energy);
+                PlayerData.Instance.energy = energy;
+                PlayerData.Instance.hp = hp;
+                Debug.Log("Zatankowano");
+            }
         }
     }
 }
