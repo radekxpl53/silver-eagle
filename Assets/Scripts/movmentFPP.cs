@@ -23,7 +23,7 @@ public class fppLatanie : MonoBehaviour
 
     [Header("STEROWANIE")]
     public float mouseSensitivity = 0.5f;
-    public float throttleSpeed = 5f; // Szybkość reakcji silnika na wciśnięcie W
+    public float throttleSpeed = 5f;
 
     [Header("PODGLAD MOCY SILNIKOW")]
     [Range(0f, 100f)]
@@ -50,11 +50,9 @@ public class fppLatanie : MonoBehaviour
 
     void Update()
     {
-        // Dynamiczne pobieranie danych ładunku
         float maxCargo = shipStats.GetMaxCargo();
         currentLoadPercent = maxCargo > 0 ? shipStats.CurrentCargo / maxCargo : 0f;
 
-        // "Pedał gazu" pod klawiszem W zamiast scrolla
         if (Keyboard.current != null)
         {
             if (Keyboard.current.wKey.isPressed)
@@ -79,7 +77,6 @@ public class fppLatanie : MonoBehaviour
         rb.mass = baseMass + (cargoCapacity * currentLoadPercent);
         rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
 
-        // Zmniejszenie oporu liniowego (ślizg jak po lodzie) proporcjonalnie do masy
         rb.linearDamping = Mathf.Lerp(0.5f, 0.05f, currentLoadPercent);
     }
 
@@ -88,11 +85,9 @@ public class fppLatanie : MonoBehaviour
         bool hasFuel = shipStats.CurrentEnergy > 0f;
         float currentPerformanceMode = hasFuel ? 1f : emergencySpeedMultiplier;
 
-        // Ciąg główny zależy od "gazu"
         float currentThrustForce = maxMainThrust * (currentThrottle / 100f) * currentPerformanceMode;
         rb.AddRelativeForce(Vector3.forward * currentThrustForce);
 
-        // Aktywne hamowanie pod S
         if (Keyboard.current != null && Keyboard.current.sKey.isPressed)
         {
             rb.AddRelativeForce(Vector3.forward * -brakeThrust * currentPerformanceMode);
@@ -119,7 +114,6 @@ public class fppLatanie : MonoBehaviour
 
         rb.AddRelativeTorque(new Vector3(pitchForce, yawForce, rollTorque));
 
-        // ZUŻYCIE PALIWA PROPORCJONALNIE DO MOCY SILNIKA
         if (currentThrottle > 0.1f && hasFuel)
         {
             float throttlePercent = currentThrottle / 100f;

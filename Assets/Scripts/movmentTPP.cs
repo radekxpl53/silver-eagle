@@ -15,8 +15,8 @@ public class latanieTpp : MonoBehaviour
     [Tooltip("Przeciągnij tu obiekt podrzędny (dziecko), który zawiera sam model 3D statku.")]
     [SerializeField] private Transform shipVisualModel;
     [SerializeField] private float maxRollAngle = 15f;
-    [SerializeField] private float rollSpeed = 45f;      // Jak szybko statek zmienia przechył (stopnie na sekundę)
-    [SerializeField] private float rollSmoothSpeed = 5f; // Miękkość wyhamowywania przechyłu
+    [SerializeField] private float rollSpeed = 45f;
+    [SerializeField] private float rollSmoothSpeed = 5f;
 
     [Header("PALIWO")]
     [SerializeField] private float emergencySpeedMultiplier = 0.3f;
@@ -33,7 +33,6 @@ public class latanieTpp : MonoBehaviour
     private ShipStats shipStats;
     private float previousLoadPercent = -1f;
 
-    // Zmienne do wizualnego przechyłu
     private float currentVisualRoll = 0f;
     private float targetVisualRoll = 0f;
 
@@ -44,7 +43,6 @@ public class latanieTpp : MonoBehaviour
 
         rb.useGravity = false;
 
-        // Blokada fizycznego obrotu X i Z, fizycznie statek zawsze jest płaski
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
         UpdatePhysics();
@@ -108,7 +106,7 @@ public class latanieTpp : MonoBehaviour
             rb.AddRelativeForce(Vector3.forward * gasInput * baseThrust * currentPerformanceMode);
         }
 
-        // B. SKRĘT (Yaw) - używamy AddTorque (globalnej osi Y), by skręcał zawsze idealnie płasko
+        // B. SKRĘT
         if (turnInput != 0)
         {
             rb.AddTorque(Vector3.up * turnInput * maneuveringTorque * currentPerformanceMode);
@@ -120,22 +118,18 @@ public class latanieTpp : MonoBehaviour
             rb.AddForce(Vector3.up * verticalInput * liftThrust * currentPerformanceMode);
         }
 
-        // D. WIZUALNY PRZECHYŁ (Q/E) - zapamiętuje pozycję
+        // D. WIZUALNY PRZECHYŁ
         if (rollInput != 0)
         {
-            // Zmieniamy docelowy kąt tylko wtedy, gdy gracz wciska Q lub E
             targetVisualRoll += rollInput * rollSpeed * Time.fixedDeltaTime;
 
-            // Pilnujemy, by nie przekroczyć twardego limitu 15 stopni
             targetVisualRoll = Mathf.Clamp(targetVisualRoll, -maxRollAngle, maxRollAngle);
         }
 
-        // Płynnie przechodzimy do docelowego kąta (daje to efekt łagodnego startu/stopu)
         currentVisualRoll = Mathf.Lerp(currentVisualRoll, targetVisualRoll, Time.fixedDeltaTime * rollSmoothSpeed);
 
         if (shipVisualModel != null)
         {
-            // Aplikujemy obrót TYLKO do przypisanego modelu 3D
             shipVisualModel.localRotation = Quaternion.Euler(0f, 0f, currentVisualRoll);
         }
 
