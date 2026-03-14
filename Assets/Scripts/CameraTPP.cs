@@ -36,14 +36,12 @@ public class kameraTpp : MonoBehaviour
 
         currentDistance = targetDistance;
 
-        // Ustawienie kamery dok³adnie ZA STATKIEM na start
         if (target != null)
         {
             Vector3 angles = target.eulerAngles;
             mouseX = angles.y;
             currentX = angles.y;
 
-            // Kamera patrzy lekko z góry (15 stopni)
             mouseY = 15f;
             currentY = 15f;
         }
@@ -79,7 +77,6 @@ public class kameraTpp : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
 
-        // Œrodek statku + ewentualne podniesienie
         Vector3 lookAtPoint = target.position + targetOffset;
         Vector3 position = lookAtPoint - (rotation * Vector3.forward * currentDistance);
 
