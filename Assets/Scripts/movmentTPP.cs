@@ -13,7 +13,11 @@ public class latanieTpp : MonoBehaviour
 
     [Header("PALIWO")]
     [SerializeField] private float emergencySpeedMultiplier = 0.3f; // 30% prędkości bez paliwa
-    [SerializeField] private float normalDrainRate = 5f;            // Spalanie na sekundę
+    [SerializeField] private float normalDrainRate = 1f;            // Spalanie na sekundę
+
+    [Header("OSTRZEŻENIE O PALIWIE")]
+    [SerializeField] private float lowFuelThreshold = 40f;
+    private bool lowFuelWarningTriggered = false;
 
     [Header("ILOSC LADUNKU")]
     [Range(0f, 1f)]
@@ -48,6 +52,7 @@ public class latanieTpp : MonoBehaviour
         }
 
         handleMovement();
+        CheckFuelWarning();
     }
 
     private void UpdatePhysics()
@@ -102,6 +107,18 @@ public class latanieTpp : MonoBehaviour
         if (isMoving && hasFuel)
         {
             shipStats.UseEnergy(normalDrainRate * Time.fixedDeltaTime);
+        }
+    }
+    private void CheckFuelWarning()
+    {
+        if (shipStats.CurrentEnergy <= lowFuelThreshold && !lowFuelWarningTriggered && shipStats.CurrentEnergy > 0)
+        {
+            lowFuelWarningTriggered = true;
+            Debug.LogWarning("<color=red><b>[TPP] UWAGA: Niski poziom paliwa!</b></color>");
+        }
+        else if (shipStats.CurrentEnergy > lowFuelThreshold && lowFuelWarningTriggered)
+        {
+            lowFuelWarningTriggered = false;
         }
     }
 }
