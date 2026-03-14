@@ -5,18 +5,27 @@ public class kameraTpp : MonoBehaviour
 {
     public Transform target;
 
+    [Header("Przesuniêcie Celu")]
+    [Tooltip("Dodaj np. Y = 2, ¿eby kamera patrzy³a na œrodek statku, a nie w jego stopy")]
+    public Vector3 targetOffset = new Vector3(0, 0f, 0);
+
     [Header("Ustawienia Orbity")]
-    [SerializeField] private float distance = 15.0f;
     [SerializeField] private float sensitivity = 0.5f;
     [SerializeField] private float yMinLimit = -20f;
     [SerializeField] private float yMaxLimit = 80f;
 
-    [SerializeField] private float mouseX = 0.0f;
-    [SerializeField] private float mouseY = 0.0f;
+    [Header("Ustawienia Zoomu (Scroll)")]
+    [SerializeField] private float targetDistance = 15.0f;
+    [SerializeField] private float minDistance = 5.0f;
+    [SerializeField] private float maxDistance = 50.0f;
+    [SerializeField] private float zoomSpeed = 2.0f;
+    [SerializeField] private float zoomSmoothness = 10f;
 
-
-    [SerializeField] private float currentX = 0.0f;
-    [SerializeField] private float currentY = 0.0f;
+    private float currentDistance;
+    private float mouseX = 0.0f;
+    private float mouseY = 0.0f;
+    private float currentX = 0.0f;
+    private float currentY = 0.0f;
 
     [SerializeField] private float smoothSpeed = 10f;
 
@@ -24,29 +33,55 @@ public class kameraTpp : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        currentDistance = targetDistance;
+
+        // Ustawienie kamery dok³adnie ZA STATKIEM na start
+        if (target != null)
+        {
+            Vector3 angles = target.eulerAngles;
+            mouseX = angles.y;
+            currentX = angles.y;
+
+            // Kamera patrzy lekko z góry (15 stopni)
+            mouseY = 15f;
+            currentY = 15f;
+        }
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
-        if (Mouse.current != null)
+        if (target == null) return;
+        if (GameManager.Instance.currentState != GameState.Mining)
         {
-            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+            if (Mouse.current != null)
+            {
+                // --- OBRÓT ---
+                Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+                mouseX += mouseDelta.x * sensitivity * 0.5f;
+                mouseY -= mouseDelta.y * sensitivity * 0.5f;
+                mouseY = Mathf.Clamp(mouseY, yMinLimit, yMaxLimit);
 
-            mouseX += mouseDelta.x * sensitivity * 0.5f;
-            mouseY -= mouseDelta.y * sensitivity * 0.5f;
-
-            // Ograniczenie góra/dó³ (¿eby nie zrobiæ fiko³ka kamer¹)
-            mouseY = Mathf.Clamp(mouseY, yMinLimit, yMaxLimit);
-
-            currentX = Mathf.Lerp(currentX, mouseX, smoothSpeed * Time.deltaTime);
-            currentY = Mathf.Lerp(currentY, mouseY, smoothSpeed * Time.deltaTime);
+                // --- ZOOM ---
+                float scrollInput = Mouse.current.scroll.ReadValue().y;
+                if (scrollInput != 0)
+                {
+                    float scrollDirection = Mathf.Sign(scrollInput);
+                    targetDistance -= scrollDirection * zoomSpeed;
+                    targetDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);
+                }
+            }
         }
+
+        currentX = Mathf.Lerp(currentX, mouseX, smoothSpeed * Time.deltaTime);
+        currentY = Mathf.Lerp(currentY, mouseY, smoothSpeed * Time.deltaTime);
+        currentDistance = Mathf.Lerp(currentDistance, targetDistance, zoomSmoothness * Time.deltaTime);
 
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
 
-        // Pozycja: Punkt celu - (kierunek * dystans)
-        Vector3 position = target.position - (rotation * Vector3.forward * distance);
+        // Œrodek statku + ewentualne podniesienie
+        Vector3 lookAtPoint = target.position + targetOffset;
+        Vector3 position = lookAtPoint - (rotation * Vector3.forward * currentDistance);
 
         transform.rotation = rotation;
         transform.position = position;
