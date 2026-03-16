@@ -190,13 +190,6 @@ public class MiningGame : MonoBehaviour
         
         Debug.Log(message);
         isMining = false;
-        
-        if (laserCollecting.isValid())
-        {
-            laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-            RuntimeManager.PlayOneShot(successSfx, transform.position);
-        }
 
         if (message == "WYDOBYTO!") {
 
@@ -211,7 +204,16 @@ public class MiningGame : MonoBehaviour
             GameManager.Instance.ShowMiningNotification(summary, Color.green);
 
             PlayerInventory inventory = FindFirstObjectByType<PlayerInventory>();
-            
+
+            if (laserCollecting.isValid())
+            {
+                laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+                Debug.Log("Zatrzymano dźwięk wydobywania i odtworzono dźwięk sukcesu ");
+
+                RuntimeManager.PlayOneShot(successSfx);
+            }
+
             if (inventory != null && MiningData.currentAsteroidLoot != null) 
             {
                 foreach (ResourceStack stack in MiningData.currentAsteroidLoot) 

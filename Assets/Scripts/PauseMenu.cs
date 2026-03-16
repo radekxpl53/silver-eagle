@@ -96,5 +96,9 @@ public class PauseMenu : MonoBehaviour
     {
         optionsPanel.SetActive(false);
         controlsPanel.SetActive(true);   
+    private void OnDestroy()
+    {
+        mainMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        mainMusic.release();
     }
 }

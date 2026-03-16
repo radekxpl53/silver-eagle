@@ -47,8 +47,7 @@ public class SettingsMenu : MonoBehaviour
         //Debug.Log("Suwak wysy�a: " + volume);
         if (volume <= 0.0001f) volume = 0.0001f;
 
-        float dB = Mathf.Log10(volume) * 20;
-        audioMixer.SetFloat("volume", dB);
+        AudioManager.instance.masterVolume = volume;
 
         PlayerPrefs.SetFloat("volume", volume);
     }
