@@ -21,7 +21,6 @@ public class fppLatanie : MonoBehaviour
     [Header("OSTRZEŻENIE O PALIWIE")]
     public float lowFuelThreshold = 40f;
     private bool lowFuelWarningTriggered = false;
-    public float maxDrainRate = 10f;
 
     [Header("ILOSC LADUNKU (Tylko Podgląd)")]
     public float currentLoadPercent = 0f;

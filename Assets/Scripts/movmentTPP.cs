@@ -25,8 +25,6 @@ public class latanieTpp : MonoBehaviour
     [Header("OSTRZEŻENIE O PALIWIE")]
     [SerializeField] private float lowFuelThreshold = 40f;
     private bool lowFuelWarningTriggered = false;
-    [SerializeField] private float emergencySpeedMultiplier = 0.3f;
-    [SerializeField] private float normalDrainRate = 5f;
 
     [Header("ILOSC LADUNKU (Tylko Podgląd)")]
     public float currentLoadPercent = 0f;
@@ -179,6 +177,7 @@ public class latanieTpp : MonoBehaviour
         {
             lowFuelWarningTriggered = false;
         }
+    }
 
     private void HandleZoom()
     {
