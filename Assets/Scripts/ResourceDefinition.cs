@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class ResourceDefinition
@@ -9,6 +10,7 @@ public class ResourceDefinition
     public float tolerance;
     public float[] weightsPerStage = new float[5];
     public int basePrice;
+    public Sprite Icon;
     public float weight;
 } 
 

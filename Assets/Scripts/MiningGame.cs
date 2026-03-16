@@ -1,9 +1,10 @@
+using FMOD.Studio;
+using FMODUnity;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem; // Wymagane dla nowego systemu
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using FMODUnity;
-using FMOD.Studio;
+using UnityEngine.UI;
 
 public class MiningGame : MonoBehaviour
 {
@@ -29,7 +30,8 @@ public class MiningGame : MonoBehaviour
     private float rockTargetPos;
     private float currentProgress = 0.2f;
     private bool isMining = false;
-    private Asteroid asteroid;
+    [Header("Asteroid Explosion")]
+    [SerializeField] private GameObject explosionPrefab;
 
     [Header("Overheat / Instability")]       
     public float smallErrorRate = 0.05f;     // 5% niestabilności
@@ -179,7 +181,7 @@ public class MiningGame : MonoBehaviour
         }
         else {
             Debug.LogWarning("Brak danych o asteroidzie! Wracam do głównej sceny.");
-            SceneManager.LoadScene("TwojaNazwaGlownejSceny");
+            SceneManager.LoadScene("GameManager");
         }
     }
 
@@ -187,27 +189,51 @@ public class MiningGame : MonoBehaviour
     {
         Debug.Log(message);
         isMining = false;
-        
-        if (laserCollecting.isValid())
-        {
-            laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-            RuntimeManager.PlayOneShot(successSfx, transform.position);
-        }
 
         if (message == "WYDOBYTO!") {
-            if (MiningData.currentAsteroidObject != null) {
-                // Wydupcamy ją z rejestru
-                if (MiningData.currentAsteroidLoot != null) {
-                    MiningData.currentAsteroidLoot.Clear();
-                }
+            PlayerInventory inventory = FindFirstObjectByType<PlayerInventory>();
 
+            if (laserCollecting.isValid())
+            {
+                laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+                Debug.Log("Zatrzymano dźwięk wydobywania i odtworzono dźwięk sukcesu ");
+
+                RuntimeManager.PlayOneShot(successSfx);
+            }
+
+            if (inventory != null && MiningData.currentAsteroidLoot != null) 
+            {
+                foreach (ResourceStack stack in MiningData.currentAsteroidLoot) 
+                {
+                    // Obliczamy ile faktycznie udało się odzyskać (zaokrąglamy w górę)
+                    int finalAmount = Mathf.CeilToInt(stack.amount * yieldMultiplier);
+                    
+                    if (finalAmount > 0)
+                    {
+                        inventory.AddResource(stack.definition, finalAmount);
+                        Debug.Log($"Dodano do ekwipunku: {stack.definition.Name} x{finalAmount} (Efektywność: {yieldMultiplier*100}%)");
+                    }
+                    
+                }
+                MiningData.currentAsteroidLoot.Clear();
                 if (MiningData.currentManager != null) {
                     Debug.Log("DEBUG: Informuję przekaźnik o wydobyciu");
                     MiningData.currentManager.OnObjectInteracted(MiningData.currentArea, MiningData.currentBelt);
                 }
 
-                // Niszczymy obiekt w świecie gry
+                if (MiningData.currentAsteroidObject != null && explosionPrefab != null)
+                {
+                    GameObject explosion = Instantiate(
+                        explosionPrefab,
+                        MiningData.currentAsteroidObject.transform.position,
+                        MiningData.currentAsteroidObject.transform.rotation
+                    );
+
+                    Scene asteroidScene = MiningData.currentAsteroidObject.gameObject.scene;
+                    SceneManager.MoveGameObjectToScene(explosion, asteroidScene);
+                }
+
                 Destroy(MiningData.currentAsteroidObject.gameObject);
                 Debug.Log("Obiekt asteroidy usunięty z głównej sceny");
             }

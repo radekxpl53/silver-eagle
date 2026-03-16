@@ -24,7 +24,7 @@ public class PauseMenu : MonoBehaviour
     // AUTOMATYCZNIE wywoływane przez PlayerInput
     public void OnPause()
     {
-        Debug.Log("ESCAPE DZIAŁA");
+        //Debug.Log("ESCAPE DZIAŁA");
         if (isPaused)
         {
             ResumeGame();
@@ -62,7 +62,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        Debug.Log("Quitting game...");
+        //Debug.Log("Quitting game...");
             #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;
             #else
@@ -86,5 +86,10 @@ public class PauseMenu : MonoBehaviour
     {
         optionsPanel.SetActive(false);
         pauseMenuPanel.SetActive(true);
+    }
+    private void OnDestroy()
+    {
+        mainMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        mainMusic.release();
     }
 }
