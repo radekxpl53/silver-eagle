@@ -1,4 +1,6 @@
 using UnityEngine;
+using FMOD.Studio;
+using FMODUnity;
 
 public class DamageCollision : MonoBehaviour
 {
@@ -8,8 +10,10 @@ public class DamageCollision : MonoBehaviour
 
     [Header("--- EFEKTY ---")]
     public ParticleSystem impactParticles;
+    [SerializeField] private EventReference hitSfx;
 
     private ShipStats shipStats;
+
 
     private void Start()
     {
@@ -23,6 +27,8 @@ public class DamageCollision : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        RuntimeManager.PlayOneShot(hitSfx, collision.collider.transform.position);
+
         float impactForce = collision.impulse.magnitude;
         if (impactForce < damageThreshold) return;
 

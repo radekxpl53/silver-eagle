@@ -13,6 +13,8 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference shipMove { get; private set; }
     [field: SerializeField] public EventReference hitSound { get; private set; }
 
+    [field: SerializeField] public EventReference alarm { get; private set; }
+
     private void Awake()
     {
         if (instance != null)
