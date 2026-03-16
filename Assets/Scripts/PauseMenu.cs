@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using FMODUnity;
 using FMOD.Studio;
+using System.Runtime.Serialization;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] GameObject pauseMenuPanel;
     [SerializeField] GameObject optionsPanel;
-    
+    [SerializeField] GameObject controlsPanel; 
     // audio
     private EventInstance mainMusic;
     
@@ -19,6 +20,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         pauseMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
+        controlsPanel.SetActive(false);
     }
 
     // AUTOMATYCZNIE wywoływane przez PlayerInput
@@ -80,11 +82,19 @@ public class PauseMenu : MonoBehaviour
     public void OptionsMenu()
     {
         pauseMenuPanel.SetActive(false);
+        controlsPanel.SetActive(false);
         optionsPanel.SetActive(true);
     }
     public void ShowMenu()
     {
         optionsPanel.SetActive(false);
+        controlsPanel.SetActive(false);
         pauseMenuPanel.SetActive(true);
+    }
+
+    public void ShowControls()
+    {
+        optionsPanel.SetActive(false);
+        controlsPanel.SetActive(true);   
     }
 }
