@@ -16,6 +16,11 @@ public class fppLatanie : MonoBehaviour
 
     [Header("PALIWO")]
     public float emergencySpeedMultiplier = 0.3f;
+    public float maxDrainRate = 1f; // Maksymalne spalanie przy 100% przepustnicy
+
+    [Header("OSTRZEŻENIE O PALIWIE")]
+    public float lowFuelThreshold = 40f;
+    private bool lowFuelWarningTriggered = false;
     public float maxDrainRate = 10f;
 
     [Header("ILOSC LADUNKU (Tylko Podgląd)")]
@@ -118,6 +123,20 @@ public class fppLatanie : MonoBehaviour
         {
             float throttlePercent = currentThrottle / 100f;
             shipStats.UseEnergy(maxDrainRate * throttlePercent * Time.fixedDeltaTime);
+        }
+
+        CheckFuelWarning();
+    }
+    private void CheckFuelWarning()
+    {
+        if (shipStats.CurrentEnergy <= lowFuelThreshold && !lowFuelWarningTriggered && shipStats.CurrentEnergy > 0)
+        {
+            lowFuelWarningTriggered = true;
+            Debug.LogWarning("<color=red><b>[FPP] UWAGA: Niski poziom paliwa!</b></color>");
+        }
+        else if (shipStats.CurrentEnergy > lowFuelThreshold && lowFuelWarningTriggered)
+        {
+            lowFuelWarningTriggered = false;
         }
     }
 }
