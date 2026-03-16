@@ -16,11 +16,11 @@ public class SettingsMenu : MonoBehaviour
         resolutions = Screen.resolutions;
 
         if (resolutions.Length == 0) {
-            Debug.LogError("Unity nie znalazï¿½o ï¿½adnych rozdzielczoï¿½ci!");
+            //Debug.LogError("Unity nie znalaz�o �adnych rozdzielczo�ci!");
             return;
         }
 
-        Debug.Log("Znaleziono rozdzielczoï¿½ci: " + resolutions.Length);
+        //Debug.Log("Znaleziono rozdzielczo�ci: " + resolutions.Length);
 
         resolutionDropdown.ClearOptions();
         
@@ -44,7 +44,7 @@ public class SettingsMenu : MonoBehaviour
     
     public void SetVolume(float volume)
     {
-        //Debug.Log("Suwak wysy³a: " + volume);
+        //Debug.Log("Suwak wysy�a: " + volume);
         if (volume <= 0.0001f) volume = 0.0001f;
 
         AudioManager.instance.masterVolume = volume;
@@ -59,7 +59,17 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetFullscreen(bool isFullscreen)
     {
-        Screen.fullScreen = isFullscreen;
+        if (isFullscreen)
+        {
+            Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+        } else
+        {
+            Screen.fullScreenMode = FullScreenMode.Windowed;
+            Resolution currentRes = resolutions[resolutionDropdown.value];
+            Screen.SetResolution(currentRes.width, currentRes.height, false);
+        }
+        PlayerPrefs.SetInt("fullscreen", isFullscreen ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void SetResolution(int resolutionIndex)

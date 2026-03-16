@@ -187,10 +187,22 @@ public class MiningGame : MonoBehaviour
 
     void EndGame(string message)
     {
+        
         Debug.Log(message);
         isMining = false;
 
         if (message == "WYDOBYTO!") {
+
+            
+            string summary = "WYDOBYTO:";
+            if (MiningData.currentAsteroidLoot != null) {
+                foreach (ResourceStack stack in MiningData.currentAsteroidLoot) {
+                    int finalAmount = Mathf.CeilToInt(stack.amount * yieldMultiplier);
+                    if (finalAmount > 0) summary += $"\n+ {finalAmount} {stack.definition.Name}";
+                }
+            }
+            GameManager.Instance.ShowMiningNotification(summary, Color.green);
+
             PlayerInventory inventory = FindFirstObjectByType<PlayerInventory>();
 
             if (laserCollecting.isValid())
@@ -237,6 +249,9 @@ public class MiningGame : MonoBehaviour
                 Destroy(MiningData.currentAsteroidObject.gameObject);
                 Debug.Log("Obiekt asteroidy usunięty z głównej sceny");
             }
+        } else
+        {
+            GameManager.Instance.ShowMiningNotification(message, Color.red);
         }
 
         // Wywalamy dane z przekaźnika
