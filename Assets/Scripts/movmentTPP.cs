@@ -29,12 +29,20 @@ public class latanieTpp : MonoBehaviour
     [SerializeField] private float liftThrust = 30000f;
     [SerializeField] private Transform cameraTransform;
 
+    [Header("KAMERA (ZOOM)")]
+    [SerializeField] private float minZoomDistance = 10f;   // Maksymalne przybliżenie
+    [SerializeField] private float maxZoomDistance = 50f;   // Maksymalne oddalenie
+    [SerializeField] private float zoomSpeed = 5f;          // Jak szybko reaguje scroll
+    [SerializeField] private float zoomSmoothness = 10f;    // Płynność ruchu (interpolacja)
+
     private Rigidbody rb;
     private ShipStats shipStats;
     private float previousLoadPercent = -1f;
 
     private float currentVisualRoll = 0f;
     private float targetVisualRoll = 0f;
+    // Zmienna przechowująca docelowy dystans kamery
+    private float targetZoomDistance;
 
     void Start()
     {
@@ -46,6 +54,12 @@ public class latanieTpp : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
         UpdatePhysics();
+
+        // Ustawienie początkowego zooma na podstawie aktualnej pozycji kamery w edytorze
+        if (cameraTransform != null)
+        {
+            targetZoomDistance = Mathf.Abs(cameraTransform.localPosition.z);
+        }
     }
 
     void Update()
@@ -63,7 +77,15 @@ public class latanieTpp : MonoBehaviour
         }
 
         handleMovement();
+        HandleZoom();
     }
+
+    // Używamy LateUpdate dla kamery, aby uniknąć "drżenia" (jittering)
+    // Kamera aktualizuje się po tym, jak Rigidbody statku zmieni pozycję.
+    //void LateUpdate()
+    //{
+    //    HandleZoom();
+    //}
 
     private void UpdatePhysics()
     {
@@ -138,5 +160,27 @@ public class latanieTpp : MonoBehaviour
         {
             shipStats.UseEnergy(normalDrainRate * Time.fixedDeltaTime);
         }
+    }
+
+    private void HandleZoom()
+    {
+        if (cameraTransform == null || Mouse.current == null) return;
+
+        float scrollInput = Mouse.current.scroll.ReadValue().y;
+
+        if (scrollInput != 0)
+        {
+            targetZoomDistance -= Mathf.Sign(scrollInput) * zoomSpeed;
+            targetZoomDistance = Mathf.Clamp(targetZoomDistance, minZoomDistance, maxZoomDistance);
+        }
+
+        // Zmieniamy TYLKO oś Z kamery używając Time.fixedDeltaTime
+        float newZ = Mathf.Lerp(cameraTransform.localPosition.z, -targetZoomDistance, Time.fixedDeltaTime * zoomSmoothness);
+
+        cameraTransform.localPosition = new Vector3(
+            cameraTransform.localPosition.x,
+            cameraTransform.localPosition.y,
+            newZ
+        );
     }
 }
