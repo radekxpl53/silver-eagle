@@ -22,8 +22,8 @@ public class InventoryToggle : MonoBehaviour
     {
         if (Keyboard.current == null) return;
 
-        
-        if (Keyboard.current.iKey.wasPressedThisFrame)
+        // tymczasowe rozwiazanie ekwpiunek mozna otworzyc wtedy gdy czas w grze plynie
+        if (Keyboard.current.iKey.wasPressedThisFrame && Time.timeScale != 0) 
         {
             ToggleInventory();
         }

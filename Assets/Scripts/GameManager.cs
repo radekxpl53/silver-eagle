@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using TMPro;
 public enum GameState
 {
     Exploration,
@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameState currentState = GameState.Exploration;
+
+    [Header("UI Notifications")]
+    public TextMeshProUGUI notificationText;
 
     private void Awake()
     {
@@ -33,6 +36,25 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         
+    }
+
+    public void ShowMiningNotification(string message, Color color)
+    {
+        if (notificationText != null)
+        {
+            notificationText.text = message;
+            notificationText.color = color;
+            notificationText.gameObject.SetActive(true);
+
+            // Wyłączamy napis po 3 sekundach
+            CancelInvoke("HideNotification"); 
+            Invoke("HideNotification", 6f);
+        }
+    }
+    private void HideNotification()
+    {
+        if (notificationText != null)
+            notificationText.gameObject.SetActive(false);
     }
 
     public void ChangeState(GameState newState)
