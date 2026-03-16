@@ -16,15 +16,14 @@ public class fppLatanie : MonoBehaviour
 
     [Header("PALIWO")]
     public float emergencySpeedMultiplier = 0.3f;
-    public float maxDrainRate = 10f; // Maksymalne spalanie przy 100% przepustnicy
+    public float maxDrainRate = 10f;
 
-    [Header("ILOSC LADUNKU")]
-    [Range(0f, 1f)]
+    [Header("ILOSC LADUNKU (Tylko Podgląd)")]
     public float currentLoadPercent = 0f;
 
     [Header("STEROWANIE")]
-    public float throttleSensitivity = 0.05f;
     public float mouseSensitivity = 0.5f;
+    public float throttleSpeed = 5f;
 
     [Header("PODGLAD MOCY SILNIKOW")]
     [Range(0f, 100f)]
@@ -42,7 +41,6 @@ public class fppLatanie : MonoBehaviour
         shipStats = GetComponent<ShipStats>();
 
         rb.useGravity = false;
-        rb.linearDamping = 0.5f;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -52,10 +50,19 @@ public class fppLatanie : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current != null)
+        float maxCargo = shipStats.GetMaxCargo();
+        currentLoadPercent = maxCargo > 0 ? shipStats.CurrentCargo / maxCargo : 0f;
+
+        if (Keyboard.current != null)
         {
-            float scroll = Mouse.current.scroll.y.ReadValue() * throttleSensitivity;
-            currentThrottle = Mathf.Clamp(currentThrottle + scroll, 0f, 100f);
+            if (Keyboard.current.wKey.isPressed)
+            {
+                currentThrottle = Mathf.Lerp(currentThrottle, 100f, Time.deltaTime * throttleSpeed);
+            }
+            else
+            {
+                currentThrottle = Mathf.Lerp(currentThrottle, 0f, Time.deltaTime * throttleSpeed);
+            }
         }
 
         if (Mathf.Abs(currentLoadPercent - previousLoadPercent) > 0.001f)
@@ -67,8 +74,10 @@ public class fppLatanie : MonoBehaviour
 
     private void UpdatePhysics()
     {
-        rb.mass = baseMass + cargoCapacity * currentLoadPercent;
+        rb.mass = baseMass + (cargoCapacity * currentLoadPercent);
         rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
+
+        rb.linearDamping = Mathf.Lerp(0.5f, 0.05f, currentLoadPercent);
     }
 
     void FixedUpdate()
@@ -105,8 +114,7 @@ public class fppLatanie : MonoBehaviour
 
         rb.AddRelativeTorque(new Vector3(pitchForce, yawForce, rollTorque));
 
-        // ZUŻYCIE PALIWA PROPORCJONALNIE DO MOCY SILNIKA
-        if (currentThrottle > 0f && hasFuel)
+        if (currentThrottle > 0.1f && hasFuel)
         {
             float throttlePercent = currentThrottle / 100f;
             shipStats.UseEnergy(maxDrainRate * throttlePercent * Time.fixedDeltaTime);
