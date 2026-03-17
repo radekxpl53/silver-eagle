@@ -65,7 +65,6 @@ public class AreaSpawnerManager : MonoBehaviour
                 Asteroid asteroidVisual = obj.GetComponent<Asteroid>();
                 if (asteroidVisual != null) {
                     asteroidVisual.materials = astData.loot;
-                    asteroidVisual.showInfoAsteroid(); 
                 }
             }
             areas.Add(areaObj);
