@@ -159,7 +159,6 @@ public class DeveloperConsole : MonoBehaviour
         if (!commands.ContainsKey(commandName))
         {
             commands.Add(commandName, functionToRun);
-            Debug.Log("Zarejestrowano Komendê: " + commandName);
         } else
         {
             Debug.LogWarning("Komenda " + commandName + " ju¿ istnieje!");

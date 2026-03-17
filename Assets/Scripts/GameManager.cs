@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 
             // Wyłączamy napis po 3 sekundach
             CancelInvoke("HideNotification"); 
-            Invoke("HideNotification", 6f);
+            Invoke("HideNotification", 8f);
         }
     }
     private void HideNotification()
