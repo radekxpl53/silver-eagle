@@ -21,6 +21,8 @@ public class SectorData {
     public bool hasAsteroidGroup;
     public bool wasSpawned = false;
     public List<BeltSavedData> belts = new List<BeltSavedData>();
+    public bool haveShop;
+    public Vector3 shopLocalPos;
 }
 
 public class ChunkManager : MonoBehaviour
@@ -65,6 +67,20 @@ public class ChunkManager : MonoBehaviour
                 newData.sectorStage = Mathf.Clamp(stage == 0 ? 0 : stage - 1, 0, 4);
                 newData.hasAsteroidGroup = false;
                 newData.belts = new List<BeltSavedData>();
+                if ((x == 0 && y == 0) || (x == 3 && y == 3) || (x == 5 && y == 5))
+                {
+                    newData.haveShop = true;
+                    float limit = (sectorSize / 2f);
+                    newData.shopLocalPos = new Vector3(
+                        Random.Range(-limit, limit),
+                        Random.Range(-limit, limit),
+                        Random.Range(-limit, limit)
+                    );
+                }
+                else
+                {
+                    newData.haveShop = false;
+                }
 
                 allSectorData.Add(pos, newData);
             }
