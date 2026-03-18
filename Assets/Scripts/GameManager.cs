@@ -18,11 +18,6 @@ public class GameManager : MonoBehaviour
     [Header("UI Notifications")]
     public TextMeshProUGUI notificationText;
 
-    [Header("Death System")]
-    [SerializeField] private GameObject deathScreenCanvas;
-    [SerializeField] private Transform baseSpawnPoint;
-    [SerializeField] private GameObject player;
-
     private void Awake()
     {
         if (Instance == null)
@@ -40,10 +35,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (deathScreenCanvas != null)
-        {
-            deathScreenCanvas.SetActive(false);
-        }
+        
     }
 
     public void ShowMiningNotification(string message, Color color)
@@ -70,33 +62,5 @@ public class GameManager : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         Debug.Log($"<color=yellow>GameState zmieniony na: <b>{newState}</b></color>");
-    }
-
-    public void TriggerGameOver()
-    {
-        ChangeState(GameState.GameOver);
-
-        if (deathScreenCanvas != null)
-            deathScreenCanvas.SetActive(true);
-
-        Time.timeScale = 0f;
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
-
-    public void RespawnAtBase()
-    {
-        Time.timeScale = 1f;
-
-        if (player != null && baseSpawnPoint != null)
-        {
-            player.transform.position = baseSpawnPoint.position;
-        }
-
-        if (deathScreenCanvas != null)
-            deathScreenCanvas.SetActive(false);
-
-        ChangeState(GameState.Exploration);
     }
 }

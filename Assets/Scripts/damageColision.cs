@@ -48,12 +48,5 @@ public class DamageCollision : MonoBehaviour
             impactParticles.transform.position = collision.contacts[0].point;
             impactParticles.Play();
         }
-
-        if (shipStats.IsDestroyed)
-        {
-            Debug.Log("<color=red>STATEK ZNISZCZONY!</color>");
-
-            GameManager.Instance.TriggerGameOver();
-        }
     }
 }
