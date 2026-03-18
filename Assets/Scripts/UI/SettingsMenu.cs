@@ -2,12 +2,16 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
     public AudioMixer audioMixer;
     
     public  TMP_Dropdown resolutionDropdown;
+    public Slider volumeSlider;
+    public TMP_Dropdown graphicsDropdown;
+    public Toggle fullscreenToggle;
     
     Resolution[] resolutions;
 
@@ -79,10 +83,27 @@ public class SettingsMenu : MonoBehaviour
         //Debug.Log("Zmieniono na: " + resolutionIndex);
     }
 
-    private void LoadSettings() {
-        if (PlayerPrefs.HasKey("volume")) {
+    private void LoadSettings()
+    {
+        if (PlayerPrefs.HasKey("volume"))
+        {
             float volume = PlayerPrefs.GetFloat("volume");
+            volumeSlider.value = volume;
             SetVolume(volume);
+        }
+
+        if (PlayerPrefs.HasKey("graphics"))
+        {
+            int quality = PlayerPrefs.GetInt("graphics");
+            graphicsDropdown.value = quality;
+            SetQuality(quality);
+        }
+
+        if (PlayerPrefs.HasKey("fullscreen"))
+        {
+            bool fullscreen = PlayerPrefs.GetInt("fullscreen") == 1;
+            fullscreenToggle.isOn = fullscreen;
+            SetFullscreen(fullscreen);
         }
     }
 }
