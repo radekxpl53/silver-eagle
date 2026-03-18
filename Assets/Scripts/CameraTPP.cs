@@ -6,7 +6,6 @@ public class kameraTpp : MonoBehaviour
     public Transform target;
 
     [Header("Przesuniêcie Celu")]
-    [Tooltip("Dodaj np. Y = 2, ¿eby kamera patrzy³a na œrodek statku, a nie w jego stopy")]
     public Vector3 targetOffset = new Vector3(0, 0f, 0);
 
     [Header("Ustawienia Orbity")]
@@ -14,7 +13,7 @@ public class kameraTpp : MonoBehaviour
     [SerializeField] private float yMinLimit = -20f;
     [SerializeField] private float yMaxLimit = 80f;
 
-    [Header("Ustawienia Zoomu (Scroll)")]
+    [Header("Ustawienia Zoomu")]
     [SerializeField] private float targetDistance = 15.0f;
     [SerializeField] private float minDistance = 5.0f;
     [SerializeField] private float maxDistance = 50.0f;
