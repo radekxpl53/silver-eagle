@@ -2,13 +2,16 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
     public AudioMixer audioMixer;
     
     public  TMP_Dropdown resolutionDropdown;
-    
+    public Slider volumeSlider;
+    public TMP_Dropdown graphicsDropdown;
+    public Toggle fullscreenToggle;
     Resolution[] resolutions;
 
     void Start()
@@ -37,7 +40,7 @@ public class SettingsMenu : MonoBehaviour
         }
 
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.SetValueWithoutNotify(currentResolutionIndex);
         resolutionDropdown.RefreshShownValue();
         LoadSettings();
     }
@@ -55,6 +58,9 @@ public class SettingsMenu : MonoBehaviour
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
+
+        PlayerPrefs.SetInt("graphics", qualityIndex);
+        PlayerPrefs.Save();
     }
 
     public void SetFullscreen(bool isFullscreen)
@@ -77,12 +83,45 @@ public class SettingsMenu : MonoBehaviour
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         //Debug.Log("Zmieniono na: " + resolutionIndex);
+
+        PlayerPrefs.SetInt("resolution", resolutionIndex);
+        PlayerPrefs.Save();
     }
 
     private void LoadSettings() {
-        if (PlayerPrefs.HasKey("volume")) {
+        if (PlayerPrefs.HasKey("volume"))
+        {
             float volume = PlayerPrefs.GetFloat("volume");
+            volumeSlider.value = volume;
             SetVolume(volume);
+        }
+
+        if (PlayerPrefs.HasKey("graphics"))
+        {
+            int quality = PlayerPrefs.GetInt("graphics");
+            graphicsDropdown.value = quality;
+            SetQuality(quality);
+        }
+
+        if (PlayerPrefs.HasKey("resolution"))
+        {
+            int resolutionIndex = PlayerPrefs.GetInt("resolution");
+
+            if (resolutionIndex >= 0 && resolutionIndex < resolutions.Length)
+            {
+                resolutionDropdown.SetValueWithoutNotify(resolutionIndex);
+                resolutionDropdown.RefreshShownValue();
+
+                Resolution resolution = resolutions[resolutionIndex];
+                Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+            }
+        }
+
+        if (PlayerPrefs.HasKey("fullscreen"))
+        {
+            bool fullscreen = PlayerPrefs.GetInt("fullscreen") == 1;
+            fullscreenToggle.isOn = fullscreen;
+            SetFullscreen(fullscreen);
         }
     }
 }
