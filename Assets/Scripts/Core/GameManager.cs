@@ -107,7 +107,8 @@ public class GameManager : MonoBehaviour
 
         if (deathScreenCanvas != null)
             deathScreenCanvas.SetActive(false);
-
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         ChangeState(GameState.Exploration);
     }
 }

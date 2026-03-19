@@ -8,9 +8,6 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public static bool isPaused;
 
-    private int pausePressCount = 0;
-    private float lastPressTime = 0f;
-    private float maxDelay = 0.5f; 
     private PlayerData playerData;
 
     [SerializeField] GameObject pauseMenuPanel;
@@ -31,17 +28,6 @@ public class PauseMenu : MonoBehaviour
     public void OnPause(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-
-        if (Time.unscaledTime - lastPressTime > maxDelay)
-            pausePressCount = 0;
-
-        pausePressCount++;
-        lastPressTime = Time.unscaledTime;
-
-        if (pausePressCount < 2)
-            return;
-
-        pausePressCount = 0;
 
         if (isPaused)
         {

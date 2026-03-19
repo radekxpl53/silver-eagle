@@ -10,8 +10,7 @@ public class BaseDropZone : MonoBehaviour
 
     private void Start()
     {
-        if (healInfoCanvas != null)
-            healInfoCanvas.SetActive(false);
+        healInfoCanvas.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
