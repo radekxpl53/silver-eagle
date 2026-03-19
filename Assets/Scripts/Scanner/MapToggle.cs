@@ -2,14 +2,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class MapToggle : MonoBehaviour {
-    public GameObject map;
+    [SerializeField] private GameObject map;
+    [SerializeField] private GameObject info;
+
 
     private bool isOpen = false;
 
     void Start() {
 
-        if (map != null) {
+        if (map != null && info != null) {
             map.SetActive(false);
+            info.SetActive(false);
             isOpen = false;
         }
     }
@@ -18,8 +21,8 @@ public class MapToggle : MonoBehaviour {
         if (Keyboard.current == null) return;
 
 
-        if (Keyboard.current.mKey.wasPressedThisFrame) {
-            Debug.Log("Naciœniêto M");
+        if (Keyboard.current.mKey.wasPressedThisFrame && GameManager.Instance.currentState == GameState.Exploration) {
+            //Debug.Log("Naciœniêto M");
             ToggleMap();
         }
     }
@@ -27,11 +30,17 @@ public class MapToggle : MonoBehaviour {
     public void ToggleMap() {
         isOpen = !isOpen;
         map.SetActive(isOpen);
+        info.SetActive(isOpen);
 
         if (isOpen) {
 
             MapDisplay mapDisplay = Object.FindFirstObjectByType<MapDisplay>();
-            if (mapDisplay != null) mapDisplay.GenerateMapUI();
+            MapSectorButton infoDisplay = Object.FindFirstObjectByType<MapSectorButton>();
+            if (mapDisplay != null)
+            {
+                mapDisplay.GenerateMapUI();
+            }
+
 
 
             Cursor.lockState = CursorLockMode.None;

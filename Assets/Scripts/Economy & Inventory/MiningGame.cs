@@ -12,34 +12,36 @@ public class MiningGame : MonoBehaviour
     public GameObject miningCanvas;
 
     [Header("UI References")]
-    public RectTransform greenZone;
-    public RectTransform rock;
-    public RectTransform background;
+    public Slider temperatureSlider;
     public Slider progressSlider;
+    public Image sliderFillImage;
+    public RectTransform sweetSpotIndicator;
 
-    [Header("Settings")]
-    public float damping = 5f; // Im wyższa wartość, tym szybciej pasek się zatrzymuje (brak "ślizgania")
-    public float moveForce = 20f;
-    public float resistance = 12f;
-    public float rockSpeed = 3f;
-    public float progressGain = 0.2f; 
-    public float progressLoss = 0.15f; 
-    
-    private float greenZoneVelocity;
-    private float miningTimer;
-    private float rockTargetPos;
-    private float currentProgress = 0.2f;
+    [Header("Drill Settings")]
+    public float maxDrillTemperature = 2500f;
+    public float heatgainSpeed = 450f;
+    public float coolDownSpeed = 250f;
+    public float progressSpeed = 0.2f;
+    public float overheatPenaltyTime = 2f;
+
+    [Header("Asteroid Physics")]
+    private float targetTemp;   // Pobierane z CalculateTemperature()
+    private float tolerance;    // Pobierane z ToleranceTemperature()
+    private float minOptimal;   // Dolna granica sweet spotu
+    private float maxOptimal;   // Górna granica sweet spotu
+
+    [Header("Values")]
+    private float currentTemperature = 0f;
+    private float currentProgress = 0f;
+    private bool isOverheated = false;
+    private float overheatTimer = 0f;
+    private float yieldMultiplier = 1f;
     private bool isMining = false;
+
+    private bool isDataInitialized = false;
+
     [Header("Asteroid Explosion")]
     [SerializeField] private GameObject explosionPrefab;
-
-    [Header("Overheat / Instability")]       
-    public float smallErrorRate = 0.05f;     // 5% niestabilności
-    public float criticalErrorRate = 0.1f;  // 10% niestabilności
-    public float instability;
-
-    [Header("Yield")]
-    public float yieldMultiplier = 1f;
 
     // Referencja do akcji (możesz ją przypisać w inspektorze lub użyć Keyboard.current)
     private bool isPressingAction => Keyboard.current.spaceKey.isPressed || Pointer.current.press.isPressed;
@@ -58,118 +60,185 @@ public class MiningGame : MonoBehaviour
     }
 
     void HandleMining()
-    {
+    {   
+        if (!isMining || !isDataInitialized) return;
+
+        if (isOverheated)
+        {
+            HandleOverheat();
+            yieldMultiplier -= 0.15f * Time.deltaTime; 
+        
+            if (yieldMultiplier < 0.3f)
+            {
+                EndGame("ZŁOŻE ZNISZCZONE - PRZEGRZANIE!");
+                return;
+            }
+            return;
+        }
+
         // 1. Logika Paska Gracza przy użyciu New Input System
         if (isPressingAction)
-            greenZoneVelocity += moveForce * Time.deltaTime;
-        else
-            greenZoneVelocity -= resistance * Time.deltaTime;
-
-        greenZoneVelocity -= greenZoneVelocity * damping * Time.deltaTime;
-        greenZone.anchoredPosition += new Vector2(greenZoneVelocity, 0);
-
-        // 2. Logika Kamienia (AI) - bez zmian
-        miningTimer -= Time.deltaTime;
-        if (miningTimer < 0)
         {
-            miningTimer = Random.Range(0.5f, 2f);
-            float range = (background.rect.width / 2) - (rock.rect.width / 2);
-            rockTargetPos = Random.Range(-range, range);
-        }
-        
-        float newRockX = Mathf.Lerp(rock.anchoredPosition.x, rockTargetPos, Time.deltaTime * rockSpeed);
-        rock.anchoredPosition = new Vector2(newRockX, 0);
+            currentTemperature += heatgainSpeed * Time.deltaTime;
 
-        ClampHorizontal(greenZone);
-        ClampHorizontal(rock);
-        CheckWinCondition();
-    }
-
-    public void StartMinigame() {
-        PLAYBACK_STATE state;
-        laserCollecting.getPlaybackState(out state);
-        if (state != PLAYBACK_STATE.PLAYING)
-        {
-            laserCollecting.start();
-        }
-        
-        isMining = true;
-        miningCanvas.SetActive(true);
-        
-        currentProgress = 0.2f;
-        instability = 0f;
-        yieldMultiplier = 1f;
-    }
-
-
-    void ClampHorizontal(RectTransform rect)
-    {
-        float limit = (background.rect.width / 2) - (rect.rect.width / 2);
-        if (Mathf.Abs(rect.anchoredPosition.x) > limit)
-        {
-            float side = Mathf.Sign(rect.anchoredPosition.x);
-            rect.anchoredPosition = new Vector2(limit * side, 0);
-            if (rect == greenZone) greenZoneVelocity = 0;
-        }
-    }
-
-    void CheckWinCondition()
-    {
-        float rockX = rock.anchoredPosition.x;
-        float greenX = greenZone.anchoredPosition.x;
-        float halfGreen = greenZone.rect.width / 2;
-
-        if (rockX < greenX + halfGreen && rockX > greenX - halfGreen)
-            currentProgress += progressGain * yieldMultiplier * Time.deltaTime;
-        else{
-            currentProgress -= progressLoss * Time.deltaTime;
-
-            float distance = Mathf.Abs(rockX - greenX);
-
-            if (distance < halfGreen * 2f)
-                instability += smallErrorRate * Time.deltaTime;
-            else
-                instability += criticalErrorRate * Time.deltaTime;
-        }
-
-        if (instability >= 0.1f && instability < 0.9f)
-        {
-            yieldMultiplier = 1f - instability; // ilość surowców zmniejsza się proporcjonalnie z niestabilnością
-        }
-        else if (instability >= 0.9f)
-        {
-            yieldMultiplier = 0f; // jeżeli przekraczamy 90% niestabilności nie zyskujemy nic (Thermal Shock)
+            PLAYBACK_STATE state;
+            laserCollecting.getPlaybackState(out state);
+            if (state != PLAYBACK_STATE.PLAYING) laserCollecting.start();
         }
         else
         {
-            yieldMultiplier = 1f; // wydobyto 
+           currentTemperature -= coolDownSpeed * Time.deltaTime;
+           laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+
+        currentTemperature = Mathf.Clamp(currentTemperature, 0, maxDrillTemperature);
+
+        // normalizacja temperatury 
+        float tempNormalized = currentTemperature / maxDrillTemperature;
+        temperatureSlider.value = tempNormalized;
+
+
+        if (currentTemperature >= minOptimal && currentTemperature <= maxOptimal)
+        {
+
+            currentProgress += progressSpeed * Time.deltaTime;
+            
+            if (sliderFillImage != null)
+                sliderFillImage.color = Color.cyan; // Kolor sygnalizujący wiercenie
+        }
+        else if (currentTemperature > maxOptimal)
+        {
+            //jesli powyzej optymalnej temperatury ilosc surowców spada
+            if (sliderFillImage != null) sliderFillImage.color = Color.red;
+            
+            // Im bardziej przekraczamy maxOptimal, tym szybciej niszczymy złoże
+            float damageScale = (currentTemperature - maxOptimal) / (maxDrillTemperature - maxOptimal);
+            yieldMultiplier -= 0.05f * damageScale * Time.deltaTime;
+
+            // Warunek przegranej
+            if (yieldMultiplier < 0.3f)
+            {
+                EndGame("ZŁOŻE ZNISZCZONE - ZBYT WYSOKA TEMPERATURA!");
+                return;
+            }
+        }
+        else
+        {
+            if (sliderFillImage != null) sliderFillImage.color = Color.white;
         }
 
         currentProgress = Mathf.Clamp01(currentProgress);
         progressSlider.value = currentProgress;
 
-        if (instability >= 0.9f)
+        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.0f, 1f);
+        
+        // Przegrzanie wiertła
+        if (currentTemperature >= maxDrillTemperature)
+            TriggerOverheat();
+
+        if (currentProgress >= 1f)
+            EndGame("WYDOBYTO!");
+    }
+
+    void TriggerOverheat()
+    {
+        isOverheated = true;
+        overheatTimer = overheatPenaltyTime;
+        laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        Debug.Log("PRZEGRZANIE! Czekaj na schłodzenie...");
+    }
+
+    void HandleOverheat()
+    {
+        overheatTimer -= Time.deltaTime;
+
+        currentTemperature -= (maxDrillTemperature / overheatPenaltyTime) * Time.deltaTime;
+        currentTemperature = Mathf.Max(currentTemperature, 0);
+        temperatureSlider.value = currentTemperature / maxDrillTemperature;
+
+        if(overheatTimer <= 0)
         {
-            ThermalShock();
+            isOverheated = false;
+        }
+    }
+    public void StartMinigame() {
+    
+        if (MiningData.currentAsteroidObject != null)
+        {
+            Asteroid asteroid = MiningData.currentAsteroidObject;
+            
+            targetTemp = asteroid.CalculateTemperature();
+            tolerance = asteroid.ToleranceTemperature();
+
+            minOptimal = targetTemp - tolerance;
+            maxOptimal = targetTemp + tolerance;
+            
+            if (sweetSpotIndicator != null)
+            {
+                float startAnchor = minOptimal / maxDrillTemperature;
+                float endAnchor = maxOptimal / maxDrillTemperature;
+                sweetSpotIndicator.anchorMin = new Vector2(startAnchor, 0);
+                sweetSpotIndicator.anchorMax = new Vector2(endAnchor, 1);
+                sweetSpotIndicator.offsetMin = Vector2.zero;
+                sweetSpotIndicator.offsetMax = Vector2.zero;
+            }
+
+            isDataInitialized = true;
+        } else
+        {
+            Debug.LogError("BŁĄD: Próba startu bez obiektu asteroidy!");
+            EndGame("BŁĄD DANYCH");
             return;
         }
 
-        instability = Mathf.Clamp01(instability);
+        isMining = true;
+        miningCanvas.SetActive(true);
+        currentProgress = 0f;
+        currentTemperature = 0f;
+        yieldMultiplier = 1f;
 
-        if (currentProgress >= 1f){
+        if (laserCollecting.isValid()) laserCollecting.start();
+    }
+
+
+
+    void CheckWinCondition()
+    {
+        // Aktualizacja Sliderów w UI
+        progressSlider.value = currentProgress;
+        temperatureSlider.value = currentTemperature;
+
+       
+        if (isOverheated) {
+            yieldMultiplier -= 0.05f * Time.deltaTime; // Powolny spadek jakości przy awarii
+        }
+
+        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.1f, 1f);
+
+        // Warunek Wygranej
+        if (currentProgress >= 1f) {
             EndGame("WYDOBYTO!");
         }
-        if (currentProgress <= 0f){
-            yieldMultiplier = 0;
-            EndGame("PRZEGRANA!");
+
+        // Opcjonalnie: Warunek przegranej (np. jeśli yield spadnie do zera lub czas minie)
+        if (yieldMultiplier <= 0.1f) {
+            EndGame("ZŁOŻE ZNISZCZONE!");
         }
     }
 
     void ThermalShock()
     {
-        Debug.Log("THERMAL SHOCK!");
-        EndGame("ASTEROIDA ROZWALONA");
-        // tutaj można dodać logikę obrażenie od odłamków
+        Debug.Log("Wiertło zablokowane - System chłodzenia aktywny!");
+        
+        if (sliderFillImage != null) {
+            sliderFillImage.color = Color.white; 
+        }
+
+        // Wstrzymujemy dźwięk wiercenia
+        laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        
+        currentProgress -= 0.05f; 
+        currentProgress = Mathf.Clamp01(currentProgress);
     }
 
     void Start() {
