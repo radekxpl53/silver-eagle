@@ -63,12 +63,33 @@ public class MiningGame : MonoBehaviour
         {
             currentTemperature += heatgainSpeed * Time.deltaTime;
             // Im cieplej, tym szybciej wiercisz (bonus za ryzyko)
-            float heatBonus = Mathf.Lerp(0.6f, 1.4f, currentTemperature); 
-            currentProgress += progressSpeed * heatBonus * Time.deltaTime;
+            
         }
         else
         {
            currentTemperature -= coolDownSpeed * Time.deltaTime;
+        }
+
+        if (currentTemperature >= 0.7f && currentTemperature <= 0.9f)
+        {
+            // Obliczamy bonus: najwyższy w samym środku zakresu (0.8)
+            // Dzięki temu gracz stara się celować w środek, a nie tylko w krawędź
+            float distanceToCenter = Mathf.Abs(currentTemperature - 0.8f); // max 0.1
+            float precisionBonus = 1f - (distanceToCenter * 5f); // 1.0 w środku, 0.5 na krawędziach
+
+            currentProgress += progressSpeed * precisionBonus * Time.deltaTime;
+            
+            if (sliderFillImage != null)
+                sliderFillImage.color = Color.cyan; // Kolor sygnalizujący wiercenie
+        }
+        else
+        {
+            // Poza zakresem - postęp nie rośnie
+            if (sliderFillImage != null)
+            {
+                if (currentTemperature > 0.9f) sliderFillImage.color = Color.red; // Ryzyko!
+                else sliderFillImage.color = Color.white; // Za zimno
+            }
         }
 
         currentTemperature = Mathf.Clamp01(currentTemperature);
