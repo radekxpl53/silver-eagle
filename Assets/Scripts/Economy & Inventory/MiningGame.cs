@@ -66,7 +66,13 @@ public class MiningGame : MonoBehaviour
         if (isOverheated)
         {
             HandleOverheat();
-            yieldMultiplier -= 0.1f * Time.deltaTime;
+            yieldMultiplier -= 0.15f * Time.deltaTime; 
+        
+            if (yieldMultiplier < 0.3f)
+            {
+                EndGame("ZŁOŻE ZNISZCZONE - PRZEGRZANIE!");
+                return;
+            }
             return;
         }
 
@@ -100,17 +106,31 @@ public class MiningGame : MonoBehaviour
             if (sliderFillImage != null)
                 sliderFillImage.color = Color.cyan; // Kolor sygnalizujący wiercenie
         }
+        else if (currentTemperature > maxOptimal)
+        {
+            //jesli powyzej optymalnej temperatury ilosc surowców spada
+            if (sliderFillImage != null) sliderFillImage.color = Color.red;
+            
+            // Im bardziej przekraczamy maxOptimal, tym szybciej niszczymy złoże
+            float damageScale = (currentTemperature - maxOptimal) / (maxDrillTemperature - maxOptimal);
+            yieldMultiplier -= 0.05f * damageScale * Time.deltaTime;
+
+            // Warunek przegranej
+            if (yieldMultiplier < 0.3f)
+            {
+                EndGame("ZŁOŻE ZNISZCZONE - ZBYT WYSOKA TEMPERATURA!");
+                return;
+            }
+        }
         else
         {
-            // Poza zakresem - postęp nie rośnie
-            if (sliderFillImage != null)
-                sliderFillImage.color = currentTemperature > maxOptimal ? Color.red : Color.white;
+            if (sliderFillImage != null) sliderFillImage.color = Color.white;
         }
 
         currentProgress = Mathf.Clamp01(currentProgress);
         progressSlider.value = currentProgress;
 
-        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.1f, 1f);
+        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.0f, 1f);
         
         // Przegrzanie wiertła
         if (currentTemperature >= maxDrillTemperature)
