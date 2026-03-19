@@ -5,7 +5,7 @@ using FMODUnity;
 public class DamageCollision : MonoBehaviour
 {
     [Header("--- KALIBRACJA ZDERZEŃ ---")]
-    public float damageThreshold = 20000f;
+    private float damageThreshold = 5000f;
     public float damageMultiplier = 0.005f;
 
     [Header("--- EFEKTY ---")]
@@ -37,8 +37,10 @@ public class DamageCollision : MonoBehaviour
 
         // <<< INTEGRACJA Z SHIPSTATS >>>
         if (shipStats != null)
+        {
             Debug.Log("Damage z DamageCollision.cs" + damage);
             shipStats.TakeDamage(damage);
+        }
 
         // Debug + efekty
         Debug.Log($"<color=red>KOLIZJA!</color> {collision.gameObject.name} | Siła: {impactForce:F0} | Obrażenia: {damage:F1}");

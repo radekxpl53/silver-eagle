@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 public class PlayerInteract : MonoBehaviour {
     public float range = 20f;
     public ShipStats shipStats;
+    public bool canSell;
     void Update() {
-        // LOG 1: Czy Unity w ogóle widzi, że klikasz E?
-        if (Keyboard.current.eKey.wasPressedThisFrame) {
+        if (Keyboard.current.gKey.wasPressedThisFrame) {
             Debug.Log("Naciśnięto klawisz E");
 
             Ray rayRight = new Ray(transform.position, transform.right);
@@ -64,6 +64,22 @@ public class PlayerInteract : MonoBehaviour {
         }
         else {
             Debug.Log("Trafiony obiekt nie ma tagu 'Asteroid'. Ma tag: " + hit.collider.tag);
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("SellZone"))
+        {
+            canSell = true;
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("SellZone"))
+        {
+            canSell = false;
         }
     }
 }

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI Notifications")]
     public TextMeshProUGUI notificationText;
+    public TextMeshProUGUI infoText;
 
     [Header("Death System")]
     [SerializeField] private GameObject deathScreenCanvas;
@@ -59,6 +60,16 @@ public class GameManager : MonoBehaviour
             Invoke("HideNotification", 8f);
         }
     }
+
+    public void ShowSectorInfo(string message, Color color)
+    {
+        if (infoText != null)
+        {
+            infoText.text = message;
+            infoText.color = color;
+        }
+    }
+
     private void HideNotification()
     {
         if (notificationText != null)
