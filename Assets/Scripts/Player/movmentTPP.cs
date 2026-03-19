@@ -9,7 +9,7 @@ public class latanieTpp : MonoBehaviour
     [SerializeField] private float cargoCapacity = 80000f;
     [SerializeField] private float maxMainThrust = 800000f;
     [SerializeField] private float brakeThrust = 400000f;
-    [SerializeField] private float maneuveringTorque = 250000f;
+    [SerializeField] private float maneuveringTorque = 25000f;
 
     [Header("WIZUALNY PRZECHYŁ (Tylko Wygląd)")]
     [Tooltip("Przeciągnij tu obiekt podrzędny (dziecko), który zawiera sam model 3D statku.")]

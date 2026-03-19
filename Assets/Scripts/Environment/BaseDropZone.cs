@@ -33,7 +33,7 @@ public class BaseDropZone : MonoBehaviour
                 // koszt leczenia
                 int cost = Mathf.CeilToInt(hpDiff * 0.5f);
 
-                // wydanie kaski na leczenie
+                // wydanie kaski na leczenie <- TU TRZEBA TO NAPRAWIĆ
                 EconomyManager.Instance.SpendCredits(cost);
 
                 costText.text = "Cost: " + cost;
