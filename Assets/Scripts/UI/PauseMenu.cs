@@ -1,15 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
 using FMOD.Studio;
-using UnityEngine.InputSystem;
+using System.Runtime.Serialization;
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public static bool isPaused;
-    private int pausePressCount = 0;
-    private float lastPressTime = 0f;
-    private float maxDelay = 0.5f; 
 
     [SerializeField] GameObject pauseMenuPanel;
     [SerializeField] GameObject optionsPanel;
@@ -26,30 +24,16 @@ public class PauseMenu : MonoBehaviour
     }
 
     // AUTOMATYCZNIE wywoływane przez PlayerInput
-    public void OnPause(InputAction.CallbackContext context)
+    public void OnPause()
     {
-        if (!context.performed) return;
-
-        if (Time.unscaledTime - lastPressTime > maxDelay)
-            pausePressCount = 0;
-
-        pausePressCount++;
-        lastPressTime = Time.unscaledTime;
-
-        if (pausePressCount < 2)
-            return;
-
-        pausePressCount = 0;
-
+        //Debug.Log("ESCAPE DZIAŁA");
         if (isPaused)
         {
             ResumeGame();
             ShowMenu();
         }
         else
-        {
             PauseGame();
-        }
     }
 
     public void PauseGame()
