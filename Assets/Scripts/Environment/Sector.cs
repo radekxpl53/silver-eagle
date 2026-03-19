@@ -3,17 +3,11 @@ using TMPro;
 
 public class Sector : MonoBehaviour {
     private SectorData data;
-    [SerializeField] private TextMeshPro textLabel;
 
     [SerializeField] private GameObject shopPrefab;
     public void Setup(SectorData newData, float size) {
         this.data = newData;
-        Debug.Log($"Sektor {data.gridPosition}");
-
-        // Wypisywanie sektora nad (do testów)
-        if (textLabel != null) {
-            textLabel.text = $"Sektor: {data.gridPosition}\nStage: {data.sectorStage}\n";
-        }
+        //Debug.Log($"Sektor {data.gridPosition}");
 
         AreaSpawnerManager spawner = GetComponent<AreaSpawnerManager>();
         if (spawner != null) {

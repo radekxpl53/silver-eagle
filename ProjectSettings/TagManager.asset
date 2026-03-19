@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Asteroid
   - Shop
+  - SellZone
   layers:
   - Default
   - TransparentFX
