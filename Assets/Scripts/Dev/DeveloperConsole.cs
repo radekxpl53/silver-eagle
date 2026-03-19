@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class DeveloperConsole : MonoBehaviour
 {
@@ -12,15 +14,17 @@ public class DeveloperConsole : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject consoleUI;
     [SerializeField] private TMP_InputField consoleInput;
-    [SerializeField] private TextMeshProUGUI logText;
+    [SerializeField] private GameObject logsSpace;
+    [SerializeField] private GameObject logTextPrefab;
+    [SerializeField] private ScrollRect scrollRect;
 
     [Header("Settings")]
     [SerializeField] private InputActionReference toggleConsoleKey;
-    [SerializeField] private int maxLogCount = 25;
+    [SerializeField] private int maxLogCount = 50;
 
 
     private Dictionary<string, Action<String[]>> commands = new Dictionary<string, Action<String[]>>();
-    private Queue<String> logQueue = new Queue<string>();
+    private Queue<GameObject> logObjectsQueue = new Queue<GameObject>();
 
     private void Awake() {
         Instance = this;
@@ -33,6 +37,19 @@ public class DeveloperConsole : MonoBehaviour
         {
             consoleInput.onSubmit.AddListener(HandleInputSubmit);
         }
+
+        AddCommand("help", ShowAllCommands);
+    }
+
+    private void ShowAllCommands(string[] args) {
+        string commandList = "\nDostêpne komendy: ";
+
+        foreach (string cmd in commands.Keys) {
+            commandList += cmd + "\n ";
+        }
+
+        string newLogMessage = $"<color=#00FFFF>{commandList}</color>\n";
+        SpawnLogText(newLogMessage);
     }
 
     private void HandleInputSubmit(string inputValue)
@@ -61,7 +78,6 @@ public class DeveloperConsole : MonoBehaviour
         toggleConsoleKey.action.performed -= ToggleConsole;
         toggleConsoleKey.action.Disable();
         Application.logMessageReceived -= HandleLogEvent;
-
     }
     private void ToggleConsole(InputAction.CallbackContext context)
     {
@@ -73,13 +89,17 @@ public class DeveloperConsole : MonoBehaviour
         bool willBeActive = !consoleUI.activeSelf;
         consoleUI.SetActive(willBeActive);
 
-        if (willBeActive)
-        {
+        if (willBeActive) {
             GameManager.Instance.ChangeState(GameState.Console);
             consoleInput.ActivateInputField();
-        } else
-        {
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        } else {
             GameManager.Instance.ChangeState(GameState.Exploration);
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -91,26 +111,47 @@ public class DeveloperConsole : MonoBehaviour
             color = "yellow";
         }
 
-        string newLog = $"<color={color}>[{type}] {logString}</color>\n";
-        logQueue.Enqueue(newLog);
+        string newLogMessage = $"<color={color}>[{type}] {logString}</color>\n";
 
-        if (logQueue.Count >= maxLogCount)
-        {
-            logQueue.Dequeue();
-        }
-
-        UpdateLogUI();
+        SpawnLogText(newLogMessage);
 
     }
 
-    private void UpdateLogUI()
-    {
-        if (logText == null)
-        {
+    private void SpawnLogText(string message) {
+        if (logsSpace == null || logTextPrefab == null) {
+            Debug.LogWarning("Brakuje referencji do logsSpace lub logTextPrefab w skrypcie DeveloperConsole!");
             return;
         }
 
-        logText.text = string.Join("", logQueue);
+        GameObject newLogObj = Instantiate(logTextPrefab);
+
+        newLogObj.transform.SetParent(logsSpace.transform, false);
+
+        newLogObj.SetActive(true);
+
+        if (newLogObj.TryGetComponent<TMP_Text>(out TMP_Text textComponent)) {
+            textComponent.text = message;
+        }
+
+
+        logObjectsQueue.Enqueue(newLogObj);
+
+        if (logObjectsQueue.Count >= maxLogCount) {
+            GameObject oldestLog = logObjectsQueue.Dequeue();
+            Destroy(oldestLog);
+        }
+
+        if (gameObject.activeInHierarchy) {
+            StartCoroutine(ScrollToBottom());
+        }
+    }
+
+    private IEnumerator ScrollToBottom() {
+        yield return new WaitForEndOfFrame();
+
+        if (scrollRect != null) {
+            scrollRect.verticalNormalizedPosition = 0f;
+        }
     }
 
     public void AddCommand(String commandName, Action<String[]> functionToRun)
@@ -118,7 +159,6 @@ public class DeveloperConsole : MonoBehaviour
         if (!commands.ContainsKey(commandName))
         {
             commands.Add(commandName, functionToRun);
-            Debug.Log("Zarejestrowano Komendê: " + commandName);
         } else
         {
             Debug.LogWarning("Komenda " + commandName + " ju¿ istnieje!");
