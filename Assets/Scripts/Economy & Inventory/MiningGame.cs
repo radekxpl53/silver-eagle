@@ -12,34 +12,27 @@ public class MiningGame : MonoBehaviour
     public GameObject miningCanvas;
 
     [Header("UI References")]
-    public RectTransform greenZone;
-    public RectTransform rock;
-    public RectTransform background;
+    public Slider temperatureSlider;
     public Slider progressSlider;
-
-    [Header("Settings")]
-    public float damping = 5f; // Im wyższa wartość, tym szybciej pasek się zatrzymuje (brak "ślizgania")
-    public float moveForce = 20f;
-    public float resistance = 12f;
-    public float rockSpeed = 3f;
-    public float progressGain = 0.2f; 
-    public float progressLoss = 0.15f; 
+    public Image sliderFillImage;
     
-    private float greenZoneVelocity;
-    private float miningTimer;
-    private float rockTargetPos;
-    private float currentProgress = 0.2f;
+
+    [Header("Drill Settings")]
+    public float heatgainSpeed = 0.5f;
+    public float coolDownSpeed = 0.3f;
+    public float progressSpeed = 0.2f;
+    public float overheatPenaltyTime = 2f;
+
+    [Header("Values")]
+    private float currentTemperature = 0f;
+    private float currentProgress = 0f;
+    private bool isOverheated = false;
+    private float overheatTimer = 0f;
+    private float yieldMultiplier = 1f;
     private bool isMining = false;
+
     [Header("Asteroid Explosion")]
     [SerializeField] private GameObject explosionPrefab;
-
-    [Header("Overheat / Instability")]       
-    public float smallErrorRate = 0.05f;     // 5% niestabilności
-    public float criticalErrorRate = 0.1f;  // 10% niestabilności
-    public float instability;
-
-    [Header("Yield")]
-    public float yieldMultiplier = 1f;
 
     // Referencja do akcji (możesz ją przypisać w inspektorze lub użyć Keyboard.current)
     private bool isPressingAction => Keyboard.current.spaceKey.isPressed || Pointer.current.press.isPressed;
@@ -58,118 +51,108 @@ public class MiningGame : MonoBehaviour
     }
 
     void HandleMining()
-    {
-        // 1. Logika Paska Gracza przy użyciu New Input System
-        if (isPressingAction)
-            greenZoneVelocity += moveForce * Time.deltaTime;
-        else
-            greenZoneVelocity -= resistance * Time.deltaTime;
-
-        greenZoneVelocity -= greenZoneVelocity * damping * Time.deltaTime;
-        greenZone.anchoredPosition += new Vector2(greenZoneVelocity, 0);
-
-        // 2. Logika Kamienia (AI) - bez zmian
-        miningTimer -= Time.deltaTime;
-        if (miningTimer < 0)
+    {   
+        if (isOverheated)
         {
-            miningTimer = Random.Range(0.5f, 2f);
-            float range = (background.rect.width / 2) - (rock.rect.width / 2);
-            rockTargetPos = Random.Range(-range, range);
-        }
-        
-        float newRockX = Mathf.Lerp(rock.anchoredPosition.x, rockTargetPos, Time.deltaTime * rockSpeed);
-        rock.anchoredPosition = new Vector2(newRockX, 0);
-
-        ClampHorizontal(greenZone);
-        ClampHorizontal(rock);
-        CheckWinCondition();
-    }
-
-    public void StartMinigame() {
-        PLAYBACK_STATE state;
-        laserCollecting.getPlaybackState(out state);
-        if (state != PLAYBACK_STATE.PLAYING)
-        {
-            laserCollecting.start();
-        }
-        
-        isMining = true;
-        miningCanvas.SetActive(true);
-        
-        currentProgress = 0.2f;
-        instability = 0f;
-        yieldMultiplier = 1f;
-    }
-
-
-    void ClampHorizontal(RectTransform rect)
-    {
-        float limit = (background.rect.width / 2) - (rect.rect.width / 2);
-        if (Mathf.Abs(rect.anchoredPosition.x) > limit)
-        {
-            float side = Mathf.Sign(rect.anchoredPosition.x);
-            rect.anchoredPosition = new Vector2(limit * side, 0);
-            if (rect == greenZone) greenZoneVelocity = 0;
-        }
-    }
-
-    void CheckWinCondition()
-    {
-        float rockX = rock.anchoredPosition.x;
-        float greenX = greenZone.anchoredPosition.x;
-        float halfGreen = greenZone.rect.width / 2;
-
-        if (rockX < greenX + halfGreen && rockX > greenX - halfGreen)
-            currentProgress += progressGain * yieldMultiplier * Time.deltaTime;
-        else{
-            currentProgress -= progressLoss * Time.deltaTime;
-
-            float distance = Mathf.Abs(rockX - greenX);
-
-            if (distance < halfGreen * 2f)
-                instability += smallErrorRate * Time.deltaTime;
-            else
-                instability += criticalErrorRate * Time.deltaTime;
-        }
-
-        if (instability >= 0.1f && instability < 0.9f)
-        {
-            yieldMultiplier = 1f - instability; // ilość surowców zmniejsza się proporcjonalnie z niestabilnością
-        }
-        else if (instability >= 0.9f)
-        {
-            yieldMultiplier = 0f; // jeżeli przekraczamy 90% niestabilności nie zyskujemy nic (Thermal Shock)
-        }
-        else
-        {
-            yieldMultiplier = 1f; // wydobyto 
-        }
-
-        currentProgress = Mathf.Clamp01(currentProgress);
-        progressSlider.value = currentProgress;
-
-        if (instability >= 0.9f)
-        {
-            ThermalShock();
+            HandleOverheat();
             return;
         }
 
-        instability = Mathf.Clamp01(instability);
+        // 1. Logika Paska Gracza przy użyciu New Input System
+        if (isPressingAction)
+        {
+            currentTemperature += heatgainSpeed * Time.deltaTime;
+            // Im cieplej, tym szybciej wiercisz (bonus za ryzyko)
+            float heatBonus = Mathf.Lerp(0.6f, 1.4f, currentTemperature); 
+            currentProgress += progressSpeed * heatBonus * Time.deltaTime;
+        }
+        else
+        {
+           currentTemperature -= coolDownSpeed * Time.deltaTime;
+        }
 
-        if (currentProgress >= 1f){
+        currentTemperature = Mathf.Clamp01(currentTemperature);
+        currentProgress = Mathf.Clamp01(currentProgress);
+        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.1f, 1f);
+
+        temperatureSlider.value = currentTemperature;
+        progressSlider.value = currentProgress;
+
+        if (sliderFillImage != null)
+            sliderFillImage.color = Color.Lerp(Color.green, Color.red, currentTemperature);
+
+        if (currentTemperature >= 1f) TriggerOverheat();
+        if (currentProgress >= 1f) EndGame("WYDOBYTO!");
+    }
+
+    void TriggerOverheat()
+    {
+        isOverheated = true;
+        overheatTimer = overheatPenaltyTime;
+        Debug.Log("PRZEGRZANIE! Czekaj na schłodzenie...");
+    }
+
+    void HandleOverheat()
+    {
+        overheatTimer -= Time.deltaTime;
+        currentTemperature -= (1f / overheatPenaltyTime) * Time.deltaTime;
+        temperatureSlider.value = currentTemperature;
+
+        if(overheatTimer <= 0)
+        {
+            isOverheated = false;
+            currentTemperature = 0;
+        }
+    }
+public void StartMinigame() {
+        isMining = true;
+        miningCanvas.SetActive(true);
+        currentProgress = 0f;
+        currentTemperature = 0f;
+        yieldMultiplier = 1f;
+
+        if (laserCollecting.isValid()) laserCollecting.start();
+    }
+
+
+
+    void CheckWinCondition()
+    {
+        // Aktualizacja Sliderów w UI
+        progressSlider.value = currentProgress;
+        temperatureSlider.value = currentTemperature;
+
+       
+        if (isOverheated) {
+            yieldMultiplier -= 0.05f * Time.deltaTime; // Powolny spadek jakości przy awarii
+        }
+
+        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.1f, 1f);
+
+        // Warunek Wygranej
+        if (currentProgress >= 1f) {
             EndGame("WYDOBYTO!");
         }
-        if (currentProgress <= 0f){
-            yieldMultiplier = 0;
-            EndGame("PRZEGRANA!");
+
+        // Opcjonalnie: Warunek przegranej (np. jeśli yield spadnie do zera lub czas minie)
+        if (yieldMultiplier <= 0.1f) {
+            EndGame("ZŁOŻE ZNISZCZONE!");
         }
     }
 
     void ThermalShock()
     {
-        Debug.Log("THERMAL SHOCK!");
-        EndGame("ASTEROIDA ROZWALONA");
-        // tutaj można dodać logikę obrażenie od odłamków
+        Debug.Log("Wiertło zablokowane - System chłodzenia aktywny!");
+        
+        if (sliderFillImage != null) {
+            sliderFillImage.color = Color.white; 
+        }
+
+        // Wstrzymujemy dźwięk wiercenia
+        laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        
+        currentProgress -= 0.05f; 
+        currentProgress = Mathf.Clamp01(currentProgress);
     }
 
     void Start() {
