@@ -9,7 +9,10 @@ public class latanieTpp : MonoBehaviour
     [SerializeField] private float cargoCapacity = 80000f;
     [SerializeField] private float maxMainThrust = 800000f;
     [SerializeField] private float brakeThrust = 400000f;
-    [SerializeField] private float maneuveringTorque = 250000f;
+    [SerializeField] private float maneuveringTorque = 120000f;
+
+    [Header("TRYB LOTU (BEZWŁADNOŚĆ)")]
+    public bool flightAssist = true; // Czy statek ma sam hamować?
 
     [Header("WIZUALNY PRZECHYŁ (Tylko Wygląd)")]
     [Tooltip("Przeciągnij tu obiekt podrzędny (dziecko), który zawiera sam model 3D statku.")]
@@ -34,10 +37,10 @@ public class latanieTpp : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
 
     [Header("KAMERA (ZOOM)")]
-    [SerializeField] private float minZoomDistance = 10f;   // Maksymalne przybliżenie
-    [SerializeField] private float maxZoomDistance = 50f;   // Maksymalne oddalenie
-    [SerializeField] private float zoomSpeed = 5f;          // Jak szybko reaguje scroll
-    [SerializeField] private float zoomSmoothness = 10f;    // Płynność ruchu (interpolacja)
+    [SerializeField] private float minZoomDistance = 10f;
+    [SerializeField] private float maxZoomDistance = 50f;
+    [SerializeField] private float zoomSpeed = 5f;
+    [SerializeField] private float zoomSmoothness = 10f;
 
     private Rigidbody rb;
     private ShipStats shipStats;
@@ -45,7 +48,6 @@ public class latanieTpp : MonoBehaviour
 
     private float currentVisualRoll = 0f;
     private float targetVisualRoll = 0f;
-    // Zmienna przechowująca docelowy dystans kamery
     private float targetZoomDistance;
 
     void Start()
@@ -59,7 +61,6 @@ public class latanieTpp : MonoBehaviour
 
         UpdatePhysics();
 
-        // Ustawienie początkowego zooma na podstawie aktualnej pozycji kamery w edytorze
         if (cameraTransform != null)
         {
             targetZoomDistance = Mathf.Abs(cameraTransform.localPosition.z);
@@ -70,6 +71,13 @@ public class latanieTpp : MonoBehaviour
     {
         float maxCargo = shipStats.GetMaxCargo();
         currentLoadPercent = maxCargo > 0 ? shipStats.CurrentCargo / maxCargo : 0f;
+
+        if (Keyboard.current != null && Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            flightAssist = !flightAssist;
+            UpdatePhysics();
+            Debug.Log("<color=cyan><b>[TPP] Asystent Lotu (Hamowanie): " + (flightAssist ? "WŁĄCZONY" : "WYŁĄCZONY") + "</b></color>");
+        }
     }
 
     void FixedUpdate()
@@ -85,18 +93,20 @@ public class latanieTpp : MonoBehaviour
         HandleZoom();
     }
 
-    // Używamy LateUpdate dla kamery, aby uniknąć "drżenia" (jittering)
-    // Kamera aktualizuje się po tym, jak Rigidbody statku zmieni pozycję.
-    //void LateUpdate()
-    //{
-    //    HandleZoom();
-    //}
-
     private void UpdatePhysics()
     {
         rb.mass = baseMass + (cargoCapacity * currentLoadPercent);
-        rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
-        rb.linearDamping = Mathf.Lerp(0.5f, 0.05f, currentLoadPercent);
+
+        if (flightAssist)
+        {
+            rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
+            rb.linearDamping = Mathf.Lerp(0.5f, 0.05f, currentLoadPercent);
+        }
+        else
+        {
+            rb.angularDamping = 0f;
+            rb.linearDamping = 0f;
+        }
     }
 
     void handleMovement()
@@ -149,7 +159,6 @@ public class latanieTpp : MonoBehaviour
         if (rollInput != 0)
         {
             targetVisualRoll += rollInput * rollSpeed * Time.fixedDeltaTime;
-
             targetVisualRoll = Mathf.Clamp(targetVisualRoll, -maxRollAngle, maxRollAngle);
         }
 
@@ -166,6 +175,7 @@ public class latanieTpp : MonoBehaviour
             shipStats.UseEnergy(normalDrainRate * Time.fixedDeltaTime);
         }
     }
+
     private void CheckFuelWarning()
     {
         if (shipStats.CurrentEnergy <= lowFuelThreshold && !lowFuelWarningTriggered && shipStats.CurrentEnergy > 0)
@@ -191,7 +201,6 @@ public class latanieTpp : MonoBehaviour
             targetZoomDistance = Mathf.Clamp(targetZoomDistance, minZoomDistance, maxZoomDistance);
         }
 
-        // Zmieniamy TYLKO oś Z kamery używając Time.fixedDeltaTime
         float newZ = Mathf.Lerp(cameraTransform.localPosition.z, -targetZoomDistance, Time.fixedDeltaTime * zoomSmoothness);
 
         cameraTransform.localPosition = new Vector3(
