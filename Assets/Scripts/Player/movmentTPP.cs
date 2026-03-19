@@ -23,7 +23,7 @@ public class latanieTpp : MonoBehaviour
 
     [Header("PALIWO")]
     [SerializeField] private float emergencySpeedMultiplier = 0.3f; // 30% prędkości bez paliwa
-    [SerializeField] private float normalDrainRate = 1f;            // Spalanie na sekundę
+    [SerializeField] private float normalDrainRate = 1f;
 
     [Header("OSTRZEŻENIE O PALIWIE")]
     [SerializeField] private float lowFuelThreshold = 40f;
@@ -90,7 +90,6 @@ public class latanieTpp : MonoBehaviour
 
         handleMovement();
         CheckFuelWarning();
-        HandleZoom();
     }
 
     private void UpdatePhysics()
