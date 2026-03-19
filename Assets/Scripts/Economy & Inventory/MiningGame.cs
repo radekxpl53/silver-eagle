@@ -18,10 +18,17 @@ public class MiningGame : MonoBehaviour
     
 
     [Header("Drill Settings")]
-    public float heatgainSpeed = 0.5f;
-    public float coolDownSpeed = 0.3f;
+    public float maxDrillTemperature = 2500f;
+    public float heatgainSpeed = 450f;
+    public float coolDownSpeed = 250f;
     public float progressSpeed = 0.2f;
     public float overheatPenaltyTime = 2f;
+
+    [Header("Asteroid Physics")]
+    private float targetTemp;   // Pobierane z CalculateTemperature()
+    private float tolerance;    // Pobierane z ToleranceTemperature()
+    private float minOptimal;   // Dolna granica sweet spotu
+    private float maxOptimal;   // Górna granica sweet spotu
 
     [Header("Values")]
     private float currentTemperature = 0f;
@@ -55,6 +62,7 @@ public class MiningGame : MonoBehaviour
         if (isOverheated)
         {
             HandleOverheat();
+            yieldMultiplier -= 0.05f * Time.deltaTime;
             return;
         }
 
@@ -62,7 +70,6 @@ public class MiningGame : MonoBehaviour
         if (isPressingAction)
         {
             currentTemperature += heatgainSpeed * Time.deltaTime;
-            // Im cieplej, tym szybciej wiercisz (bonus za ryzyko)
             
         }
         else
@@ -70,14 +77,15 @@ public class MiningGame : MonoBehaviour
            currentTemperature -= coolDownSpeed * Time.deltaTime;
         }
 
-        if (currentTemperature >= 0.7f && currentTemperature <= 0.9f)
-        {
-            // Obliczamy bonus: najwyższy w samym środku zakresu (0.8)
-            // Dzięki temu gracz stara się celować w środek, a nie tylko w krawędź
-            float distanceToCenter = Mathf.Abs(currentTemperature - 0.8f); // max 0.1
-            float precisionBonus = 1f - (distanceToCenter * 5f); // 1.0 w środku, 0.5 na krawędziach
+        // normalizacja temperatury 
+        float tempNormalized = currentTemperature / maxDrillTemperature;
+        temperatureSlider.value = tempNormalized;
 
-            currentProgress += progressSpeed * precisionBonus * Time.deltaTime;
+
+        if (currentTemperature >= minOptimal && currentTemperature <= maxOptimal)
+        {
+
+            currentProgress += progressSpeed * Time.deltaTime;
             
             if (sliderFillImage != null)
                 sliderFillImage.color = Color.cyan; // Kolor sygnalizujący wiercenie
@@ -86,24 +94,18 @@ public class MiningGame : MonoBehaviour
         {
             // Poza zakresem - postęp nie rośnie
             if (sliderFillImage != null)
-            {
-                if (currentTemperature > 0.9f) sliderFillImage.color = Color.red; // Ryzyko!
-                else sliderFillImage.color = Color.white; // Za zimno
-            }
+                sliderFillImage.color = currentTemperature > maxOptimal ? Color.red : Color.white;
         }
 
-        currentTemperature = Mathf.Clamp01(currentTemperature);
         currentProgress = Mathf.Clamp01(currentProgress);
-        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.1f, 1f);
-
-        temperatureSlider.value = currentTemperature;
         progressSlider.value = currentProgress;
 
-        if (sliderFillImage != null)
-            sliderFillImage.color = Color.Lerp(Color.green, Color.red, currentTemperature);
+        // Przegrzanie wiertła
+        if (currentTemperature >= maxDrillTemperature)
+            TriggerOverheat();
 
-        if (currentTemperature >= 1f) TriggerOverheat();
-        if (currentProgress >= 1f) EndGame("WYDOBYTO!");
+        if (currentProgress >= 1f)
+            EndGame("WYDOBYTO!");
     }
 
     void TriggerOverheat()
@@ -125,7 +127,17 @@ public class MiningGame : MonoBehaviour
             currentTemperature = 0;
         }
     }
-public void StartMinigame() {
+    public void StartMinigame() {
+    
+        if (MiningData.currentAsteroidObject != null)
+        {
+            Asteroid asteroid = MiningData.currentAsteroidObject;
+            targetTemp = asteroid.CalculateTemperature();
+            tolerance = asteroid.ToleranceTemperature();
+            minOptimal = targetTemp - tolerance;
+            maxOptimal = targetTemp + tolerance;
+        }
+
         isMining = true;
         miningCanvas.SetActive(true);
         currentProgress = 0f;
