@@ -11,12 +11,15 @@ public class fppLatanie : MonoBehaviour
 
     [Header("SIŁY HAMOWANIA I MANEWRÓW")]
     public float brakeThrust = 400000f;
-    public float maneuverForce = 250000f;
-    public float rollForce = 250000f;
+    public float maneuverForce = 120000f;
+    public float rollForce = 120000f;
+
+    [Header("TRYB LOTU")]
+    public bool flightAssist = true; // Czy statek ma sam hamować?
 
     [Header("PALIWO")]
     public float emergencySpeedMultiplier = 0.3f;
-    public float maxDrainRate = 1f; // Maksymalne spalanie przy 100% przepustnicy
+    public float maxDrainRate = 1f;
 
     [Header("OSTRZEŻENIE O PALIWIE")]
     public float lowFuelThreshold = 40f;
@@ -57,6 +60,13 @@ public class fppLatanie : MonoBehaviour
         float maxCargo = shipStats.GetMaxCargo();
         currentLoadPercent = maxCargo > 0 ? shipStats.CurrentCargo / maxCargo : 0f;
 
+        if (Keyboard.current != null && Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            flightAssist = !flightAssist;
+            UpdatePhysics();
+            Debug.Log("<color=cyan><b>[FPP] Asystent Lotu (Hamowanie): " + (flightAssist ? "WŁĄCZONY" : "WYŁĄCZONY") + "</b></color>");
+        }
+
         if (Keyboard.current != null)
         {
             if (Keyboard.current.wKey.isPressed)
@@ -79,9 +89,17 @@ public class fppLatanie : MonoBehaviour
     private void UpdatePhysics()
     {
         rb.mass = baseMass + (cargoCapacity * currentLoadPercent);
-        rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
 
-        rb.linearDamping = Mathf.Lerp(0.5f, 0.05f, currentLoadPercent);
+        if (flightAssist)
+        {
+            rb.angularDamping = Mathf.Lerp(1.5f, 0.9f, currentLoadPercent);
+            rb.linearDamping = Mathf.Lerp(0.5f, 0.05f, currentLoadPercent);
+        }
+        else
+        {
+            rb.angularDamping = 0f;
+            rb.linearDamping = 0f;
+        }
     }
 
     void FixedUpdate()
