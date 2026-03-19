@@ -15,7 +15,7 @@ public class MiningGame : MonoBehaviour
     public Slider temperatureSlider;
     public Slider progressSlider;
     public Image sliderFillImage;
-    
+    public RectTransform sweetSpotIndicator;
 
     [Header("Drill Settings")]
     public float maxDrillTemperature = 2500f;
@@ -38,6 +38,8 @@ public class MiningGame : MonoBehaviour
     private float yieldMultiplier = 1f;
     private bool isMining = false;
 
+    private bool isDataInitialized = false;
+
     [Header("Asteroid Explosion")]
     [SerializeField] private GameObject explosionPrefab;
 
@@ -59,10 +61,12 @@ public class MiningGame : MonoBehaviour
 
     void HandleMining()
     {   
+        if (!isMining || !isDataInitialized) return;
+
         if (isOverheated)
         {
             HandleOverheat();
-            yieldMultiplier -= 0.05f * Time.deltaTime;
+            yieldMultiplier -= 0.1f * Time.deltaTime;
             return;
         }
 
@@ -70,12 +74,18 @@ public class MiningGame : MonoBehaviour
         if (isPressingAction)
         {
             currentTemperature += heatgainSpeed * Time.deltaTime;
-            
+
+            PLAYBACK_STATE state;
+            laserCollecting.getPlaybackState(out state);
+            if (state != PLAYBACK_STATE.PLAYING) laserCollecting.start();
         }
         else
         {
            currentTemperature -= coolDownSpeed * Time.deltaTime;
+           laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
+
+        currentTemperature = Mathf.Clamp(currentTemperature, 0, maxDrillTemperature);
 
         // normalizacja temperatury 
         float tempNormalized = currentTemperature / maxDrillTemperature;
@@ -100,6 +110,8 @@ public class MiningGame : MonoBehaviour
         currentProgress = Mathf.Clamp01(currentProgress);
         progressSlider.value = currentProgress;
 
+        yieldMultiplier = Mathf.Clamp(yieldMultiplier, 0.1f, 1f);
+        
         // Przegrzanie wiertła
         if (currentTemperature >= maxDrillTemperature)
             TriggerOverheat();
@@ -112,19 +124,21 @@ public class MiningGame : MonoBehaviour
     {
         isOverheated = true;
         overheatTimer = overheatPenaltyTime;
+        laserCollecting.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         Debug.Log("PRZEGRZANIE! Czekaj na schłodzenie...");
     }
 
     void HandleOverheat()
     {
         overheatTimer -= Time.deltaTime;
-        currentTemperature -= (1f / overheatPenaltyTime) * Time.deltaTime;
-        temperatureSlider.value = currentTemperature;
+
+        currentTemperature -= (maxDrillTemperature / overheatPenaltyTime) * Time.deltaTime;
+        currentTemperature = Mathf.Max(currentTemperature, 0);
+        temperatureSlider.value = currentTemperature / maxDrillTemperature;
 
         if(overheatTimer <= 0)
         {
             isOverheated = false;
-            currentTemperature = 0;
         }
     }
     public void StartMinigame() {
@@ -132,10 +146,29 @@ public class MiningGame : MonoBehaviour
         if (MiningData.currentAsteroidObject != null)
         {
             Asteroid asteroid = MiningData.currentAsteroidObject;
+            
             targetTemp = asteroid.CalculateTemperature();
             tolerance = asteroid.ToleranceTemperature();
+
             minOptimal = targetTemp - tolerance;
             maxOptimal = targetTemp + tolerance;
+            
+            if (sweetSpotIndicator != null)
+            {
+                float startAnchor = minOptimal / maxDrillTemperature;
+                float endAnchor = maxOptimal / maxDrillTemperature;
+                sweetSpotIndicator.anchorMin = new Vector2(startAnchor, 0);
+                sweetSpotIndicator.anchorMax = new Vector2(endAnchor, 1);
+                sweetSpotIndicator.offsetMin = Vector2.zero;
+                sweetSpotIndicator.offsetMax = Vector2.zero;
+            }
+
+            isDataInitialized = true;
+        } else
+        {
+            Debug.LogError("BŁĄD: Próba startu bez obiektu asteroidy!");
+            EndGame("BŁĄD DANYCH");
+            return;
         }
 
         isMining = true;
