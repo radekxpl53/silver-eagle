@@ -52,7 +52,7 @@ public class InteractableObject : MonoBehaviour {
     private void OnDrawGizmos()
     {
         GUI.color = Color.black;
-        Handles.Label(transform.position - (transform.position - parentArea.transform.position) / 2, distanceBetweenObjects.ToString());
+        //Handles.Label(transform.position - (transform.position - parentArea.transform.position) / 2, distanceBetweenObjects.ToString());
     }
 
     void CheckDistance()

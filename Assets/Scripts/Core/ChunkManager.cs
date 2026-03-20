@@ -23,6 +23,8 @@ public class SectorData {
     public List<BeltSavedData> belts = new List<BeltSavedData>();
     public bool haveShop;
     public Vector3 shopLocalPos;
+    public bool haveRepairStation;
+    public Vector3 repairStationLocalPos;
 }
 
 public class ChunkManager : MonoBehaviour
@@ -70,16 +72,23 @@ public class ChunkManager : MonoBehaviour
                 if ((x == 0 && y == 0) || (x == 3 && y == 3) || (x == 5 && y == 5))
                 {
                     newData.haveShop = true;
+                    newData.haveRepairStation = true;
                     float limit = (sectorSize / 2f);
-                    newData.shopLocalPos = new Vector3(
-                        Random.Range(-limit, limit),
-                        Random.Range(-limit, limit),
-                        Random.Range(-limit, limit)
-                    );
+                    Vector3 shopLocalPosition = GenerateRandomCords();
+                    Vector3 repairStationLocalPosition = GenerateRandomCords();
+
+                    if (Vector3.Distance(shopLocalPosition, repairStationLocalPosition) < 300)
+                    {
+                        repairStationLocalPosition = GenerateRandomCords();
+                    }
+
+                    newData.repairStationLocalPos = repairStationLocalPosition;
+                    newData.shopLocalPos = shopLocalPosition;
                 }
                 else
                 {
                     newData.haveShop = false;
+                    newData.haveRepairStation = false;
                 }
 
                 allSectorData.Add(pos, newData);
@@ -111,6 +120,18 @@ public class ChunkManager : MonoBehaviour
         //DebugMapStats();
 
         mapDisplay.GenerateMapUI();
+    }
+
+    public Vector3 GenerateRandomCords()
+    {
+        float limit = (sectorSize / 2f);
+        Vector3 randomCords = new Vector3(
+            Random.Range(-limit, limit),
+            Random.Range(-limit, limit),
+            Random.Range(-limit, limit)
+        );
+
+        return randomCords;
     }
 
     //public void DebugMapStats() {

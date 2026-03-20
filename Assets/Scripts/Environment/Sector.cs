@@ -5,6 +5,7 @@ public class Sector : MonoBehaviour {
     private SectorData data;
 
     [SerializeField] private GameObject shopPrefab;
+    [SerializeField] private GameObject repairStationPrefab;
     public void Setup(SectorData newData, float size) {
         this.data = newData;
         //Debug.Log($"Sektor {data.gridPosition}");
@@ -21,9 +22,15 @@ public class Sector : MonoBehaviour {
             shop.transform.localPosition = data.shopLocalPos;
         }
 
-            // Rysujemy obwódki sektora
-            //DrawSectorBorder(size);
+        if (newData.haveRepairStation == true)
+        {
+            GameObject repairStation = Instantiate(repairStationPrefab, transform);
+            repairStationPrefab.transform.localPosition = data.repairStationLocalPos;
         }
+
+        // Rysujemy obwódki sektora
+        //DrawSectorBorder(size);
+    }
 
         //private void DrawSectorBorder(float size) {
         //    LineRenderer line = gameObject.GetComponent<LineRenderer>();

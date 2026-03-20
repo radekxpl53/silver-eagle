@@ -7,6 +7,7 @@ TagManager:
   - Asteroid
   - Shop
   - SellZone
+  - RepairStation
   layers:
   - Default
   - TransparentFX

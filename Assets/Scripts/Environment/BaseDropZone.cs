@@ -4,50 +4,55 @@ using UnityEngine;
 
 public class BaseDropZone : MonoBehaviour
 {
-    [SerializeField] private ShipStats shipStats;
     [SerializeField] private GameObject healInfoCanvas;
     [SerializeField] private TextMeshProUGUI costText;
 
     private void Start()
     {
         healInfoCanvas.SetActive(false);
+        GameManager.Instance.allRepairStationsPosition.Add(this.transform);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            if(shipStats.CurrentEnergy != shipStats.GetMaxEnergy())
+            ShipStats shipStats = other.GetComponent<ShipStats>();
+
+            if (shipStats == null)
             {
-                float energy = shipStats.GetMaxEnergy();
-                shipStats.AddEnergy(energy);
-                PlayerData.Instance.energy = energy;
-                Debug.Log("Zatankowano");
+                shipStats = other.GetComponentInParent<ShipStats>();
             }
-            if (shipStats.CurrentHP != shipStats.GetMaxHP())
+
+            if (shipStats != null)
             {
-                // ile hp leczymy
-                float hpDiff = shipStats.GetMaxHP() - shipStats.CurrentHP;
-
-                // koszt leczenia
-                int cost = Mathf.CeilToInt(hpDiff * 0.5f);
-
-                // wydanie kaski na leczenie <- TU TRZEBA TO NAPRAWIĆ
-                EconomyManager.Instance.SpendCredits(cost);
-
-                costText.text = "Cost: " + cost;
-
-                shipStats.Heal(hpDiff);
-
-                if (healInfoCanvas != null)
+                if (shipStats.CurrentEnergy < shipStats.GetMaxEnergy())
                 {
-                    healInfoCanvas.SetActive(true);
-
-                    CancelInvoke("HideHealCanvas");
-
-                    Invoke("HideHealCanvas", 3f);
+                    float energy = shipStats.GetMaxEnergy();
+                    shipStats.AddEnergy(energy);
+                    PlayerData.Instance.energy = energy;
+                    Debug.Log("Zatankowano");
                 }
 
+                if (shipStats.CurrentHP < shipStats.GetMaxHP())
+                {
+                    float hpDiff = shipStats.GetMaxHP() - shipStats.CurrentHP;
+                    int cost = Mathf.CeilToInt(hpDiff * 0.5f);
+
+                    EconomyManager.Instance.SpendCredits(cost);
+
+                    if (costText != null)
+                        costText.text = "Cost: " + cost;
+
+                    shipStats.Heal(hpDiff);
+
+                    if (healInfoCanvas != null)
+                    {
+                        healInfoCanvas.SetActive(true);
+                        CancelInvoke("HideHealCanvas");
+                        Invoke("HideHealCanvas", 3f);
+                    }
+                }
             }
         }
     }
@@ -56,5 +61,11 @@ public class BaseDropZone : MonoBehaviour
     {
         if (healInfoCanvas != null)
             healInfoCanvas.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.allRepairStationsPosition.Remove(this.transform);
     }
 }

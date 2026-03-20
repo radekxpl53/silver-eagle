@@ -67,6 +67,11 @@ public class latanieTpp : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        previousLoadPercent = -1f;
+    }
+
     void Update()
     {
         float maxCargo = shipStats.GetMaxCargo();

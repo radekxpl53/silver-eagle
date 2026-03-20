@@ -37,34 +37,24 @@ public class swichingCamera : MonoBehaviour
 
     private void ApplyMode(bool isFpp)
     {
-        // 1. Przełączanie Skryptów
         tppMovementScript.enabled = !isFpp;
         fppMovementScript.enabled = isFpp;
 
-        // 2. Przełączanie Kamer
         tppCameraObject.SetActive(!isFpp);
         fppCameraObject.SetActive(isFpp);
 
-        // 3. Resetowanie ustawień fizyki
         if (isFpp)
         {
-            // --- USTAWIENIA DLA FPP ---
-            rb.constraints = RigidbodyConstraints.None; // Odblokowujemy pełen obrót
-            rb.linearDamping = 0.8f;
+            rb.constraints = RigidbodyConstraints.None;
+            // Usunięte linearDamping
         }
         else
         {
-            // --- USTAWIENIA DLA TPP ---
-            // Blokujemy obrót, żeby statek latał prosto
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            rb.linearDamping = 2.0f;
-            rb.angularDamping = 5.0f;
+            // Usunięte linearDamping i angularDamping
 
-            // Zerujemy przechył statku po wyjściu z FPP żeby nie został zablokowany krzywo
             Vector3 currentRotation = transform.rotation.eulerAngles;
             transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
-
-            // wyzerowanie pędu obrotowego, żeby statkiem nie trzęsło przy przejściu
             rb.angularVelocity = Vector3.zero;
         }
     }

@@ -6,28 +6,49 @@ public class PlayerInteract : MonoBehaviour {
     public float range = 20f;
     public ShipStats shipStats;
     public bool canSell;
-    void Update() {
-        if (Keyboard.current.gKey.wasPressedThisFrame) {
-            Debug.Log("Naciśnięto klawisz E");
+    void Update()
+    {
+        if (Keyboard.current.gKey.wasPressedThisFrame)
+        {
+            Debug.Log("Naciśnięto klawisz G");
 
             Ray rayRight = new Ray(transform.position, transform.right);
             Ray rayLeft = new Ray(transform.position, -transform.right);
             RaycastHit hit;
 
-            // Wizualizacja laserów w oknie Scene
             Debug.DrawRay(transform.position, transform.right * range, Color.yellow, 2f);
             Debug.DrawRay(transform.position, -transform.right * range, Color.yellow, 2f);
 
-            // Sprawdzamy prawą stronę
-            if (Physics.Raycast(rayRight, out hit, range)) {
-                TryStartMining(hit);
+            bool foundAsteroid = false;
+
+            if (Physics.Raycast(rayRight, out hit, range))  // <- Kacper miał racje, outy są mega
+            {
+                if (hit.collider.CompareTag("Asteroid"))
+                {
+                    TryStartMining(hit);
+                    foundAsteroid = true;
+                }
+                else
+                {
+                    Debug.Log("Prawy laser trafił w: " + hit.collider.tag);
+                }
             }
-            // Sprawdzamy lewą stronę
-            else if (Physics.Raycast(rayLeft, out hit, range)) {
-                TryStartMining(hit);
+            if (!foundAsteroid && Physics.Raycast(rayLeft, out hit, range)) 
+            {
+                if (hit.collider.CompareTag("Asteroid"))
+                {
+                    TryStartMining(hit);
+                    foundAsteroid = true;
+                }
+                else
+                {
+                    Debug.Log("Lewy laser trafił w: " + hit.collider.tag);
+                }
             }
-            else {
-                Debug.Log("Lasery boczne w nic nie trafiły. Podleć bliżej asteroidy burtą!");
+
+            if (!foundAsteroid)
+            {
+                Debug.Log("Lasery boczne nie znalazły asteroidy. Podleć bliżej burtą!");
             }
         }
     }

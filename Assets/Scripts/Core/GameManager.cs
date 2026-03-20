@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using NUnit.Framework;
+using System.Collections.Generic;
 public enum GameState
 {
     Exploration,
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform baseSpawnPoint;
     [SerializeField] private GameObject player;
 
+    public List<Transform> allRepairStationsPosition = new List<Transform>();
     private void Awake()
     {
         if (Instance == null)
@@ -100,13 +103,52 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        if (player != null && baseSpawnPoint != null)
+        if (player != null)
         {
-            player.transform.position = baseSpawnPoint.position;
+            Vector3 targetPosition = Vector3.zero;
+            bool stationFound = false;
+
+            if (allRepairStationsPosition.Count > 0)
+            {
+                float minDistance = Mathf.Infinity;
+                Transform nearestStation = null;
+
+                foreach (Transform t in allRepairStationsPosition)
+                {
+                    float distance = Vector3.Distance(player.transform.position, t.position);
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        nearestStation = t;
+                    }
+                }
+
+                if (nearestStation != null)
+                {
+                    targetPosition = nearestStation.position;
+                    stationFound = true;
+                }
+            }
+
+            if (!stationFound && baseSpawnPoint != null)
+            {
+                targetPosition = baseSpawnPoint.position;
+            }
+
+            player.transform.position = targetPosition;
+            player.transform.rotation = Quaternion.identity;
+
+            Rigidbody rb = player.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
         }
 
         if (deathScreenCanvas != null)
             deathScreenCanvas.SetActive(false);
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         ChangeState(GameState.Exploration);
