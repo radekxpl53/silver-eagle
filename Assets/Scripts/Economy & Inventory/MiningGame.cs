@@ -2,7 +2,7 @@ using FMOD.Studio;
 using FMODUnity;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.InputSystem; // Wymagane dla nowego systemu
+using UnityEngine.InputSystem; 
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,10 +19,14 @@ public class MiningGame : MonoBehaviour
 
     [Header("Drill Settings")]
     public float maxDrillTemperature = 2500f;
-    public float heatgainSpeed = 450f;
-    public float coolDownSpeed = 250f;
+    public float heatgainSpeed = 650f;
+    public float coolDownSpeed = 550f;
     public float progressSpeed = 0.2f;
     public float overheatPenaltyTime = 2f;
+
+    [Header("Movement Settings")]
+    public float driftSpeed = 50f; // Prędkość przesuwania się strefy
+    private int driftDirection = 1; // 1 to w górę, -1 to w dół
 
     [Header("Asteroid Physics")]
     private float targetTemp;   // Pobierane z CalculateTemperature()
@@ -43,7 +47,7 @@ public class MiningGame : MonoBehaviour
     [Header("Asteroid Explosion")]
     [SerializeField] private GameObject explosionPrefab;
 
-    // Referencja do akcji (możesz ją przypisać w inspektorze lub użyć Keyboard.current)
+
     private bool isPressingAction => Keyboard.current.spaceKey.isPressed || Pointer.current.press.isPressed;
     
     [Header("Audio")]
@@ -55,6 +59,7 @@ public class MiningGame : MonoBehaviour
         if (isMining)
         {
             HandleMining();
+            UpdateSweetSpotPosition();
         }
 
     }
@@ -76,7 +81,6 @@ public class MiningGame : MonoBehaviour
             return;
         }
 
-        // 1. Logika Paska Gracza przy użyciu New Input System
         if (isPressingAction)
         {
             currentTemperature += heatgainSpeed * Time.deltaTime;
@@ -161,44 +165,54 @@ public class MiningGame : MonoBehaviour
             isOverheated = false;
         }
     }
-    public void StartMinigame() {
-    
-        if (MiningData.currentAsteroidObject != null)
-        {
-            Asteroid asteroid = MiningData.currentAsteroidObject;
-            
-            targetTemp = asteroid.CalculateTemperature();
-            tolerance = asteroid.ToleranceTemperature();
+public void StartMinigame() {
+    if (MiningData.currentAsteroidObject != null)
+    {
+        Asteroid asteroid = MiningData.currentAsteroidObject;
+        
+        float rawTarget = asteroid.CalculateTemperature();
+        float rawTolerance = asteroid.ToleranceTemperature();
 
-            minOptimal = targetTemp - tolerance;
-            maxOptimal = targetTemp + tolerance;
-            
-            if (sweetSpotIndicator != null)
-            {
-                float startAnchor = minOptimal / maxDrillTemperature;
-                float endAnchor = maxOptimal / maxDrillTemperature;
-                sweetSpotIndicator.anchorMin = new Vector2(startAnchor, 0);
-                sweetSpotIndicator.anchorMax = new Vector2(endAnchor, 1);
-                sweetSpotIndicator.offsetMin = Vector2.zero;
-                sweetSpotIndicator.offsetMax = Vector2.zero;
-            }
+        // LIMIT 15% PASKA (7.5% w każdą stronę)
+        float maxAllowedTolerance = maxDrillTemperature * 0.075f; 
+        float finalTolerance = Mathf.Min(rawTolerance, maxAllowedTolerance);
 
-            isDataInitialized = true;
-        } else
+        // Zabezpieczenie przed wychodzeniem poza skalę 
+        targetTemp = Mathf.Clamp(rawTarget, finalTolerance, maxDrillTemperature - finalTolerance);
+
+
+        minOptimal = targetTemp - finalTolerance;
+        maxOptimal = targetTemp + finalTolerance;
+        
+        if (sweetSpotIndicator != null)
         {
-            Debug.LogError("BŁĄD: Próba startu bez obiektu asteroidy!");
-            EndGame("BŁĄD DANYCH");
-            return;
+            float startAnchor = minOptimal / maxDrillTemperature;
+            float endAnchor = maxOptimal / maxDrillTemperature;
+            
+            sweetSpotIndicator.anchorMin = new Vector2(startAnchor, 0);
+            sweetSpotIndicator.anchorMax = new Vector2(endAnchor, 1);
+
+            sweetSpotIndicator.offsetMin = Vector2.zero;
+            sweetSpotIndicator.offsetMax = Vector2.zero;
         }
 
-        isMining = true;
-        miningCanvas.SetActive(true);
-        currentProgress = 0f;
-        currentTemperature = 0f;
-        yieldMultiplier = 1f;
-
-        if (laserCollecting.isValid()) laserCollecting.start();
+        isDataInitialized = true;
+    } 
+    else
+    {
+        Debug.LogError("BŁĄD: Próba startu bez obiektu asteroidy!");
+        EndGame("BŁĄD DANYCH");
+        return;
     }
+
+    isMining = true;
+    miningCanvas.SetActive(true);
+    currentProgress = 0f;
+    currentTemperature = 0f;
+    yieldMultiplier = 1f;
+
+    if (laserCollecting.isValid()) laserCollecting.start();
+}
 
 
 
@@ -251,6 +265,40 @@ public class MiningGame : MonoBehaviour
         else {
             Debug.LogWarning("Brak danych o asteroidzie! Wracam do głównej sceny.");
             SceneManager.LoadScene("GameManager");
+        }
+    }
+
+    void UpdateSweetSpotPosition()
+    {
+        if (!isMining || isOverheated) return;
+
+        float movement = driftSpeed * driftDirection * Time.deltaTime;
+        targetTemp += movement;
+
+        // 2. Odbijanie od krawędzi (z uwzględnieniem tolerancji, żeby strefa nie wystawała)
+        float currentTolerance = (maxOptimal - minOptimal) / 2f;
+        
+        if (targetTemp + currentTolerance >= maxDrillTemperature)
+        {
+            driftDirection = -1; // Zmień kierunek na dół
+        }
+        else if (targetTemp - currentTolerance <= 0)
+        {
+            driftDirection = 1; // Zmień kierunek na górę
+        }
+
+        // 3. Aktualizacja granic optymalnych
+        minOptimal = targetTemp - currentTolerance;
+        maxOptimal = targetTemp + currentTolerance;
+
+        // 4. Aktualizacja w UI
+        if (sweetSpotIndicator != null)
+        {
+            float startAnchor = minOptimal / maxDrillTemperature;
+            float endAnchor = maxOptimal / maxDrillTemperature;
+
+            sweetSpotIndicator.anchorMin = new Vector2(startAnchor, 0);
+            sweetSpotIndicator.anchorMax = new Vector2(endAnchor, 1);
         }
     }
 
