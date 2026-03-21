@@ -77,7 +77,7 @@ public class latanieTpp : MonoBehaviour
         float maxCargo = shipStats.GetMaxCargo();
         currentLoadPercent = maxCargo > 0 ? shipStats.CurrentCargo / maxCargo : 0f;
 
-        if (Keyboard.current != null && Keyboard.current.xKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.xKey.wasPressedThisFrame && (GameManager.Instance.currentState == GameState.Exploration || GameManager.Instance.currentState == GameState.Fighting))
         {
             flightAssist = !flightAssist;
             UpdatePhysics();
