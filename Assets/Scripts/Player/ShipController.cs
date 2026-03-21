@@ -15,7 +15,9 @@ public class ShipController : MonoBehaviour
 
     [Header("STEROWANIE")]
     [SerializeField] private float fppMouseSensitivity = 0.5f;
-    [SerializeField] private float verticalAccelerationTime = 0.75f;
+    [SerializeField] private float verticalAccelerationTime = 0.4f;
+    public float forwardAccelerationTime = 1.0f; // Czas rozpędzania do przodu/tyłu
+    public float maxOverallSpeed = 10f;
 
     [Header("WIZUALNY PRZECHYL")]
     [SerializeField] private Transform shipVisualModel;
@@ -28,6 +30,8 @@ public class ShipController : MonoBehaviour
     private float currentVerticalThrust = 0f;
     private float verticalVelocityRef = 0f;
 
+    private float currentForwardThrust = 0f;
+    private float forwardVelocityRef = 0f;
     private float currentVisualRoll = 0f;
     private float previousLoadPercent = -1f;
     private bool lowFuelWarningTriggered = false;
@@ -93,6 +97,11 @@ public class ShipController : MonoBehaviour
         HandleMovement();
         CheckFuelWarning();
         ApplyDirectionalDamping();
+
+        if (rb.linearVelocity.magnitude > maxOverallSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxOverallSpeed;
+        }
     }
 
     private void ApplyCameraMode()
@@ -165,10 +174,15 @@ public class ShipController : MonoBehaviour
         bool hasFuel = stats.CurrentEnergy > 0f;
         float currentPerformance = hasFuel ? 1f : stats.EmergencySpeedMultiplier;
 
-        if (gasInput != 0)
+        float targetForwardThrust = 0f;
+        if (gasInput > 0) targetForwardThrust = stats.MaxMainThrust * currentPerformance;
+        else if (gasInput < 0) targetForwardThrust = -stats.BrakeThrust * currentPerformance;
+
+        currentForwardThrust = Mathf.SmoothDamp(currentForwardThrust, targetForwardThrust, ref forwardVelocityRef, forwardAccelerationTime);
+
+        if (Mathf.Abs(currentForwardThrust) > 10f)
         {
-            float baseThrust = (gasInput > 0) ? stats.MaxMainThrust : stats.BrakeThrust;
-            rb.AddRelativeForce(Vector3.forward * gasInput * baseThrust * currentPerformance);
+            rb.AddRelativeForce(Vector3.forward * currentForwardThrust);
         }
 
         float targetVerticalThrust = verticalInput * stats.LiftThrust * currentPerformance;
