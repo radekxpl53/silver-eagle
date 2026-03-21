@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject deathScreenCanvas;
     [SerializeField] private Transform baseSpawnPoint;
     [SerializeField] private GameObject player;
+    [SerializeField] private ShipStats shipStats;
 
     public List<Transform> allRepairStationsPosition = new List<Transform>();
     private void Awake()
@@ -102,6 +103,8 @@ public class GameManager : MonoBehaviour
     public void RespawnAtBase()
     {
         Time.timeScale = 1f;
+
+        shipStats.Heal(shipStats.GetMaxHP());
 
         if (player != null)
         {

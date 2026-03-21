@@ -7,11 +7,13 @@ public class ShipStats : MonoBehaviour {
     public float CurrentHP { get; private set; }
     public float CurrentEnergy { get; private set; }
     public float CurrentCargo { get; private set; }
+    public bool IsDestroyed { get; private set; }
+
     [SerializeField] private float MaxHP;
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
-    public bool IsDestroyed { get; private set; }
+   
 
     [Header("--- SKRYPTY STERUJĄCE DO ZABLOKOWANIA ---")]
     [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
@@ -73,9 +75,11 @@ public class ShipStats : MonoBehaviour {
             if (CurrentHP + amount > MaxHP) {
                 CurrentHP = MaxHP;
                 Debug.Log("Statek naprawiony!");
+                IsDestroyed = false;
             }
             else {
                 CurrentHP += amount;
+                IsDestroyed = false;
             }
             Debug.Log("Ustawiono wartość HP na: " + CurrentHP);
         }
