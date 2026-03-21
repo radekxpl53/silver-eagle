@@ -48,7 +48,7 @@ public class SellSystem : MonoBehaviour
         if (endScreen != null)
         {
             endScreen.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
     }
