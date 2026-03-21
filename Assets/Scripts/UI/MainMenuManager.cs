@@ -16,7 +16,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button quitButton;
     [SerializeField] private Button controlsButton;
     [SerializeField] private GameObject optionsPanel;
-    [SerializeField] private GameObject mainMenuPanel;  
+    [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject controlsPanel;
     
     // audio
@@ -26,7 +26,10 @@ public class MainMenuManager : MonoBehaviour
     {
         // music
         mainMusic = AudioManager.instance.CreateInstance(FMODEvents.instance.mainMusic);
-        mainMusic.start();
+        
+        PLAYBACK_STATE state;
+        mainMusic.getPlaybackState(out state);
+        if (state != PLAYBACK_STATE.PLAYING) mainMusic.start();
         
         mainMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
@@ -51,9 +54,6 @@ public class MainMenuManager : MonoBehaviour
     private void OnNewGameClicked()
     {
         //Debug.Log("Starting new game...");
-        
-        mainMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        mainMusic.release();
         
         SceneManager.LoadScene("GameManager");
     }
