@@ -49,7 +49,7 @@ public class MiningGame : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private EventReference successSfx;
     private EventInstance laserCollecting;
-
+    
     void Update()
     {
         if (isMining)
