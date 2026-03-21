@@ -14,8 +14,10 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button loadGameButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button controlsButton;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject mainMenuPanel;  
+    [SerializeField] private GameObject controlsPanel;
     
     // audio
     private EventInstance mainMusic;
@@ -28,6 +30,7 @@ public class MainMenuManager : MonoBehaviour
         
         mainMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
+        controlsPanel.SetActive(false);
 
         if (newGameButton != null)
             newGameButton.onClick.AddListener(OnNewGameClicked);
@@ -37,6 +40,9 @@ public class MainMenuManager : MonoBehaviour
         
         if (optionsButton != null)
             optionsButton.onClick.AddListener(OnOptionsClicked);
+        
+        if (controlsButton != null)
+            controlsButton.onClick.AddListener(OnControlsClicked);
         
         if (quitButton != null)
             quitButton.onClick.AddListener(OnQuitClicked);
@@ -124,6 +130,7 @@ public class MainMenuManager : MonoBehaviour
     }
 
     public void ShowMenu() {
+        controlsPanel.SetActive(false);
         optionsPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
     }
@@ -139,6 +146,12 @@ public class MainMenuManager : MonoBehaviour
         #endif
     }
     
+    private void OnControlsClicked()
+    {
+        mainMenuPanel.SetActive(false);
+        controlsPanel.SetActive(true);
+    }
+
     private void OnDestroy()
     {
         mainMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
