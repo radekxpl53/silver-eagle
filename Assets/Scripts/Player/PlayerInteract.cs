@@ -1,16 +1,27 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour {
     public float range = 20f;
     public ShipStats shipStats;
     public bool canSell;
+    [SerializeField] private GameObject contextCanvas;
+
+    private void Start()
+    {
+        if (contextCanvas != null)
+            contextCanvas.SetActive(false);
+    }
+
     void Update()
     {
-        if (Keyboard.current.gKey.wasPressedThisFrame && GameManager.Instance.currentState == GameState.Exploration)
+        if (GameManager.Instance.currentState == GameState.Exploration)
         {
-            Debug.Log("Naciśnięto klawisz G");
+            //Debug.Log("Naciśnięto klawisz G");
 
             Ray rayRight = new Ray(transform.position, transform.right);
             Ray rayLeft = new Ray(transform.position, -transform.right);
@@ -20,12 +31,12 @@ public class PlayerInteract : MonoBehaviour {
             Debug.DrawRay(transform.position, -transform.right * range, Color.yellow, 2f);
 
             bool foundAsteroid = false;
-
+            
             if (Physics.Raycast(rayRight, out hit, range))  // <- Kacper miał racje, outy są mega
             {
                 if (hit.collider.CompareTag("Asteroid"))
                 {
-                    TryStartMining(hit);
+                    //TryStartMining(hit);
                     foundAsteroid = true;
                 }
                 else
@@ -37,7 +48,7 @@ public class PlayerInteract : MonoBehaviour {
             {
                 if (hit.collider.CompareTag("Asteroid"))
                 {
-                    TryStartMining(hit);
+                    //TryStartMining(hit);
                     foundAsteroid = true;
                 }
                 else
@@ -46,17 +57,33 @@ public class PlayerInteract : MonoBehaviour {
                 }
             }
 
-            if (!foundAsteroid)
+            if (foundAsteroid)
             {
-                Debug.Log("Lasery boczne nie znalazły asteroidy. Podleć bliżej burtą!");
+                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby wydobyć surowce naciśnij G";
+                contextCanvas.SetActive(true);
+                
+                // sprawdz klawisz
+                if (Keyboard.current.gKey.wasPressedThisFrame)
+                {
+                    TryStartMining(hit);
+                    contextCanvas.SetActive(false);
+                }
+            }
+            else
+            {
+                contextCanvas.SetActive(false);
+            }
+
+            if (canSell)
+            {
+                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby sprzedać surowce naciśnij C";
+                contextCanvas.SetActive(true);
             }
         }
     }
 
     void TryStartMining(RaycastHit hit) {
         Debug.Log("Laser w coś trafił: " + hit.collider.name);
-
-        
 
         if (hit.collider.CompareTag("Asteroid") && GameManager.Instance.currentState == GameState.Exploration) {
             
