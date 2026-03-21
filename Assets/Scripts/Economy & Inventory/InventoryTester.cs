@@ -9,7 +9,7 @@ public class InventoryTester : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.tKey.wasPressedThisFrame)
+        if (Keyboard.current.tKey.wasPressedThisFrame && GameManager.Instance.currentState == GameState.Exploration)
         {
             if (database != null && database.Resources.Count > 0)
             {

@@ -8,7 +8,7 @@ public class PlayerInteract : MonoBehaviour {
     public bool canSell;
     void Update()
     {
-        if (Keyboard.current.gKey.wasPressedThisFrame)
+        if (Keyboard.current.gKey.wasPressedThisFrame && GameManager.Instance.currentState == GameState.Exploration)
         {
             Debug.Log("Naciśnięto klawisz G");
 
