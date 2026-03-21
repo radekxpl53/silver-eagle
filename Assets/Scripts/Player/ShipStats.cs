@@ -8,12 +8,28 @@ public class ShipStats : MonoBehaviour {
     public float CurrentEnergy { get; private set; }
     public float CurrentCargo { get; private set; }
     public bool IsDestroyed { get; private set; }
+    public float MaxMainThrust { get => maxMainThrust; set => maxMainThrust = value; }
+    public float BrakeThrust { get => brakeThrust; set => brakeThrust = value; }
+    public float ManeuverForce { get => maneuverForce; set => maneuverForce = value; }
+    public float RollForce { get => rollForce; set => rollForce = value; }
+    public float LiftThrust { get => liftThrust; set => liftThrust = value; }
+    public float EmergencySpeedMultiplier { get => emergencySpeedMultiplier; set => emergencySpeedMultiplier = value; }
+    public float NormalDrainRate { get => normalDrainRate; set => normalDrainRate = value; }
+    public float LowFuelThreshold { get => lowFuelThreshold; set => lowFuelThreshold = value; }
 
     [SerializeField] private float MaxHP;
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
-   
+
+    [SerializeField] private float maxMainThrust = 800000f;
+    [SerializeField] private float brakeThrust = 400000f;
+    [SerializeField] private float maneuverForce = 120000f;
+    [SerializeField] private float rollForce = 120000f;
+    [SerializeField] private float liftThrust = 120000f;
+    [SerializeField] private float emergencySpeedMultiplier = 0.3f;
+    [SerializeField] private float normalDrainRate = 1f;
+    [SerializeField] private float lowFuelThreshold = 40f;
 
     [Header("--- SKRYPTY STERUJĄCE DO ZABLOKOWANIA ---")]
     [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
