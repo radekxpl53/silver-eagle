@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -29,6 +30,7 @@ public class SectorData {
 
 public class ChunkManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI sectorInfo;
     [SerializeField] private MapDisplay mapDisplay;
 
     public static ChunkManager Instance;
@@ -190,6 +192,9 @@ public class ChunkManager : MonoBehaviour
             if (sectorScript != null) {
                 sectorScript.Setup(dataFromMemory, sectorSize);
             }
+            string x = ((char)('A' + sectorCooRD[1])).ToString();
+            int y = sectorCooRD[0] + 1;
+            sectorInfo.SetText("Aktualny Sektor: "+x+y);
         }
     }
 
