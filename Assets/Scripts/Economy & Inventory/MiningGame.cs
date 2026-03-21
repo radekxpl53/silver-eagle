@@ -20,8 +20,8 @@ public class MiningGame : MonoBehaviour
     [Header("Drill Settings")]
     public float maxDrillTemperature = 2500f;
     public float heatgainSpeed = 650f;
-    public float coolDownSpeed = 550f;
-    public float progressSpeed = 0.2f;
+    public float coolDownSpeed = 1000f;
+    public float progressSpeed = 0.1f;
     public float overheatPenaltyTime = 2f;
 
     [Header("Movement Settings")]
