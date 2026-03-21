@@ -41,7 +41,7 @@ public class PlayerInteract : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("Prawy laser trafił w: " + hit.collider.tag);
+                    //Debug.Log("Prawy laser trafił w: " + hit.collider.tag);
                 }
             }
             if (!foundAsteroid && Physics.Raycast(rayLeft, out hit, range)) 
@@ -53,13 +53,13 @@ public class PlayerInteract : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("Lewy laser trafił w: " + hit.collider.tag);
+                    //Debug.Log("Lewy laser trafił w: " + hit.collider.tag);
                 }
             }
 
             if (foundAsteroid)
             {
-                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby wydobyć surowce naciśnij G";
+                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby wydobyć surowce naciśnij 'G'";
                 contextCanvas.SetActive(true);
                 
                 // sprawdz klawisz
@@ -76,7 +76,7 @@ public class PlayerInteract : MonoBehaviour {
 
             if (canSell)
             {
-                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby sprzedać surowce naciśnij C";
+                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby sprzedać surowce naciśnij 'C'";
                 contextCanvas.SetActive(true);
             }
         }

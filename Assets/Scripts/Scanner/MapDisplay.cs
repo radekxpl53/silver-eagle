@@ -9,16 +9,22 @@ public class MapDisplay : MonoBehaviour
     [SerializeField] private GameObject backgroud;
     [SerializeField] private GameObject sector;
     [SerializeField] private GameObject labelPrefab;
-    private bool isGenerated = false;
 
     public void GenerateMapUI()
     {
-        if (isGenerated) return;
+        foreach (Transform child in backgroud.transform)
+        {
+            Destroy(child.gameObject);
+        }
 
         for (var j = ChunkManager.Instance.mapRows; j >= 0; j--)
         {
             for (var i = 0; i < (ChunkManager.Instance.mapCols + 1); i++)
-            { 
+            {
+                int playerXPosition = Mathf.FloorToInt(ChunkManager.Instance.Player.position.x / ChunkManager.Instance.SectorSize);
+                int playerZPosition = Mathf.FloorToInt(ChunkManager.Instance.Player.position.z / ChunkManager.Instance.SectorSize);
+
+                Vector2Int currentPos = new Vector2Int(playerXPosition, playerZPosition);
                 if (i == ChunkManager.Instance.mapCols || j == 0)
                 {
                     GameObject label = Instantiate(labelPrefab, backgroud.transform);
@@ -52,11 +58,16 @@ public class MapDisplay : MonoBehaviour
 
                 Image img = newSector.GetComponent<Image>();
 
-                if (ChunkManager.Instance.allSectorData[gridCoords].hasAsteroidGroup)
+
+                if(gridCoords == currentPos)
+                {
+                    img.color = Color.green;
+                }
+                else if (ChunkManager.Instance.allSectorData[gridCoords].hasAsteroidGroup)
                 {
                     img.color = Color.brown;
                 }
-                else
+                else if(!ChunkManager.Instance.allSectorData[gridCoords].hasAsteroidGroup)
                 {
                     img.color = Color.gray;
                 }
@@ -65,7 +76,6 @@ public class MapDisplay : MonoBehaviour
                 btn.onClick.AddListener(btnScript.OnClick);
             }
         }
-        isGenerated = true;
     }
 }
 
