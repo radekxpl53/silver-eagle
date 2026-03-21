@@ -10,14 +10,14 @@ public class ShipController : MonoBehaviour
     [SerializeField] private GameObject fppCameraObject;
 
     [Header("TRYB LOTU")]
-    [SerializeField] private bool flightAssist = true;
+    [SerializeField] private bool flightAssist = false;
     [SerializeField] private float autoBrakeStrength = 2.0f;
 
     [Header("STEROWANIE")]
     [SerializeField] private float fppMouseSensitivity = 0.5f;
     [SerializeField] private float verticalAccelerationTime = 0.4f;
     public float forwardAccelerationTime = 1.0f; // Czas rozpędzania do przodu/tyłu
-    public float maxOverallSpeed = 10f;
+    public float maxOverallSpeed = 20f;
 
     [Header("WIZUALNY PRZECHYL")]
     [SerializeField] private Transform shipVisualModel;
