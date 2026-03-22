@@ -9,6 +9,9 @@ public class SellSystem : MonoBehaviour
     [SerializeField] private PlayerInteract playerInteract;
     [SerializeField] private GameObject endScreen;
     [SerializeField] private bool firstSell = false;
+
+    private ShipController shipController;
+
     void Start()
     {
         economyManager = EconomyManager.Instance;
@@ -16,6 +19,7 @@ public class SellSystem : MonoBehaviour
         inventory = player.GetComponent<PlayerInventory>();
         shipStats = player.GetComponent<ShipStats>();
         playerInteract = player.GetComponent<PlayerInteract>();
+        shipController = player.GetComponent<ShipController>();
         if (endScreen != null) endScreen.SetActive(false);
     }
 
@@ -48,8 +52,10 @@ public class SellSystem : MonoBehaviour
         if (endScreen != null)
         {
             endScreen.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (shipController != null)
+            {
+                shipController.isInteractingWithUI = true;
+            }
         }
     }
     public void CloseEndScreen()
@@ -57,8 +63,10 @@ public class SellSystem : MonoBehaviour
         if (endScreen != null)
         {
             endScreen.SetActive(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (shipController != null)
+            {
+                shipController.isInteractingWithUI = false;
+            }
         }
     }
 }

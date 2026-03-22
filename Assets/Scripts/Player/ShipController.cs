@@ -30,6 +30,7 @@ public class ShipController : MonoBehaviour
     private float currentVerticalThrust = 0f;
     private float verticalVelocityRef = 0f;
 
+    public bool isInteractingWithUI = false;
     private float currentForwardThrust = 0f;
     private float forwardVelocityRef = 0f;
     private float currentVisualRoll = 0f;
@@ -64,7 +65,12 @@ public class ShipController : MonoBehaviour
             UpdatePhysics();
         }
 
-        if (GameManager.Instance != null && (GameManager.Instance.currentState == GameState.Exploration || GameManager.Instance.currentState == GameState.Fighting || GameManager.Instance.currentState == GameState.Mining))
+        if (isInteractingWithUI)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else if (GameManager.Instance != null && (GameManager.Instance.currentState == GameState.Exploration || GameManager.Instance.currentState == GameState.Fighting || GameManager.Instance.currentState == GameState.Mining))
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
