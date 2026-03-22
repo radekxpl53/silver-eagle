@@ -52,10 +52,7 @@ public class SellSystem : MonoBehaviour
         if (endScreen != null)
         {
             endScreen.SetActive(true);
-            if (shipController != null)
-            {
-                shipController.isInteractingWithUI = true;
-            }
+            GameManager.Instance.ChangeState(GameState.Menu);
         }
     }
     public void CloseEndScreen()
@@ -63,10 +60,7 @@ public class SellSystem : MonoBehaviour
         if (endScreen != null)
         {
             endScreen.SetActive(false);
-            if (shipController != null)
-            {
-                shipController.isInteractingWithUI = false;
-            }
+            GameManager.Instance.ChangeState(GameState.Exploration);
         }
     }
 }

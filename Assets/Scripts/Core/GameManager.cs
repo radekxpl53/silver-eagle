@@ -85,6 +85,17 @@ public class GameManager : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         Debug.Log($"<color=yellow>GameState zmieniony na: <b>{newState}</b></color>");
+
+        if (newState == GameState.Exploration || newState == GameState.Fighting || newState == GameState.Mining)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void TriggerGameOver()

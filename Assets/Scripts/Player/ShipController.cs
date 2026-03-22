@@ -65,22 +65,6 @@ public class ShipController : MonoBehaviour
             UpdatePhysics();
         }
 
-        if (isInteractingWithUI)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else if (GameManager.Instance != null && (GameManager.Instance.currentState == GameState.Exploration || GameManager.Instance.currentState == GameState.Fighting || GameManager.Instance.currentState == GameState.Mining))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
 
         // 3. Obsługa wagi i ładunku 
         float currentLoadPercent = stats.GetMaxCargo() > 0 ? stats.CurrentCargo / stats.GetMaxCargo() : 0f;
