@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7abd4e6049469321ca6e253ed3b19c0e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - miningCanvas: {instanceID: 0}
+  - greenZone: {instanceID: 0}
+  - rock: {instanceID: 0}
+  - background: {instanceID: 0}
+  - progressSlider: {instanceID: 0}
+  - explosionPrefab: {fileID: 8968023698026162492, guid: 4eca1c217956c6945af47cf8d29714e8, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

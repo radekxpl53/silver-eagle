@@ -2,6 +2,7 @@
 ## nazewnictwo plików camelCase ( jakasNazwaZmiennej )
 
 ## 📂 Struktura projektu
+```
 Assets/  
 ├── Art/ # Wszystkie assety wizualne  
 │ ├── Characters/ # Modele postaci + tekstury  
@@ -27,3 +28,4 @@ Assets/
 │  
 ├── Plugins/ # Zewnętrzne biblioteki i pakiety  
 └── Tests/ # Testy jednostkowe i integracyjne  
+```
