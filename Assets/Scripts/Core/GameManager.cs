@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 public enum GameState
@@ -14,19 +15,17 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance {get; private set; }
     public GameState currentState = GameState.Exploration;
 
-    [Header("UI Notifications")]
-    public TextMeshProUGUI notificationText;
-    public TextMeshProUGUI infoText;
-
-    [Header("Death System")]
-    [SerializeField] private GameObject deathScreenCanvas;
-    [SerializeField] private Transform baseSpawnPoint;
-    [SerializeField] private GameObject player;
-
+    private GameObject _deathScreenCanvas;
+    private Transform _baseSpawnPoint;
+    private GameObject _player;
     public List<Transform> allRepairStationsPosition = new List<Transform>();
+    public static event Action<string, Color> OnNotificationRequested;
+    public static event Action<string, Color> OnSectorInfoRequested;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -44,39 +43,28 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (deathScreenCanvas != null)
+        if (_deathScreenCanvas != null)
         {
-            deathScreenCanvas.SetActive(false);
+            _deathScreenCanvas.SetActive(false);
         }
     }
 
+    public void RegisterPlayer(GameObject playerInstance)
+    {
+        _player = playerInstance;
+        Debug.Log("<color=green>Gracz został pomyślnie zarejestrowany!</color>");
+    }
+    public void RegisterDeathScreen(GameObject canvas) => _deathScreenCanvas = canvas;
+    public void RegisterSpawnPoint(Transform spawn) => _baseSpawnPoint = spawn; 
+
     public void ShowMiningNotification(string message, Color color)
     {
-        if (notificationText != null)
-        {
-            notificationText.text = message;
-            notificationText.color = color;
-            notificationText.gameObject.SetActive(true);
-
-            // Wyłączamy napis po 3 sekundach
-            CancelInvoke("HideNotification"); 
-            Invoke("HideNotification", 8f);
-        }
+        OnNotificationRequested?.Invoke(message, color);
     }
 
     public void ShowSectorInfo(string message, Color color)
     {
-        if (infoText != null)
-        {
-            infoText.text = message;
-            infoText.color = color;
-        }
-    }
-
-    private void HideNotification()
-    {
-        if (notificationText != null)
-            notificationText.gameObject.SetActive(false);
+        OnSectorInfoRequested?.Invoke(message, color);
     }
 
     public void ChangeState(GameState newState)
@@ -89,12 +77,8 @@ public class GameManager : MonoBehaviour
     public void TriggerGameOver()
     {
         ChangeState(GameState.GameOver);
-
-        if (deathScreenCanvas != null)
-            deathScreenCanvas.SetActive(true);
-
+        if (_deathScreenCanvas != null) _deathScreenCanvas.SetActive(true);
         Time.timeScale = 0f;
-
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -102,8 +86,7 @@ public class GameManager : MonoBehaviour
     public void RespawnAtBase()
     {
         Time.timeScale = 1f;
-
-        if (player != null)
+        if (_player != null)
         {
             Vector3 targetPosition = Vector3.zero;
             bool stationFound = false;
@@ -112,43 +95,32 @@ public class GameManager : MonoBehaviour
             {
                 float minDistance = Mathf.Infinity;
                 Transform nearestStation = null;
-
                 foreach (Transform t in allRepairStationsPosition)
                 {
-                    float distance = Vector3.Distance(player.transform.position, t.position);
+                    if (t == null) continue; // Zabezpieczenie przed usuniętymi obiektami
+                    float distance = Vector3.Distance(_player.transform.position, t.position);
                     if (distance < minDistance)
                     {
                         minDistance = distance;
                         nearestStation = t;
                     }
                 }
-
-                if (nearestStation != null)
-                {
-                    targetPosition = nearestStation.position;
-                    stationFound = true;
-                }
+                if (nearestStation != null) { targetPosition = nearestStation.position; stationFound = true; }
             }
 
-            if (!stationFound && baseSpawnPoint != null)
-            {
-                targetPosition = baseSpawnPoint.position;
-            }
+            if (!stationFound && _baseSpawnPoint != null) targetPosition = _baseSpawnPoint.position;
 
-            player.transform.position = targetPosition;
-            player.transform.rotation = Quaternion.identity;
+            _player.transform.position = targetPosition;
+            _player.transform.rotation = Quaternion.identity;
 
-            Rigidbody rb = player.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (_player.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
         }
 
-        if (deathScreenCanvas != null)
-            deathScreenCanvas.SetActive(false);
-
+        if (_deathScreenCanvas != null) _deathScreenCanvas.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         ChangeState(GameState.Exploration);

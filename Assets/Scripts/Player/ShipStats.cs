@@ -28,6 +28,10 @@ public class ShipStats : MonoBehaviour {
         DeveloperConsole.Instance.AddCommand("set_max_energy", SetMaxEnergyCommand);
         DeveloperConsole.Instance.AddCommand("get_hp", GetHPCommand);
         DeveloperConsole.Instance.AddCommand("get_energy", GetEnergyCommand);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterPlayer(this.gameObject);
+        }
     }
 
     public void ResetData()
