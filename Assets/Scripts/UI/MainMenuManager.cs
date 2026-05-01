@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using FMOD.Studio;
 using System.IO;
+using System.Collections;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button quitButton;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject mainMenuPanel;  
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private Slider loadingSlider;
     
     // audio
     private EventInstance mainMusic;
@@ -28,6 +31,7 @@ public class MainMenuManager : MonoBehaviour
         
         mainMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
+        loadingPanel.SetActive(false);
 
         if (newGameButton != null)
             newGameButton.onClick.AddListener(OnNewGameClicked);
@@ -49,7 +53,40 @@ public class MainMenuManager : MonoBehaviour
         mainMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         mainMusic.release();
         
-        SceneManager.LoadScene("GameManager");
+        StartCoroutine(LoadSceneAsync("GameManager"));
+    }
+
+    private IEnumerator LoadSceneAsync(string sceneName)
+    {
+        mainMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        mainMusic.release();
+
+        mainMenuPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        loadingPanel.SetActive(true);
+
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+        op.allowSceneActivation = false;
+
+        float fakeProgress = 0f;
+        float speed = 1f; 
+
+        while (!op.isDone)
+        {
+            float realProgress = Mathf.Clamp01(op.progress / 0.9f);
+
+            fakeProgress = Mathf.MoveTowards(fakeProgress, realProgress, speed * Time.deltaTime);
+
+            loadingSlider.value = fakeProgress;
+
+            if (fakeProgress >= 0.99f && op.progress >= 0.9f)
+            {
+                yield return new WaitForSeconds(0.3f); 
+                op.allowSceneActivation = true;
+            }
+
+            yield return null;
+        }
     }
 
     void LoadGame()
@@ -113,7 +150,7 @@ public class MainMenuManager : MonoBehaviour
     private void OnLoadGameClicked()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadScene("GameManager");
+        StartCoroutine(LoadSceneAsync("GameManager"));
     }
 
     public void OnOptionsClicked()
