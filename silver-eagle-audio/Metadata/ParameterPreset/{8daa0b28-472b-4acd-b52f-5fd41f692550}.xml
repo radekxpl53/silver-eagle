@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{8daa0b28-472b-4acd-b52f-5fd41f692550}">
+		<property name="name">
+			<value>Blend_Filter</value>
+		</property>
+		<relationship name="folder">
+			<destination>{6e67b3bf-a2a0-4c7a-91a3-86ca419ea8d9}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{9c421e00-8365-481b-a523-74f3978fa02c}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{9c421e00-8365-481b-a523-74f3978fa02c}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>1</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+		<relationship name="automators">
+			<destination>{fcf6ed35-a00a-4902-b03c-3ef40f68dc74}</destination>
+		</relationship>
+		<relationship name="modulators">
+			<destination>{7aa37842-c823-4158-a6fa-81b76ab61ad8}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{fcf6ed35-a00a-4902-b03c-3ef40f68dc74}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+	<object class="SeekModulator" id="{7aa37842-c823-4158-a6fa-81b76ab61ad8}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cursorPosition</value>
+		</property>
+		<property name="speedAscending">
+			<value>2</value>
+		</property>
+	</object>
+</objects>
