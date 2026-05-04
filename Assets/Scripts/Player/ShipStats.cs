@@ -23,7 +23,7 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
     [SerializeField] private List<string> purchasedUpgrades = new List<string>();
-    public bool IsDestroyed { get; private set; }
+  
 
     [SerializeField] private float maxMainThrust = 800000f;
     [SerializeField] private float brakeThrust = 400000f;
