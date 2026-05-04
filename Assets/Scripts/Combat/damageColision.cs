@@ -27,13 +27,18 @@ public class DamageCollision : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        RuntimeManager.PlayOneShot(hitSfx, collision.collider.transform.position);
-
         float impactForce = collision.impulse.magnitude;
         if (impactForce < damageThreshold) return;
 
         float damage = (impactForce - damageThreshold) * damageMultiplier;
         damage = Mathf.Max(0f, damage);
+
+        //sfx
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Impact_Velocity", impactForce / 100);
+
+        RuntimeManager.PlayOneShot(hitSfx, collision.collider.transform.position);
+
+        Debug.Log($"siła uderzenia {impactForce}");
 
         // <<< INTEGRACJA Z SHIPSTATS >>>
         if (shipStats != null)
