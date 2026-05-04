@@ -1,3 +1,8 @@
 version https://git-lfs.github.com/spec/v1
+<<<<<<< ladowanie-scen
+oid sha256:404d1f0594b39aa3c6ac6e932bf3c2a2eb2406e437d6438e6d63b67b2d1359d0
+size 74521
+=======
 oid sha256:f3c571b6f77902252dc6a549b31409b9a6c38f12e33956daee72c82ea2aa9535
 size 95419
+>>>>>>> develop
