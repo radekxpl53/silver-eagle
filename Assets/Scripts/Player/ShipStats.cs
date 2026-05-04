@@ -22,7 +22,7 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
-    // [SerializeField] private List<string> purchasedUpgrades = new List<string>();
+    [SerializeField] private List<string> purchasedUpgrades = new List<string>();
 
     [SerializeField] private float maxMainThrust = 800000f;
     [SerializeField] private float brakeThrust = 400000f;
@@ -174,7 +174,7 @@ public class ShipStats : MonoBehaviour {
         MaxEnergy = amount;
         Debug.Log("Poprawnie przypisano " + amount + " MaxPaliwa");
     }
-    
+
 
     public void SetHPCommand(string[] args) {
         if (args.Length > 0) {
@@ -228,23 +228,23 @@ public class ShipStats : MonoBehaviour {
         Debug.Log("Aktualny stan paliwa wynosi: " + CurrentEnergy + "/" + MaxEnergy);
     }
 
-    public List<string> GetUnlockedUpgradesList() 
+    public List<string> GetUnlockedUpgradesList()
     {
         return purchasedUpgrades;
     }
 
-    public void UnlockUpgrade(string upgradeID) 
+    public void UnlockUpgrade(string upgradeID)
     {
-        if (!purchasedUpgrades.Contains(upgradeID)) 
+        if (!purchasedUpgrades.Contains(upgradeID))
         {
             purchasedUpgrades.Add(upgradeID);
             Debug.Log("Odblokowano ulepszenie: " + upgradeID);
         }
     }
-    public void LoadUpgrades(List<string> upgrades) 
+    public void LoadUpgrades(List<string> upgrades)
     {
         if (upgrades == null) return;
-        
+
         purchasedUpgrades = new List<string>(upgrades);
         Debug.Log("Wczytano ulepszenia w ShipStats: " + purchasedUpgrades.Count);
     }
