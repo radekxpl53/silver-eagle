@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,7 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
+    [SerializeField] private List<string> purchasedUpgrades = new List<string>();
 
     [SerializeField] private float maxMainThrust = 800000f;
     [SerializeField] private float brakeThrust = 400000f;
@@ -30,6 +32,9 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float emergencySpeedMultiplier = 0.3f;
     [SerializeField] private float normalDrainRate = 1f;
     [SerializeField] private float lowFuelThreshold = 40f;
+
+    public float baseCargoCapacity = 100f;
+    public float currentMaxCargo;
 
     [Header("--- SKRYPTY STERUJĄCE DO ZABLOKOWANIA ---")]
     [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
@@ -55,6 +60,16 @@ public class ShipStats : MonoBehaviour {
         CurrentCargo = 0;
     }
 
+    //*****************************88888  
+    public void UpdateMaxCargo(float multiplier) 
+    {
+        MaxCargo = baseCargoCapacity * multiplier;
+        Debug.Log($"[ShipStats] Nowy limit ładowni: {MaxCargo}");
+    }
+
+    
+
+    //****************88888
     public void TakeDamage(float damage)
     {
         if (damage > 0f)
@@ -172,7 +187,7 @@ public class ShipStats : MonoBehaviour {
         MaxEnergy = amount;
         Debug.Log("Poprawnie przypisano " + amount + " MaxPaliwa");
     }
-    
+
 
     public void SetHPCommand(string[] args) {
         if (args.Length > 0) {
@@ -224,6 +239,27 @@ public class ShipStats : MonoBehaviour {
     }
     public void GetEnergyCommand(string[] args) {
         Debug.Log("Aktualny stan paliwa wynosi: " + CurrentEnergy + "/" + MaxEnergy);
+    }
+
+    public List<string> GetUnlockedUpgradesList()
+    {
+        return purchasedUpgrades;
+    }
+
+    public void UnlockUpgrade(string upgradeID)
+    {
+        if (!purchasedUpgrades.Contains(upgradeID))
+        {
+            purchasedUpgrades.Add(upgradeID);
+            Debug.Log("Odblokowano ulepszenie: " + upgradeID);
+        }
+    }
+    public void LoadUpgrades(List<string> upgrades)
+    {
+        if (upgrades == null) return;
+
+        purchasedUpgrades = new List<string>(upgrades);
+        Debug.Log("Wczytano ulepszenia w ShipStats: " + purchasedUpgrades.Count);
     }
 
     public float GetMaxHP() { return MaxHP; }

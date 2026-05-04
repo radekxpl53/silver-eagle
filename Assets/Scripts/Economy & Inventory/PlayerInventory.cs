@@ -10,6 +10,8 @@ public class PlayerInventory : MonoBehaviour
 
     void Start()
     {
+        ApplyCargoUpgrade();
+
         if (uiDisplay == null)
         {
             Debug.LogError("BŁĄD: Nie podpiąłeś panelu do pola Ui Display w PlayerInventory na obiekcie: " + gameObject.name);
@@ -87,4 +89,21 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    private void ApplyCargoUpgrade()
+    {
+    
+    if (shipStats == null) return;
+
+    
+    float cargoModulator = 1.0f; 
+    if (GameManager.Instance != null)
+    {
+        cargoModulator = PlayerPrefs.GetFloat("CargoModifier", 1.0f);
+    }
+        
+    shipStats.UpdateMaxCargo(cargoModulator);
+        
+    Debug.Log($"[Inventory] Pojemność ładowni zaktualizowana o mnożnik: {cargoModulator}");
+    
+    }
 }
