@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject deathScreenCanvas;
     [SerializeField] private Transform baseSpawnPoint;
     [SerializeField] private GameObject player;
+    [SerializeField] private ShipStats shipStats;
 
     public List<Transform> allRepairStationsPosition = new List<Transform>();
     private void Awake()
@@ -84,6 +85,17 @@ public class GameManager : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         Debug.Log($"<color=yellow>GameState zmieniony na: <b>{newState}</b></color>");
+
+        if (newState == GameState.Exploration || newState == GameState.Fighting || newState == GameState.Mining)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void TriggerGameOver()
@@ -102,6 +114,8 @@ public class GameManager : MonoBehaviour
     public void RespawnAtBase()
     {
         Time.timeScale = 1f;
+
+        shipStats.Heal(shipStats.GetMaxHP());
 
         if (player != null)
         {

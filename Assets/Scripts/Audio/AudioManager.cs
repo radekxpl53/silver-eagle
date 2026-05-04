@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
         masterBus = RuntimeManager.GetBus("bus:/");
     }
 
-    private void Update()
+    private void Update()   
     {
         masterBus.setVolume(masterVolume);
     }
