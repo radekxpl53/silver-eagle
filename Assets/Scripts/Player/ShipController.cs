@@ -8,6 +8,7 @@ public class ShipController : MonoBehaviour
     [SerializeField] private bool isFPPMode = true;
     [SerializeField] private GameObject tppCameraObject;
     [SerializeField] private GameObject fppCameraObject;
+    private Vector2 _accumulatedMouseDelta;
 
     [Header("TRYB LOTU")]
     [SerializeField] private bool flightAssist = false;
@@ -57,6 +58,9 @@ public class ShipController : MonoBehaviour
             ApplyCameraMode();
             UpdatePhysics();
         }
+
+        if (Mouse.current != null && !isInteractingWithUI)
+            _accumulatedMouseDelta += Mouse.current.delta.ReadValue();
 
         // 2. Zmiana trybu lotu
         if (Keyboard.current != null && Keyboard.current.xKey.wasPressedThisFrame)
@@ -188,9 +192,9 @@ public class ShipController : MonoBehaviour
             float mouseX = 0f, mouseY = 0f;
             if (Mouse.current != null)
             {
-                Vector2 delta = Mouse.current.delta.ReadValue();
-                mouseX = delta.x * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
-                mouseY = delta.y * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
+                mouseX = _accumulatedMouseDelta.x * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
+                mouseY = _accumulatedMouseDelta.y * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
+                _accumulatedMouseDelta = Vector2.zero;
             }
 
             float pitchForce = -mouseY * stats.ManeuverForce * currentPerformance;
