@@ -25,9 +25,8 @@ public class PlayerData
     public bool repairDrones;
     public bool repairKits;
 
-    public List<string> unlockedUpgrades = new List<string>();
-
     private static PlayerData _instance = null;
+
     public delegate void OnPlayerDataChange(
     float hp,
     int credits,
@@ -47,8 +46,7 @@ public class PlayerData
     bool sectorInformation,
     bool fastTravel,
     bool repairDrones,
-    bool repairKits
-    );
+    bool repairKits);
     public static event OnPlayerDataChange OnDataChange;
 
     public static PlayerData Instance
@@ -57,11 +55,13 @@ public class PlayerData
         {
             if(_instance == null)
             {
-                _instance = new PlayerData(100, 0, 200, new List<ResourceStack>(), Vector3.zero, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false, new List<string>());
+                _instance = new PlayerData(100, 0, 200, new List<ResourceStack>(), Vector3.zero, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, false);
             }
+
             return _instance;
         }
-    }
+    }  
+
     private PlayerData(
     float hp,
     int credits,
@@ -81,8 +81,7 @@ public class PlayerData
     bool sectorInformation,
     bool fastTravel,
     bool repairDrones,
-    bool repairKits,
-    List<string> upgrades)
+    bool repairKits)
     {
         this.hp = hp;
         this.credits = credits;
@@ -103,7 +102,6 @@ public class PlayerData
         this.fastTravel = fastTravel;
         this.repairDrones = repairDrones;
         this.repairKits = repairKits;
-        this.unlockedUpgrades = upgrades;
     } 
 
     public void SetPlayerData(
@@ -125,8 +123,7 @@ public class PlayerData
     bool sectorInformation,
     bool fastTravel,
     bool repairDrones,
-    bool repairKits,
-    List<string> upgrades)
+    bool repairKits)
     {
         this.hp = hp;
         this.credits = credits;
@@ -147,8 +144,7 @@ public class PlayerData
         this.fastTravel = fastTravel;
         this.repairDrones = repairDrones;
         this.repairKits = repairKits;
-        this.unlockedUpgrades = upgrades;
-        
+
         OnDataChange?.Invoke(hp, credits, energy, inventory, position, speed, maneuverability, acceleration, cargoHold, durability, 
         shield, militaryScanner, laserTemperature, drillDurability, asteroidReport, sectorInformation, fastTravel, repairDrones, repairKits);
     }
@@ -174,8 +170,7 @@ public class PlayerData
             false,
             false,
             false,
-            false,
-            new List<string>()
+            false
         );
     }
 
