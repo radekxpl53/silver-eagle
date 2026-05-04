@@ -10,7 +10,6 @@ public class ShipController : MonoBehaviour
     [SerializeField] private bool isFPPMode = true;
     [SerializeField] private GameObject tppCameraObject;
     [SerializeField] private GameObject fppCameraObject;
-    private Vector2 _accumulatedMouseDelta;
 
     [Header("TRYB LOTU")]
     [SerializeField] private bool flightAssist = false;
@@ -26,9 +25,6 @@ public class ShipController : MonoBehaviour
     [SerializeField] private Transform shipVisualModel;
     [SerializeField] private float maxRollAngle = 15f;
     [SerializeField] private float rollSmoothSpeed = 5f;
-
-    [Header("STRZELANIE")]
-    private HeavyKineticLauncher launcher;
 
     private Rigidbody rb;
     private ShipStats stats;
@@ -47,8 +43,6 @@ public class ShipController : MonoBehaviour
 
     void Start()
     {
-        launcher = GetComponent<HeavyKineticLauncher>();
-
         rb = GetComponent<Rigidbody>();
         stats = GetComponent<ShipStats>();
 
@@ -68,9 +62,6 @@ public class ShipController : MonoBehaviour
             UpdatePhysics();
         }
 
-        if (Mouse.current != null && !isInteractingWithUI)
-            _accumulatedMouseDelta += Mouse.current.delta.ReadValue();
-
         // 2. Zmiana trybu lotu
         if (Keyboard.current != null && Keyboard.current.xKey.wasPressedThisFrame)
         {
@@ -87,9 +78,6 @@ public class ShipController : MonoBehaviour
             previousLoadPercent = currentLoadPercent;
         }
 
-        // 4. strzelanie
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-            launcher.TryFire();
         ChangeAudioFilter();
     }
 
@@ -206,9 +194,9 @@ public class ShipController : MonoBehaviour
             float mouseX = 0f, mouseY = 0f;
             if (Mouse.current != null)
             {
-                mouseX = _accumulatedMouseDelta.x * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
-                mouseY = _accumulatedMouseDelta.y * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
-                _accumulatedMouseDelta = Vector2.zero;
+                Vector2 delta = Mouse.current.delta.ReadValue();
+                mouseX = delta.x * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
+                mouseY = delta.y * fppMouseSensitivity * Time.fixedDeltaTime * 50f;
             }
 
             float pitchForce = -mouseY * stats.ManeuverForce * currentPerformance;
