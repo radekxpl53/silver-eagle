@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -29,6 +30,7 @@ public class SectorData {
 
 public class ChunkManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI sectorInfo;
     [SerializeField] private MapDisplay mapDisplay;
 
     public static ChunkManager Instance;
@@ -40,8 +42,10 @@ public class ChunkManager : MonoBehaviour
     public int mapCols { get; private set; } = 6;
     public int mapRows { get; private set; } = 6;
     // TO jest bardzo do zmiany, bo nie wiem ile daæ ¿eby by³o ok, narazie do testó 4x4x4 km starczy raczej
-    [SerializeField] private float sectorSize = 4000f;
+    [SerializeField] private float sectorSize  = 400f ;
+    public float SectorSize => sectorSize;
     [SerializeField] private Transform player;
+    public Transform Player => player;
     [SerializeField] private GameObject sector;
     [SerializeField] private ResourceDatabase resourceDB;
     private GameObject currentSectorObject = null;
@@ -190,6 +194,9 @@ public class ChunkManager : MonoBehaviour
             if (sectorScript != null) {
                 sectorScript.Setup(dataFromMemory, sectorSize);
             }
+            string x = ((char)('A' + sectorCooRD[1])).ToString();
+            int y = sectorCooRD[0] + 1;
+            sectorInfo.SetText("Aktualny Sektor: "+x+y);
         }
     }
 
