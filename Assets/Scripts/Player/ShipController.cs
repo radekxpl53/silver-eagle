@@ -79,7 +79,7 @@ public class ShipController : MonoBehaviour
         }
 
 
-        // 3. Obsługa wagi i ładunku 
+        // 3. Obsługa wagi i ładunku
         float currentLoadPercent = stats.GetMaxCargo() > 0 ? stats.CurrentCargo / stats.GetMaxCargo() : 0f;
         if (Mathf.Abs(currentLoadPercent - previousLoadPercent) > 0.001f)
         {
