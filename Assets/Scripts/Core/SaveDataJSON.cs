@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveDataJSON : MonoBehaviour
 {
@@ -14,6 +16,17 @@ public class SaveDataJSON : MonoBehaviour
         economyManager = EconomyManager.Instance;
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveData();
+    }
+
+    public void GoToMainMenu()
+    {
+        SaveData();
+        SceneManager.LoadScene("MainMenu"); // Zmień na nazwę swojej sceny
+    }
+
     public void SaveData()
     {
         playerData.position = GameObject.FindGameObjectWithTag("Player").transform.position;
@@ -22,6 +35,8 @@ public class SaveDataJSON : MonoBehaviour
         playerData.cargoHold = shipStats.CurrentCargo;
         playerData.credits = economyManager.Credits;
 
+        playerData.unlockedUpgrades = new List<string>(shipStats.GetUnlockedUpgradesList());
+        
         playerData.inventory.Clear();
 
         foreach (var item in inventory.myItems)
@@ -35,7 +50,7 @@ public class SaveDataJSON : MonoBehaviour
             playerData.inventory.Add(saveStack);
         }
         
-        string json = JsonUtility.ToJson(playerData);
+        string json = JsonUtility.ToJson(playerData, true);
         Debug.Log(json);
 
         string path = Application.persistentDataPath + "/SaveData.json";
@@ -58,10 +73,12 @@ public class SaveDataJSON : MonoBehaviour
 
         PlayerData data = JsonUtility.FromJson<PlayerData>(json);
 
+        shipStats.LoadUpgrades(data.unlockedUpgrades);
+
         GameObject.FindGameObjectWithTag("Player").transform.position = data.position;
 
         playerData.SetPlayerData(data.hp, data.credits, data.energy, data.inventory, data.position, data.speed, data.maneuverability, data.acceleration, data.cargoHold, data.durability, 
-        data.shield, data.militaryScanner, data.laserTemperature, data.drillDurability, data.asteroidReport, data.sectorInformation, data.fastTravel, data.repairDrones, data.repairKits);
+        data.shield, data.militaryScanner, data.laserTemperature, data.drillDurability, data.asteroidReport, data.sectorInformation, data.fastTravel, data.repairDrones, data.repairKits, data.unlockedUpgrades);
         shipStats.SetHP(data.hp);
         shipStats.SetEnergy(data.energy);
         shipStats.SetCargo(data.cargoHold);

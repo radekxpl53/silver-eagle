@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{430a12ec-96df-4289-99b2-651cbeb7588b}">
+		<property name="name">
+			<value>Throttle</value>
+		</property>
+		<relationship name="folder">
+			<destination>{6e67b3bf-a2a0-4c7a-91a3-86ca419ea8d9}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{a75c0fdb-4a0a-4595-8713-003c4778cbbe}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{a75c0fdb-4a0a-4595-8713-003c4778cbbe}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

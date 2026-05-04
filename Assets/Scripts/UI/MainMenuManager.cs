@@ -15,6 +15,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button loadGameButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button controlsButton;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject mainMenuPanel;  
     [SerializeField] private GameObject loadingPanel;
@@ -27,11 +28,15 @@ public class MainMenuManager : MonoBehaviour
     {
         // music
         mainMusic = AudioManager.instance.CreateInstance(FMODEvents.instance.mainMusic);
-        mainMusic.start();
+        
+        PLAYBACK_STATE state;
+        mainMusic.getPlaybackState(out state);
+        if (state != PLAYBACK_STATE.PLAYING) mainMusic.start();
         
         mainMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
         loadingPanel.SetActive(false);
+        controlsPanel.SetActive(false);
 
         if (newGameButton != null)
             newGameButton.onClick.AddListener(OnNewGameClicked);
@@ -41,6 +46,9 @@ public class MainMenuManager : MonoBehaviour
         
         if (optionsButton != null)
             optionsButton.onClick.AddListener(OnOptionsClicked);
+        
+        if (controlsButton != null)
+            controlsButton.onClick.AddListener(OnControlsClicked);
         
         if (quitButton != null)
             quitButton.onClick.AddListener(OnQuitClicked);
@@ -87,6 +95,7 @@ public class MainMenuManager : MonoBehaviour
 
             yield return null;
         }
+        SceneManager.LoadScene("GameManager");
     }
 
     void LoadGame()
@@ -114,7 +123,7 @@ public class MainMenuManager : MonoBehaviour
         data.speed, data.maneuverability, data.acceleration, data.cargoHold,
         data.durability, data.shield, data.militaryScanner, data.laserTemperature,
         data.drillDurability, data.asteroidReport, data.sectorInformation,
-        data.fastTravel, data.repairDrones, data.repairKits);
+        data.fastTravel, data.repairDrones, data.repairKits, data.unlockedUpgrades);
 
         shipStats.SetHP(data.hp);
         shipStats.SetEnergy(data.energy);
@@ -161,6 +170,7 @@ public class MainMenuManager : MonoBehaviour
     }
 
     public void ShowMenu() {
+        controlsPanel.SetActive(false);
         optionsPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
     }
@@ -176,6 +186,12 @@ public class MainMenuManager : MonoBehaviour
         #endif
     }
     
+    private void OnControlsClicked()
+    {
+        mainMenuPanel.SetActive(false);
+        controlsPanel.SetActive(true);
+    }
+
     private void OnDestroy()
     {
         mainMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
