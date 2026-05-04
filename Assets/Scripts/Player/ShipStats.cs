@@ -31,6 +31,9 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float normalDrainRate = 1f;
     [SerializeField] private float lowFuelThreshold = 40f;
 
+    public float baseCargoCapacity = 100f;
+    public float currentMaxCargo;
+
     [Header("--- SKRYPTY STERUJĄCE DO ZABLOKOWANIA ---")]
     [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
 
@@ -55,6 +58,16 @@ public class ShipStats : MonoBehaviour {
         CurrentCargo = 0;
     }
 
+    //*****************************88888  
+    public void UpdateMaxCargo(float multiplier) 
+    {
+        MaxCargo = baseCargoCapacity * multiplier;
+        Debug.Log($"[ShipStats] Nowy limit ładowni: {MaxCargo}");
+    }
+
+    
+
+    //****************88888
     public void TakeDamage(float damage)
     {
         if (damage > 0f)
