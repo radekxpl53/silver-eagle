@@ -12,7 +12,9 @@ public class MapSectorButton : MonoBehaviour {
     public int cost = 500;
     public void OnClick()
     {
-        string summary = $"Sektor: {gridPos}";
+        string x = ((char)('A' + gridPos[1])).ToString();
+        int y = gridPos[0] + 1;
+        string summary = $"Sektor: {x+y}";
         Color color;
         SectorData data = ChunkManager.Instance.allSectorData[gridPos];
         if (EconomyManager.Instance.Credits - cost > 0)

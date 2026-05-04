@@ -21,5 +21,12 @@ public class Restart : MonoBehaviour
 
         player.transform.position = PlayerData.Instance.position;
         player.transform.rotation = Quaternion.identity;
+
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 }
