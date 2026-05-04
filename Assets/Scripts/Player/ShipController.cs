@@ -25,6 +25,9 @@ public class ShipController : MonoBehaviour
     [SerializeField] private float maxRollAngle = 15f;
     [SerializeField] private float rollSmoothSpeed = 5f;
 
+    [Header("STRZELANIE")]
+    private HeavyKineticLauncher launcher;
+
     private Rigidbody rb;
     private ShipStats stats;
 
@@ -40,6 +43,8 @@ public class ShipController : MonoBehaviour
 
     void Start()
     {
+        launcher = GetComponent<HeavyKineticLauncher>();
+
         rb = GetComponent<Rigidbody>();
         stats = GetComponent<ShipStats>();
 
@@ -77,6 +82,10 @@ public class ShipController : MonoBehaviour
             UpdatePhysics();
             previousLoadPercent = currentLoadPercent;
         }
+
+        // 4. strzelanie
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+            launcher.TryFire();
     }
 
     void FixedUpdate()
