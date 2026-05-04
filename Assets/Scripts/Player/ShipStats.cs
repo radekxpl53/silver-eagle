@@ -2,6 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class ShipStats : MonoBehaviour {
     public float CurrentHP { get; private set; }
@@ -21,6 +22,8 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
+    [SerializeField] private List<string> purchasedUpgrades = new List<string>();
+    public bool IsDestroyed { get; private set; }
 
     [SerializeField] private float maxMainThrust = 800000f;
     [SerializeField] private float brakeThrust = 400000f;
@@ -224,6 +227,27 @@ public class ShipStats : MonoBehaviour {
     }
     public void GetEnergyCommand(string[] args) {
         Debug.Log("Aktualny stan paliwa wynosi: " + CurrentEnergy + "/" + MaxEnergy);
+    }
+
+    public List<string> GetUnlockedUpgradesList() 
+    {
+        return purchasedUpgrades;
+    }
+
+    public void UnlockUpgrade(string upgradeID) 
+    {
+        if (!purchasedUpgrades.Contains(upgradeID)) 
+        {
+            purchasedUpgrades.Add(upgradeID);
+            Debug.Log("Odblokowano ulepszenie: " + upgradeID);
+        }
+    }
+    public void LoadUpgrades(List<string> upgrades) 
+    {
+        if (upgrades == null) return;
+        
+        purchasedUpgrades = new List<string>(upgrades);
+        Debug.Log("Wczytano ulepszenia w ShipStats: " + purchasedUpgrades.Count);
     }
 
     public float GetMaxHP() { return MaxHP; }
