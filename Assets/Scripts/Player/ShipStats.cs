@@ -2,7 +2,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
 
 public class ShipStats : MonoBehaviour {
     public float CurrentHP { get; private set; }
