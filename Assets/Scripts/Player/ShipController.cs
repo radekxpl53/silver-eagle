@@ -1,5 +1,7 @@
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 [RequireComponent(typeof(Rigidbody), typeof(ShipStats))]
 public class ShipController : MonoBehaviour
@@ -40,6 +42,8 @@ public class ShipController : MonoBehaviour
     private float currentVisualRoll = 0f;
     private float previousLoadPercent = -1f;
     private bool lowFuelWarningTriggered = false;
+
+    private string FMOD_PARAM = "Blend_Filter";
 
     void Start()
     {
@@ -86,6 +90,7 @@ public class ShipController : MonoBehaviour
         // 4. strzelanie
         if (Mouse.current.leftButton.wasPressedThisFrame)
             launcher.TryFire();
+        ChangeAudioFilter();
     }
 
     void FixedUpdate()
@@ -245,6 +250,18 @@ public class ShipController : MonoBehaviour
         else if (stats.CurrentEnergy > stats.LowFuelThreshold && lowFuelWarningTriggered)
         {
             lowFuelWarningTriggered = false;
+        }
+    }
+
+    private void ChangeAudioFilter()
+    {
+        FMOD.RESULT result = FMODUnity.RuntimeManager.StudioSystem.setParameterByName(FMOD_PARAM, isFPPMode ? 1.0f : 0.0f);
+
+        Debug.Log(result);
+
+        if (result != FMOD.RESULT.OK)
+        {
+            Debug.LogError($"FMOD: Błąd ustawiania parametru {FMOD_PARAM}: {result}");
         }
     }
 }
