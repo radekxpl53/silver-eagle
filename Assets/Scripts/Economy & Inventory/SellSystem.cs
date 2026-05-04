@@ -3,10 +3,15 @@ using UnityEngine.InputSystem;
 
 public class SellSystem : MonoBehaviour
 {
-    private PlayerInventory inventory;
-    private EconomyManager economyManager;
-    private ShipStats shipStats;
-    private PlayerInteract playerInteract;
+    [SerializeField] private PlayerInventory inventory;
+    [SerializeField] private EconomyManager economyManager;
+    [SerializeField] private ShipStats shipStats;
+    [SerializeField] private PlayerInteract playerInteract;
+    [SerializeField] private GameObject endScreen;
+    [SerializeField] private bool firstSell = false;
+
+    private ShipController shipController;
+
     void Start()
     {
         economyManager = EconomyManager.Instance;
@@ -14,13 +19,21 @@ public class SellSystem : MonoBehaviour
         inventory = player.GetComponent<PlayerInventory>();
         shipStats = player.GetComponent<ShipStats>();
         playerInteract = player.GetComponent<PlayerInteract>();
+        shipController = player.GetComponent<ShipController>();
+        if (endScreen != null) endScreen.SetActive(false);
     }
 
     void Update()
     {
         // wciśnij C aby sprzedać
-        if (Keyboard.current.cKey.wasPressedThisFrame && playerInteract.canSell)
+        if (Keyboard.current.cKey.wasPressedThisFrame && playerInteract.canSell && shipStats.CurrentCargo > 0f)
         {
+            if (!firstSell)
+            {
+                ShowEndScreen();
+                firstSell = true;
+            }
+
             foreach (var item in inventory.myItems)
             {
                 int credits = item.amount * item.definition.basePrice;
@@ -33,4 +46,23 @@ public class SellSystem : MonoBehaviour
 
         }
     }
+
+    private void ShowEndScreen()
+    {
+        if (endScreen != null)
+        {
+            endScreen.SetActive(true);
+            GameManager.Instance.ChangeState(GameState.Menu);
+        }
+    }
+    public void CloseEndScreen()
+    {
+        if (endScreen != null)
+        {
+            endScreen.SetActive(false);
+            GameManager.Instance.ChangeState(GameState.Exploration);
+        }
+    }
 }
+
+

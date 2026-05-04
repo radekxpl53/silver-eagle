@@ -6,25 +6,30 @@ using FMODUnity;
 public class ShipSFX : MonoBehaviour
 {
     [SerializeField] private EventReference thrusterSfx;
-
     [SerializeField] private ShipStats shipStats;
-    
+
     private EventInstance shipIdle;
     private EventInstance shipMove;
     private EventInstance alarmSfx;
-    private bool isMoving = false;
+    
     private bool isRotating = false;
-
     private bool alarmIsPlaying = false;
+
+    [SerializeField] private float fadeSpeed = 2f;
+    private float idleVolume = 1f;
+    private float moveVolume = 0f;
 
     void Start()
     {
         shipIdle = RuntimeManager.CreateInstance(FMODEvents.instance.shipIdle);
         shipMove = RuntimeManager.CreateInstance(FMODEvents.instance.shipMove);
-
         alarmSfx = RuntimeManager.CreateInstance(FMODEvents.instance.alarm);
 
+        shipIdle.setVolume(1f);
+        shipMove.setVolume(0f);
         shipIdle.start();
+        shipMove.start();
+
         RuntimeManager.AttachInstanceToGameObject(shipIdle, gameObject);
         RuntimeManager.AttachInstanceToGameObject(shipMove, gameObject);
     }
@@ -35,7 +40,6 @@ public class ShipSFX : MonoBehaviour
         {
             var kb = Keyboard.current;
             if (kb == null) return false;
-
             return kb.wKey.isPressed || kb.sKey.isPressed || kb.spaceKey.isPressed || kb.shiftKey.isPressed;
         }
         return false;
@@ -47,7 +51,6 @@ public class ShipSFX : MonoBehaviour
         {
             var kb = Keyboard.current;
             if (kb == null) return false;
-
             return kb.aKey.isPressed || kb.dKey.isPressed;
         }
         return false;
@@ -58,67 +61,41 @@ public class ShipSFX : MonoBehaviour
         bool currentlyThrusting = IsApplyingThrust();
         bool currentlyRotating = IsRotating();
 
-        if (currentlyThrusting && !isMoving)
-        {
-            StartMoving();
-        }
-        else if (!currentlyThrusting && isMoving)
-        {
-            StopMoving();
-        }
-        else if (currentlyRotating && !isRotating)
-        {
-            StartRotating();
-        }
-        else if (!currentlyRotating && isRotating)
-        {
-            StopRotating();
-        }
+        float targetIdleVolume = currentlyThrusting ? 0f : 1f;
+        float targetMoveVolume = currentlyThrusting ? 1f : 0f;
 
-        // alarm, alarm!
-        if (shipStats != null && shipStats.CurrentHP <= shipStats.GetMaxHP() * 0.2)
+        idleVolume = Mathf.MoveTowards(idleVolume, targetIdleVolume, fadeSpeed * Time.deltaTime);
+        moveVolume = Mathf.MoveTowards(moveVolume, targetMoveVolume, fadeSpeed * Time.deltaTime);
+
+        shipIdle.setVolume(idleVolume);
+        shipMove.setVolume(moveVolume);
+
+        if (!isRotating && currentlyRotating)
+        {
+            isRotating = true;
+        }
+        else if (isRotating && !currentlyRotating)
+        {
+            isRotating = false;
+            RuntimeManager.PlayOneShot(thrusterSfx, transform.position);
+        }
+        
+        if (shipStats != null && shipStats.CurrentHP <= shipStats.GetMaxHP() * 0.2f)
         {
             if (!alarmIsPlaying)
             {
                 alarmIsPlaying = true;
                 alarmSfx.start();
-                Debug.Log("Alarm started");
             }
         }
         else
         {
-            alarmSfx.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            alarmIsPlaying = false;
+            if (alarmIsPlaying)
+            {
+                alarmSfx.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                alarmIsPlaying = false;
+            }
         }
-    }
-
-    void StartMoving()
-    {
-        isMoving = true;
-        
-        shipIdle.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        
-        shipMove.start();
-    }
-
-    void StopMoving()
-    {
-        isMoving = false;
-        
-        shipMove.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        shipIdle.start();
-    }
-
-    void StartRotating() 
-    { 
-        isRotating = true;
-    }
-
-    void StopRotating()
-    {
-        isRotating = false;
-
-        RuntimeManager.PlayOneShot(thrusterSfx, transform.position);
     }
 
     void OnDestroy()

@@ -2,16 +2,37 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class ShipStats : MonoBehaviour {
     public float CurrentHP { get; private set; }
     public float CurrentEnergy { get; private set; }
     public float CurrentCargo { get; private set; }
+    public bool IsDestroyed { get; private set; }
+    public float MaxMainThrust { get => maxMainThrust; set => maxMainThrust = value; }
+    public float BrakeThrust { get => brakeThrust; set => brakeThrust = value; }
+    public float ManeuverForce { get => maneuverForce; set => maneuverForce = value; }
+    public float RollForce { get => rollForce; set => rollForce = value; }
+    public float LiftThrust { get => liftThrust; set => liftThrust = value; }
+    public float EmergencySpeedMultiplier { get => emergencySpeedMultiplier; set => emergencySpeedMultiplier = value; }
+    public float NormalDrainRate { get => normalDrainRate; set => normalDrainRate = value; }
+    public float LowFuelThreshold { get => lowFuelThreshold; set => lowFuelThreshold = value; }
+
     [SerializeField] private float MaxHP;
     [SerializeField] private float MaxEnergy;
     [SerializeField] private float MaxCargo;
     [SerializeField] private float BaseMass;
+    [SerializeField] private List<string> purchasedUpgrades = new List<string>();
     public bool IsDestroyed { get; private set; }
+
+    [SerializeField] private float maxMainThrust = 800000f;
+    [SerializeField] private float brakeThrust = 400000f;
+    [SerializeField] private float maneuverForce = 120000f;
+    [SerializeField] private float rollForce = 120000f;
+    [SerializeField] private float liftThrust = 120000f;
+    [SerializeField] private float emergencySpeedMultiplier = 0.3f;
+    [SerializeField] private float normalDrainRate = 1f;
+    [SerializeField] private float lowFuelThreshold = 40f;
 
     [Header("--- SKRYPTY STERUJĄCE DO ZABLOKOWANIA ---")]
     [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
@@ -77,9 +98,11 @@ public class ShipStats : MonoBehaviour {
             if (CurrentHP + amount > MaxHP) {
                 CurrentHP = MaxHP;
                 Debug.Log("Statek naprawiony!");
+                IsDestroyed = false;
             }
             else {
                 CurrentHP += amount;
+                IsDestroyed = false;
             }
             Debug.Log("Ustawiono wartość HP na: " + CurrentHP);
         }
@@ -208,6 +231,27 @@ public class ShipStats : MonoBehaviour {
     }
     public void GetEnergyCommand(string[] args) {
         Debug.Log("Aktualny stan paliwa wynosi: " + CurrentEnergy + "/" + MaxEnergy);
+    }
+
+    public List<string> GetUnlockedUpgradesList() 
+    {
+        return purchasedUpgrades;
+    }
+
+    public void UnlockUpgrade(string upgradeID) 
+    {
+        if (!purchasedUpgrades.Contains(upgradeID)) 
+        {
+            purchasedUpgrades.Add(upgradeID);
+            Debug.Log("Odblokowano ulepszenie: " + upgradeID);
+        }
+    }
+    public void LoadUpgrades(List<string> upgrades) 
+    {
+        if (upgrades == null) return;
+        
+        purchasedUpgrades = new List<string>(upgrades);
+        Debug.Log("Wczytano ulepszenia w ShipStats: " + purchasedUpgrades.Count);
     }
 
     public float GetMaxHP() { return MaxHP; }
