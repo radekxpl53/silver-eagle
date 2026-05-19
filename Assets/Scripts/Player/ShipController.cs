@@ -257,8 +257,6 @@ public class ShipController : MonoBehaviour
     {
         FMOD.RESULT result = FMODUnity.RuntimeManager.StudioSystem.setParameterByName(FMOD_PARAM, isFPPMode ? 1.0f : 0.0f);
 
-        Debug.Log(result);
-
         if (result != FMOD.RESULT.OK)
         {
             Debug.LogError($"FMOD: Błąd ustawiania parametru {FMOD_PARAM}: {result}");

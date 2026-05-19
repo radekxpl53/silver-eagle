@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class kameraTpp : MonoBehaviour
+public class CameraTPP : MonoBehaviour
 {
     public Transform target;
 
-    [Header("Przesuniêcie Celu")]
+    [Header("PrzesuniÄ™cie Celu")]
     public Vector3 targetOffset = new Vector3(0, 0f, 0);
 
     [Header("Ustawienia Orbity")]
@@ -53,7 +53,7 @@ public class kameraTpp : MonoBehaviour
         {
             if (Mouse.current != null)
             {
-                // --- OBRÓT ---
+                // --- OBRÃ“T ---
                 Vector2 mouseDelta = Mouse.current.delta.ReadValue();
                 mouseX += mouseDelta.x * sensitivity * 0.5f;
                 mouseY -= mouseDelta.y * sensitivity * 0.5f;
