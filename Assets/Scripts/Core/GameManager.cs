@@ -1,6 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
-using NUnit.Framework;
 using System.Collections.Generic;
 public enum GameState
 {
@@ -28,19 +28,55 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ShipStats shipStats;
 
     public List<Transform> allRepairStationsPosition = new List<Transform>();
+
+    [Header("Enemy Registry")]
+    public List<EnemyAI> activeEnemies = new List<EnemyAI>();
+
+    public void RegisterEnemy(EnemyAI enemy)
+    {
+        if (enemy != null && !activeEnemies.Contains(enemy))
+            activeEnemies.Add(enemy);
+    }
+
+    public void UnregisterEnemy(EnemyAI enemy)
+    {
+        activeEnemies.Remove(enemy);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        activeEnemies.RemoveAll(e => e == null);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // przetrwa zmianę sceny
-            //Debug.Log("<color=cyan>GameManager został zainicjalizowany jako Singleton</color>");
+            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
             Debug.LogWarning("Drugi GameManager został zniszczony (duplikat)");
             Destroy(gameObject);
+            return;
         }
+
+        if (player == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) player = p;
+        }
+
+        if (player != null && shipStats == null)
+            shipStats = player.GetComponent<ShipStats>();
     }
 
     private void Start()
@@ -115,7 +151,13 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        shipStats.Heal(shipStats.GetMaxHP());
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null && shipStats == null)
+            shipStats = player.GetComponent<ShipStats>();
+
+        if (shipStats != null)
+            shipStats.Heal(shipStats.GetMaxHP());
 
         if (player != null)
         {

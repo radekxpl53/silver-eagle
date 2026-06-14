@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class ShipStats : MonoBehaviour {
+    public static event Action<Vector3, float, bool> OnDamageDealt;
+
     public float CurrentHP { get; private set; }
     public float CurrentEnergy { get; private set; }
     public float CurrentCargo { get; private set; }
@@ -35,6 +37,11 @@ public class ShipStats : MonoBehaviour {
 
     public float baseCargoCapacity = 100f;
     public float currentMaxCargo;
+
+    [Header("--- PANCERZ STREFOWY ---")]
+    public float frontArmorMultiplier = 0.5f;
+    public float sideArmorMultiplier = 1.0f;
+    public float rearArmorMultiplier = 1.5f;
 
     [Header("--- SKRYPTY STERUJĄCE DO ZABLOKOWANIA ---")]
     [SerializeField] private MonoBehaviour[] controlScriptsToDisable;
@@ -67,14 +74,26 @@ public class ShipStats : MonoBehaviour {
         Debug.Log($"[ShipStats] Nowy limit ładowni: {MaxCargo}");
     }
 
-    
+    public void TakeZonedDamage(float baseDamage, Vector3 hitNormal)
+    {
+        float damage = baseDamage;
+        float dotForward = Vector3.Dot(transform.forward, hitNormal);
+        float dotRight = Vector3.Dot(transform.right, hitNormal);
 
-    //****************88888
+        if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
+            damage *= dotForward > 0 ? frontArmorMultiplier : rearArmorMultiplier;
+        else
+            damage *= sideArmorMultiplier;
+
+        TakeDamage(damage);
+    }
+
     public void TakeDamage(float damage)
     {
         if (damage > 0f)
         {
             CurrentHP = CurrentHP - damage;
+            OnDamageDealt?.Invoke(transform.position, damage, CompareTag("Player"));
             Debug.Log("Ustawiono wartość HP na: " + CurrentHP);
             if (CurrentHP <= 0f)
             {
@@ -97,8 +116,16 @@ public class ShipStats : MonoBehaviour {
     {
         Debug.Log("<color=red>STATEK ZNISZCZONY!</color>");
 
-        // 1. Blokada sterowania
-        GameManager.Instance.ChangeState(GameState.GameOver);
+        EnemyAI enemyAI = GetComponent<EnemyAI>();
+        if (enemyAI != null)
+        {
+            enemyAI.Die();
+            return;
+        }
+
+        EventBus.TriggerOnPlayerDeath();
+        if (GameManager.Instance != null)
+            GameManager.Instance.TriggerGameOver();
     }
 
     public void Heal(float amount) {

@@ -46,6 +46,34 @@ public class ChunkManager : MonoBehaviour
     public float SectorSize => sectorSize;
     [SerializeField] private Transform player;
     public Transform Player => player;
+    public Vector2Int CurrentPlayerSector => currentPlayerSector;
+
+    public Vector3 GetSectorWorldCenter(Vector2Int? grid = null)
+    {
+        Vector2Int g = grid ?? currentPlayerSector;
+        if (g.x < 0) g = Vector2Int.zero;
+        return new Vector3(g.x * sectorSize + sectorSize * 0.5f, 0f, g.y * sectorSize + sectorSize * 0.5f);
+    }
+
+    public float GetSectorHalfExtent() => sectorSize * 0.5f;
+
+    public bool IsInsideSector(Vector3 worldPos, Vector2Int? grid = null, float margin = 0f)
+    {
+        Vector3 center = GetSectorWorldCenter(grid);
+        float half = GetSectorHalfExtent() - margin;
+        return Mathf.Abs(worldPos.x - center.x) <= half
+            && Mathf.Abs(worldPos.z - center.z) <= half;
+    }
+
+    public Vector3 ClampToSector(Vector3 worldPos, Vector2Int? grid = null, float margin = 5f)
+    {
+        Vector3 center = GetSectorWorldCenter(grid);
+        float half = GetSectorHalfExtent() - margin;
+        worldPos.x = Mathf.Clamp(worldPos.x, center.x - half, center.x + half);
+        worldPos.z = Mathf.Clamp(worldPos.z, center.z - half, center.z + half);
+        return worldPos;
+    }
+
     [SerializeField] private GameObject sector;
     [SerializeField] private ResourceDatabase resourceDB;
     private GameObject currentSectorObject = null;

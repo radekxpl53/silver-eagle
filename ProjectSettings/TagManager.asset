@@ -8,6 +8,8 @@ TagManager:
   - Shop
   - SellZone
   - RepairStation
+  - Player
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -15,8 +17,9 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
   - 
-  - 
+  - Asteroid
   - 
   - 
   - 

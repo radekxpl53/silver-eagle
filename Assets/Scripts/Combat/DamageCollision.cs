@@ -14,7 +14,6 @@ public class DamageCollision : MonoBehaviour
 
     private ShipStats shipStats;
 
-
     private void Start()
     {
         shipStats = GetComponent<ShipStats>();
@@ -35,14 +34,9 @@ public class DamageCollision : MonoBehaviour
         float damage = (impactForce - damageThreshold) * damageMultiplier;
         damage = Mathf.Max(0f, damage);
 
-        // <<< INTEGRACJA Z SHIPSTATS >>>
         if (shipStats != null)
-        {
-            Debug.Log("Damage z DamageCollision.cs" + damage);
             shipStats.TakeDamage(damage);
-        }
 
-        // Debug + efekty
         Debug.Log($"<color=red>KOLIZJA!</color> {collision.gameObject.name} | Siła: {impactForce:F0} | Obrażenia: {damage:F1}");
 
         if (impactParticles != null)
@@ -51,11 +45,7 @@ public class DamageCollision : MonoBehaviour
             impactParticles.Play();
         }
 
-        if (shipStats.IsDestroyed)
-        {
-            Debug.Log("<color=red>STATEK ZNISZCZONY!</color>");
-
-            GameManager.Instance.TriggerGameOver();
-        }
+        if (shipStats != null && shipStats.IsDestroyed && shipStats.CompareTag("Player"))
+            GameManager.Instance?.TriggerGameOver();
     }
 }
