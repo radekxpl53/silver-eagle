@@ -10,8 +10,6 @@ public class SellSystem : MonoBehaviour
     [SerializeField] private GameObject endScreen;
     [SerializeField] private bool firstSell = false;
 
-    private ShipController shipController;
-
     void Start()
     {
         economyManager = EconomyManager.Instance;
@@ -21,7 +19,6 @@ public class SellSystem : MonoBehaviour
         inventory = player.GetComponent<PlayerInventory>();
         shipStats = player.GetComponent<ShipStats>();
         playerInteract = player.GetComponent<PlayerInteract>();
-        shipController = player.GetComponent<ShipController>();
         if (endScreen != null) endScreen.SetActive(false);
     }
 
@@ -30,7 +27,6 @@ public class SellSystem : MonoBehaviour
         if (Keyboard.current == null || playerInteract == null || shipStats == null || inventory == null || economyManager == null)
             return;
 
-        // wciśnij C aby sprzedać
         if (Keyboard.current.cKey.wasPressedThisFrame && playerInteract.canSell && shipStats.CurrentCargo > 0f)
         {
             if (!firstSell)
@@ -39,17 +35,32 @@ public class SellSystem : MonoBehaviour
                 firstSell = true;
             }
 
+            float taxPercent = GetCurrentSectorTaxPercent();
+            float totalCredits = 0f;
+
             foreach (var item in inventory.myItems)
             {
-                int credits = item.amount * item.definition.basePrice;
-                economyManager.AddCredits(credits);
+                if (item?.definition == null) continue;
+                float gross = item.amount * item.definition.basePrice;
+                totalCredits += gross * (1f - taxPercent / 100f);
             }
 
+            economyManager.AddCredits(totalCredits);
             inventory.myItems.Clear();
             shipStats.SetCargo(0);
             inventory.RefreshUI();
+
             GameEvents.TriggerResourcesSold();
+            GameEvents.TriggerCreditsChanged(economyManager.Credits);
+            GameEvents.TriggerDebtChanged(economyManager.Debt);
         }
+    }
+
+    private float GetCurrentSectorTaxPercent()
+    {
+        if (ChunkManager.Instance == null) return 0f;
+        SectorDefinition def = SectorRegistry.GetDefinition(ChunkManager.Instance.CurrentPlayerSector);
+        return def != null ? def.shopTaxPercent : 0f;
     }
 
     private void ShowEndScreen()
@@ -60,6 +71,7 @@ public class SellSystem : MonoBehaviour
             GameManager.Instance.ChangeState(GameState.Menu);
         }
     }
+
     public void CloseEndScreen()
     {
         if (endScreen != null)
@@ -69,5 +81,3 @@ public class SellSystem : MonoBehaviour
         }
     }
 }
-
-

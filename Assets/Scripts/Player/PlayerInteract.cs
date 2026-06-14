@@ -91,6 +91,8 @@ public class PlayerInteract : MonoBehaviour {
 
             InteractableObject io = hit.collider.GetComponent<InteractableObject>();
             if (target != null) {
+                MiningAnalysisHelper.EmitAnalysisReady(target);
+
                 MiningData.currentAsteroidLoot = target.materials;
                 MiningData.currentAsteroidObject = target;
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 public class SaveDataJSON : MonoBehaviour
 {
     public static SaveDataJSON Instance { get; private set; }
+    public static bool PendingLoad { get; set; }
 
     public static string SavePath => Application.persistentDataPath + "/SaveData.json";
 
@@ -23,18 +25,25 @@ public class SaveDataJSON : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    IEnumerator Start()
     {
-        economyManager = EconomyManager.Instance;
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        ResolveRefs();
+        yield return null;
+
+        if (PendingLoad)
         {
-            shipStats = player.GetComponent<ShipStats>();
-            inventory = player.GetComponent<PlayerInventory>();
+            PendingLoad = false;
+            LoadData();
         }
     }
 
     public static bool HasSaveFile() => File.Exists(SavePath);
+
+    public static void DeleteSaveFile()
+    {
+        if (File.Exists(SavePath))
+            File.Delete(SavePath);
+    }
 
     public void SaveData()
     {
@@ -104,6 +113,20 @@ public class SaveDataJSON : MonoBehaviour
             }
         }
 
+        if (inventory != null)
+        {
+            data.inventory.Clear();
+            foreach (var stack in inventory.myItems)
+            {
+                if (stack?.definition == null) continue;
+                data.inventory.Add(new SavedResourceStack
+                {
+                    resourceName = stack.definition.Name,
+                    amount = stack.amount
+                });
+            }
+        }
+
         if (ChunkManager.Instance != null)
         {
             Vector2Int sector = ChunkManager.Instance.CurrentPlayerSector;
@@ -129,12 +152,6 @@ public class SaveDataJSON : MonoBehaviour
     {
         ResolveRefs();
 
-        if (economyManager != null)
-        {
-            economyManager.SetCredits(data.credits);
-            economyManager.SetDebt(data.debt);
-        }
-
         if (ChunkManager.Instance != null && data.sectors != null)
         {
             foreach (var entry in data.sectors)
@@ -146,10 +163,23 @@ public class SaveDataJSON : MonoBehaviour
             }
         }
 
+        if (economyManager != null)
+        {
+            economyManager.SetCredits(data.credits);
+            economyManager.SetDebt(data.debt);
+            GameEvents.TriggerCreditsChanged(data.credits);
+            GameEvents.TriggerDebtChanged(data.debt);
+        }
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            player.transform.position = data.playerPosition;
+            Vector2Int savedSector = new Vector2Int(data.sectorGridX, data.sectorGridY);
+            if (ChunkManager.Instance != null)
+                ChunkManager.Instance.ForcePlayerToSector(savedSector, data.playerPosition);
+            else
+                player.transform.position = data.playerPosition;
+
             if (shipStats != null)
             {
                 shipStats.SetHP(data.hp);
@@ -157,6 +187,26 @@ public class SaveDataJSON : MonoBehaviour
                 shipStats.SetCargo(data.cargo);
                 if (data.purchasedUpgrades != null)
                     shipStats.LoadUpgrades(data.purchasedUpgrades);
+            }
+
+            if (inventory != null)
+            {
+                inventory.myItems.Clear();
+                var db = FindResourceDatabase();
+                if (data.inventory != null && db != null)
+                {
+                    foreach (var saved in data.inventory)
+                    {
+                        ResourceDefinition def = FindResourceByName(db, saved.resourceName);
+                        if (def == null) continue;
+                        inventory.myItems.Add(new ResourceStack
+                        {
+                            definition = def,
+                            amount = saved.amount
+                        });
+                    }
+                }
+                inventory.RefreshUI();
             }
         }
 
@@ -180,6 +230,23 @@ public class SaveDataJSON : MonoBehaviour
             PlayerData.Instance.fastTravel,
             PlayerData.Instance.repairDrones,
             PlayerData.Instance.repairKits);
+    }
+
+    private static ResourceDatabase FindResourceDatabase()
+    {
+        var dbs = Resources.FindObjectsOfTypeAll<ResourceDatabase>();
+        return dbs.Length > 0 ? dbs[0] : null;
+    }
+
+    private static ResourceDefinition FindResourceByName(ResourceDatabase db, string name)
+    {
+        if (db?.Resources == null || string.IsNullOrEmpty(name)) return null;
+        foreach (var res in db.Resources)
+        {
+            if (res != null && res.Name == name)
+                return res;
+        }
+        return null;
     }
 
     private void ResolveRefs()

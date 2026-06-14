@@ -11,6 +11,13 @@ public class SectorDataEntry
 }
 
 [Serializable]
+public class SavedResourceStack
+{
+    public string resourceName;
+    public int amount;
+}
+
+[Serializable]
 public class GameSaveData
 {
     public int saveVersion = 1;
@@ -23,5 +30,6 @@ public class GameSaveData
     public float energy;
     public float cargo;
     public List<string> purchasedUpgrades = new List<string>();
+    public List<SavedResourceStack> inventory = new List<SavedResourceStack>();
     public List<SectorDataEntry> sectors = new List<SectorDataEntry>();
 }

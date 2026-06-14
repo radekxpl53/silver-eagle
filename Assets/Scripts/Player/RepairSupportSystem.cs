@@ -1,9 +1,21 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RepairSupportSystem : MonoBehaviour
 {
+    public static RepairSupportSystem Instance { get; private set; }
+
     [SerializeField] private float droneHealPerSecond = 5f;
-    [SerializeField] private string repairKitResourceId = "repair_kit";
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     void Update()
     {
@@ -18,6 +30,9 @@ public class RepairSupportSystem : MonoBehaviour
 
         if (PlayerData.Instance.repairDrones && stats.CurrentHP < stats.GetMaxHP())
             stats.Heal(droneHealPerSecond * Time.deltaTime);
+
+        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+            UseRepairKit();
     }
 
     public bool UseRepairKit()

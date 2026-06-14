@@ -1,13 +1,22 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class EnemyLootDropper
 {
-    public static void DropLoot(Vector3 position, int sectorStage)
+    private const float PickupRange = 80f;
+
+    public static void DropLoot(Vector3 position, int sectorStage, Transform player = null)
     {
         var db = FindResourceDatabase();
-
         if (db == null) return;
+
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) player = playerObj.transform;
+        }
+
+        PlayerInventory inventory = player != null ? player.GetComponent<PlayerInventory>() : null;
+        bool inRange = player != null && Vector3.Distance(position, player.position) <= PickupRange;
 
         int types = Random.Range(1, 4);
         for (int i = 0; i < types; i++)
@@ -17,7 +26,10 @@ public static class EnemyLootDropper
             if (res == null) continue;
 
             int amount = Random.Range(5, 20);
-            Debug.Log($"[Loot] {res.Name} x{amount} @ {position}");
+            if (inRange && inventory != null)
+                inventory.AddResource(res, amount);
+            else
+                Debug.Log($"[Loot] {res.Name} x{amount} @ {position} (poza zasięgiem)");
         }
     }
 

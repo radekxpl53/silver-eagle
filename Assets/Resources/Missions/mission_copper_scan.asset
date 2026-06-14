@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a436b4d2318978e409d5f74e9644f532, type: 3}
+  m_Name: mission_copper_scan
+  m_EditorClassIdentifier: SilverEagle::FactionMissionDefinition
+  missionId: mission_copper_scan
+  displayName: Skan miedzi
+  description: "Zbierz pr\xF3bki miedzi w Rubie\u017Cach."
+  targetResource:
+    Name: "Brudny L\xF3d"
+    Stage: 0
+    optimalTemp: 150
+    tolerance: 100
+    weightsPerStage:
+    - 60
+    - 48
+    - 38
+    - 31
+    - 25
+    basePrice: 10
+    Icon: {fileID: 0}
+    weight: 0.9
+  requiredAmount: 30
+  creditReward: 600

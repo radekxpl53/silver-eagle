@@ -15,6 +15,9 @@ public static class GameEvents
     public static event Action OnMiningComplete;
     public static event Action OnResourcesSold;
     public static event Action OnMapToggled;
+    public static event Action<SectorDefinition, MiningThreatLevel, string, float> OnMiningAnalysisReady;
+    public static event Action<Transform> OnCombatPromptShown;
+    public static event Action<bool> OnCombatPromptAnswered;
 
     public static void TriggerSectorEntered(Vector2Int grid, SectorDefinition def) =>
         OnSectorEntered?.Invoke(grid, def);
@@ -51,4 +54,17 @@ public static class GameEvents
 
     public static void TriggerMapToggled() =>
         OnMapToggled?.Invoke();
+
+    public static void TriggerMiningAnalysisReady(
+        SectorDefinition sector,
+        MiningThreatLevel threatLevel,
+        string compositionSummary,
+        float averageTemp) =>
+        OnMiningAnalysisReady?.Invoke(sector, threatLevel, compositionSummary, averageTemp);
+
+    public static void TriggerCombatPromptShown(Transform enemyContext) =>
+        OnCombatPromptShown?.Invoke(enemyContext);
+
+    public static void TriggerCombatPromptAnswered(bool fight) =>
+        OnCombatPromptAnswered?.Invoke(fight);
 }

@@ -41,7 +41,7 @@ public class ChunkManager : MonoBehaviour
 
     public int mapCols { get; private set; } = 6;
     public int mapRows { get; private set; } = 6;
-    // TO jest bardzo do zmiany, bo nie wiem ile daù ùeby byùo ok, narazie do testù 4x4x4 km starczy raczej
+    // TO jest bardzo do zmiany, bo nie wiem ile da? ?eby by?o ok, narazie do test? 4x4x4 km starczy raczej
     [SerializeField] private float sectorSize  = 400f ;
     public float SectorSize => sectorSize;
     [SerializeField] private Transform player;
@@ -85,11 +85,11 @@ public class ChunkManager : MonoBehaviour
     public static int globalGroupCount = 0;
     public int maxGlobalGroups = 20;
 
-    // Generacja 6x6 mapy oraz predefiniowanie danych w asteroidach na caùej mapie
+    // Generacja 6x6 mapy oraz predefiniowanie danych w asteroidach na ca?ej mapie
     private void GenerateWorldData() {
         List<Vector2Int> allCoords = new List<Vector2Int>();
 
-        // Tworzenie pustych sektorùw
+        // Tworzenie pustych sektor?w
         for (int x = 0; x < mapCols; x++) {
             for (int y = 0; y < mapRows; y++) {
                 Vector2Int pos = new Vector2Int(x, y);
@@ -127,14 +127,14 @@ public class ChunkManager : MonoBehaviour
             }
         }
 
-        // Usuwamy sektor startowy z puli losowania i robimy tak, ùeby ZAWSZE byùy tam asteroidy
+        // Usuwamy sektor startowy z puli losowania i robimy tak, ?eby ZAWSZE by?y tam asteroidy
         allCoords.Remove(Vector2Int.zero);
         SectorData startSector = allSectorData[Vector2Int.zero];
         startSector.hasAsteroidGroup = true;
-        PopulateSectorWithBelts(startSector); // Odpalamy generator dla startùwki
+        PopulateSectorWithBelts(startSector); // Odpalamy generator dla start?wki
 
 
-        // 29 bo usuwamy jeden sektor startowy z puli losowania, ale to chyba bùdziemy mieli do zmiany zobacyzmy juù jak dodamy latanie i zbieranie, czy nie jest za duùo
+        // 29 bo usuwamy jeden sektor startowy z puli losowania, ale to chyba b?dziemy mieli do zmiany zobacyzmy ju? jak dodamy latanie i zbieranie, czy nie jest za du?o
         int groupsToSpawn = 29;
         for (int i = 0; i < groupsToSpawn; i++) {
             if (allCoords.Count == 0) break;
@@ -181,10 +181,10 @@ public class ChunkManager : MonoBehaviour
     //        }
     //    }
 
-    //    Debug.Log("RAPORT GENERACJI ùWIATA");
+    //    Debug.Log("RAPORT GENERACJI ?WIATA");
     //    Debug.Log($"Sektory z asteroidami: {totalSectorsWithAsteroids} / 36");
-    //    Debug.Log($"ùùczna liczba pasùw: {totalBelts}");
-    //    Debug.Log($"ùùczna liczba asteroid w pamiùci: {totalAsteroids}");
+    //    Debug.Log($"??czna liczba pas?w: {totalBelts}");
+    //    Debug.Log($"??czna liczba asteroid w pami?ci: {totalAsteroids}");
     //}
 
     private List<ResourceStack> PreGenerateLoot(int stage) {
@@ -204,8 +204,8 @@ public class ChunkManager : MonoBehaviour
         return generatedLoot;
     }
 
-    // Wyùwietlanie, aktualizacja i usuwanie aktywnego sektora
-    private void RefreshSectorView(Vector2Int sectorCooRD) {
+    // Wy?wietlanie, aktualizacja i usuwanie aktywnego sektora
+    public void RefreshSectorView(Vector2Int sectorCooRD) {
         if (currentSectorObject != null) {
             Destroy(currentSectorObject);
         }
@@ -255,7 +255,7 @@ public class ChunkManager : MonoBehaviour
     void Start()
     {
         GenerateWorldData();
-        //Debug.Log("Wygenerowano bazù danych sektorùw: " + allSectorData.Count);
+        //Debug.Log("Wygenerowano baz? danych sektor?w: " + allSectorData.Count);
     }
 
     void Update()
@@ -263,7 +263,7 @@ public class ChunkManager : MonoBehaviour
         if (player == null) {
             return;
         }
-        // Ograniczenie Clampem, ùeby nie wylecieù za sektory (bo wywala bùùdy)
+        // Ograniczenie Clampem, ?eby nie wylecie? za sektory (bo wywala b??dy)
         float maxX = mapCols * sectorSize;
         float maxZ = mapRows * sectorSize;
 
@@ -271,11 +271,11 @@ public class ChunkManager : MonoBehaviour
         limitedPos.x = Mathf.Clamp(limitedPos.x, 0, maxX - 1);
         limitedPos.z = Mathf.Clamp(limitedPos.z, 0, maxZ - 1);
 
-        // ùeby nie wylecieù poza Y Sektora
+        // ?eby nie wylecie? poza Y Sektora
         limitedPos.y = Mathf.Clamp(limitedPos.y, -sectorSize / 2f, sectorSize / 2f);
         player.position = limitedPos;
 
-        // Pobieranie sektora w ktùrym znajduje sie gracz
+        // Pobieranie sektora w kt?rym znajduje sie gracz
         int playerXPosition = Mathf.FloorToInt(player.position.x / sectorSize);
         int playerZPosition = Mathf.FloorToInt(player.position.z / sectorSize);
 
@@ -284,11 +284,21 @@ public class ChunkManager : MonoBehaviour
         // Zmiana informacji o sektorze
         if (currentPos != currentPlayerSector) {
             currentPlayerSector = currentPos;
-            //Debug.Log("Wleciaùem do nowego sektora:" + currentPlayerSector);
+            //Debug.Log("Wlecia?em do nowego sektora:" + currentPlayerSector);
             RefreshSectorView(currentPos);
             SectorDefinition def = SectorRegistry.GetDefinition(currentPos);
             GameEvents.TriggerSectorEntered(currentPos, def);
         }
+    }
+
+    public void ForcePlayerToSector(Vector2Int sector, Vector3 worldPosition)
+    {
+        currentPlayerSector = sector;
+        if (player != null)
+            player.position = worldPosition;
+        RefreshSectorView(sector);
+        SectorDefinition def = SectorRegistry.GetDefinition(sector);
+        GameEvents.TriggerSectorEntered(sector, def);
     }
 
     public void TrySpawnNewBeltGlobal() {
@@ -331,14 +341,14 @@ public class ChunkManager : MonoBehaviour
 
         List<string> array = new List<string>();
         if (sum != 0) {
-            array.Add($"ùùcznie: {sum}");
+            array.Add($"??cznie: {sum}");
             foreach (var top in top_three) {
                 float result = (top.Value / sum) * 100;
                 array.Add($"{top.Key.Name}: {result:F0}%");
             }
         }
         else {
-            array.Add("Nic nie znajdujù siù w wybranych sektorze");
+            array.Add("Nic nie znajduj? si? w wybranych sektorze");
         }
         return array;
     }

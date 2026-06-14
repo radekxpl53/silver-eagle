@@ -33,6 +33,7 @@ public class CombatPromptSystem : MonoBehaviour
         if (enemyDetected) return;
         enemyDetected = true;
         Debug.Log("[Combat] Wróg — walcz/uciekaj");
+        GameEvents.TriggerCombatPromptShown(player);
         GameEvents.TriggerCombatStarted();
     }
 
@@ -41,5 +42,16 @@ public class CombatPromptSystem : MonoBehaviour
         if (!enemyDetected) return;
         enemyDetected = false;
         GameEvents.TriggerCombatEnded();
+    }
+
+    /// <summary>Stub dla UI (Prompt B): fight=true pozostaje w walce, false kończy prompt.</summary>
+    public void AnswerCombatPrompt(bool fight)
+    {
+        GameEvents.TriggerCombatPromptAnswered(fight);
+        if (!fight)
+        {
+            enemyDetected = false;
+            GameEvents.TriggerCombatEnded();
+        }
     }
 }

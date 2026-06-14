@@ -24,7 +24,30 @@ public class FastTravelSystem : MonoBehaviour
         if (target == null) return false;
 
         stats.UseEnergy(energyCost);
-        player.transform.position = target.position;
+        TeleportPlayer(player, target.position);
+        return true;
+    }
+
+    public bool TryFastTravelToSector(Vector2Int sectorGrid)
+    {
+        if (!CanFastTravel() || ChunkManager.Instance == null) return false;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return false;
+
+        ShipStats stats = player.GetComponent<ShipStats>();
+        if (stats == null || stats.CurrentEnergy < energyCost) return false;
+
+        Vector3 destination = ChunkManager.Instance.GetSectorWorldCenter(sectorGrid);
+        stats.UseEnergy(energyCost);
+        TeleportPlayer(player, destination);
+        ChunkManager.Instance.ForcePlayerToSector(sectorGrid, destination);
+        return true;
+    }
+
+    private static void TeleportPlayer(GameObject player, Vector3 position)
+    {
+        player.transform.position = position;
 
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb != null)
@@ -32,7 +55,6 @@ public class FastTravelSystem : MonoBehaviour
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
-        return true;
     }
 
     private Transform FindNearestRepairStation(Vector3 from)

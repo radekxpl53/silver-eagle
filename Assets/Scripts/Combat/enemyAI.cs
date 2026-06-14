@@ -296,7 +296,7 @@ public class EnemyAI : MonoBehaviour
                     if (ChunkManager.Instance != null &&
                         ChunkManager.Instance.allSectorData.TryGetValue(ChunkManager.Instance.CurrentPlayerSector, out var sd))
                         stage = SectorRegistry.GetLeadingStage(sd);
-                    EnemyLootDropper.DropLoot(transform.position, stage);
+                    EnemyLootDropper.DropLoot(transform.position, stage, playerTarget);
                     GameEvents.TriggerEnemyKilled(this);
                 }
             }

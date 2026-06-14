@@ -31,6 +31,7 @@ public class ShipController : MonoBehaviour
 
     [Header("STRZELANIE")]
     private HeavyKineticLauncher launcher;
+    private PlasmaCannon plasmaCannon;
 
     private Rigidbody rb;
     private ShipStats stats;
@@ -46,6 +47,7 @@ public class ShipController : MonoBehaviour
     void Start()
     {
         launcher = GetComponent<HeavyKineticLauncher>();
+        plasmaCannon = GetComponent<PlasmaCannon>();
 
         rb = GetComponent<Rigidbody>();
         stats = GetComponent<ShipStats>();
@@ -83,6 +85,9 @@ public class ShipController : MonoBehaviour
 
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && launcher != null)
             launcher.TryFire();
+
+        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && plasmaCannon != null)
+            plasmaCannon.TryFire();
 
         ChangeAudioFilter();
     }
