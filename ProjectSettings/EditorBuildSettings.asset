@@ -14,9 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MiningScene.unity
     guid: 139dabfaffbb1c44bb91d811552eef51
-  - enabled: 1
-    path: Assets/Scenes/EnemyAiScene.unity
-    guid: ef35535f01b98ee4b917d6b39e14ad59
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

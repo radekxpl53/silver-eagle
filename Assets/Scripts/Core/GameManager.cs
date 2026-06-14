@@ -156,8 +156,32 @@ public class GameManager : MonoBehaviour
         if (player != null && shipStats == null)
             shipStats = player.GetComponent<ShipStats>();
 
+        if (EconomyManager.Instance != null)
+        {
+            float repairCost = EconomyManager.Instance.Credits * 0.3f;
+            EconomyManager.Instance.SpendCredits(repairCost);
+        }
+
+        if (player != null)
+        {
+            PlayerInventory inv = player.GetComponent<PlayerInventory>();
+            if (inv != null && inv.myItems.Count > 0)
+            {
+                int toRemove = Mathf.Max(1, Mathf.CeilToInt(inv.myItems.Count * 0.2f));
+                for (int i = 0; i < toRemove && inv.myItems.Count > 0; i++)
+                {
+                    int idx = Random.Range(0, inv.myItems.Count);
+                    inv.myItems.RemoveAt(idx);
+                }
+                inv.RefreshUI();
+            }
+        }
+
         if (shipStats != null)
+        {
             shipStats.Heal(shipStats.GetMaxHP());
+            shipStats.AddEnergy(shipStats.GetMaxEnergy());
+        }
 
         if (player != null)
         {

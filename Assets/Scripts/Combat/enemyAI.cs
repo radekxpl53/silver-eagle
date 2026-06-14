@@ -24,7 +24,7 @@ public class EnemyAI : MonoBehaviour
     public Transform playerTarget;
     public float detectionRange = 500f;
     public float combatRange = 150f;
-    public float fleeHealthThreshold = 0.25f;
+    public float fleeHealthThreshold = 0.70f;
     public float stopDistance = 50f;
     public float patrolStopDistance = 12f;
 
@@ -274,6 +274,8 @@ public class EnemyAI : MonoBehaviour
         dodgeCooldownTimer = 3.0f;
     }
 
+    private bool fledAndDroppedLoot;
+
     private void UpdateState()
     {
         if (stats == null) return;
@@ -285,7 +287,19 @@ public class EnemyAI : MonoBehaviour
         if (healthPercent < fleeHealthThreshold)
         {
             if (currentState != EnemyState.Flee)
+            {
                 AILog.FSM($"Mało HP ({healthPercent * 100f:F0}%) — uciekam.");
+                if (!fledAndDroppedLoot)
+                {
+                    fledAndDroppedLoot = true;
+                    int stage = 0;
+                    if (ChunkManager.Instance != null &&
+                        ChunkManager.Instance.allSectorData.TryGetValue(ChunkManager.Instance.CurrentPlayerSector, out var sd))
+                        stage = SectorRegistry.GetLeadingStage(sd);
+                    EnemyLootDropper.DropLoot(transform.position, stage);
+                    GameEvents.TriggerEnemyKilled(this);
+                }
+            }
             currentState = EnemyState.Flee;
             return;
         }

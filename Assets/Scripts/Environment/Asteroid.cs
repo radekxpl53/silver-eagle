@@ -2,8 +2,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEditor;
-
 public class Asteroid : MonoBehaviour
 {
     public List<ResourceStack> materials = new List<ResourceStack>();

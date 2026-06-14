@@ -42,6 +42,8 @@ public class MiningGame : MonoBehaviour
     private float yieldMultiplier = 1f;
     private bool isMining = false;
 
+    private float instability = 0f;
+    private bool thermalShockTriggered;
     private bool isDataInitialized = false;
 
     [Header("Asteroid Explosion")]
@@ -71,15 +73,10 @@ public class MiningGame : MonoBehaviour
         if (isOverheated)
         {
             HandleOverheat();
-            yieldMultiplier -= 0.15f * Time.deltaTime; 
-        
-            if (yieldMultiplier < 0.3f)
-            {
-                EndGame("ZŁOŻE ZNISZCZONE - PRZEGRZANIE!");
-                return;
-            }
             return;
         }
+
+        UpdateInstability();
 
         if (isPressingAction)
         {
@@ -112,23 +109,22 @@ public class MiningGame : MonoBehaviour
         }
         else if (currentTemperature > maxOptimal)
         {
-            //jesli powyzej optymalnej temperatury ilosc surowców spada
             if (sliderFillImage != null) sliderFillImage.color = Color.red;
-            
-            // Im bardziej przekraczamy maxOptimal, tym szybciej niszczymy złoże
-            float damageScale = (currentTemperature - maxOptimal) / (maxDrillTemperature - maxOptimal);
-            yieldMultiplier -= 0.05f * damageScale * Time.deltaTime;
-
-            // Warunek przegranej
-            if (yieldMultiplier < 0.3f)
-            {
-                EndGame("ZŁOŻE ZNISZCZONE - ZBYT WYSOKA TEMPERATURA!");
-                return;
-            }
         }
         else
         {
             if (sliderFillImage != null) sliderFillImage.color = Color.white;
+        }
+
+        if (instability >= 10f && instability < 90f)
+        {
+            float meltRate = (instability - 10f) / 80f;
+            yieldMultiplier -= 0.12f * meltRate * Time.deltaTime;
+            if (yieldMultiplier < 0.3f)
+            {
+                EndGame("ZŁOŻE ZNISZCZONE - TOPNIENIE SUROWCA!");
+                return;
+            }
         }
 
         currentProgress = Mathf.Clamp01(currentProgress);
@@ -210,6 +206,8 @@ public void StartMinigame() {
     currentProgress = 0f;
     currentTemperature = 0f;
     yieldMultiplier = 1f;
+    instability = 0f;
+    thermalShockTriggered = false;
 
     if (laserCollecting.isValid()) laserCollecting.start();
 }
@@ -240,6 +238,68 @@ public void StartMinigame() {
         }
     }
 
+    void UpdateInstability()
+    {
+        bool inZone = currentTemperature >= minOptimal && currentTemperature <= maxOptimal;
+
+        if (!inZone)
+            instability += 10f * Time.deltaTime;
+
+        if (currentTemperature > maxOptimal * 1.2f)
+            instability += 30f * Time.deltaTime;
+        else if (inZone)
+            instability = Mathf.Max(0f, instability - 5f * Time.deltaTime);
+
+        instability = Mathf.Clamp(instability, 0f, 100f);
+
+        if (instability >= 90f && !thermalShockTriggered)
+        {
+            thermalShockTriggered = true;
+            TriggerThermalShock();
+        }
+    }
+
+    void TriggerThermalShock()
+    {
+        ThermalShock();
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            ShipStats stats = player.GetComponent<ShipStats>();
+            DamageCollision collision = player.GetComponentInChildren<DamageCollision>();
+            Vector3 astPos = MiningData.currentAsteroidObject != null
+                ? MiningData.currentAsteroidObject.transform.position
+                : player.transform.position;
+            float dist = Vector3.Distance(player.transform.position, astPos);
+            float damage = Mathf.Lerp(35f, 8f, dist / 400f);
+
+            if (stats != null)
+                stats.AbsorbDamage(damage, player.transform.position);
+            else if (collision != null)
+                collision.SendMessage("OnCollisionEnter", new Collision(), SendMessageOptions.DontRequireReceiver);
+
+            GameEvents.TriggerHullDamaged(damage, player.transform.position);
+        }
+
+        EndGame("THERMAL SHOCK — PRZERWANO WYDOBYWANIE!");
+    }
+
+    void ShowSampleAnalysis(Asteroid asteroid)
+    {
+        if (asteroid == null || asteroid.materials == null || asteroid.materials.Count == 0) return;
+
+        float sum = 0f;
+        foreach (var m in asteroid.materials) sum += m.amount;
+        float avgTemp = asteroid.CalculateTemperature();
+        string band = avgTemp < 1500f ? "LOW" : avgTemp < 2200f ? "MID" : "HIGH";
+
+        Debug.Log("=== ANALIZA PRÓBKI ===");
+        foreach (var m in asteroid.materials)
+            Debug.Log($"  {m.definition.Name}: {(m.amount / sum) * 100f:F0}%");
+        Debug.Log($"  Średnia temp: {avgTemp:F0}°C | Strefa: {band}");
+    }
+
     void ThermalShock()
     {
         Debug.Log("Wiertło zablokowane - System chłodzenia aktywny!");
@@ -260,6 +320,8 @@ public void StartMinigame() {
         
         if (MiningData.currentAsteroidLoot != null)
         {
+            if (MiningData.currentAsteroidObject != null)
+                ShowSampleAnalysis(MiningData.currentAsteroidObject.GetComponent<Asteroid>());
             StartMinigame();
         }
         else {

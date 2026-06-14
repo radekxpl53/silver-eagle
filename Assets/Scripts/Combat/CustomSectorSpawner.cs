@@ -33,6 +33,8 @@ public class CustomSectorSpawner : MonoBehaviour
     {
         yield return null;
 
+        ApplyRiskScaling();
+
         PatrolWaypointManager pwm = FindFirstObjectByType<PatrolWaypointManager>();
         if (pwm != null) pwm.RefreshFromChunkManager();
 
@@ -156,5 +158,18 @@ public class CustomSectorSpawner : MonoBehaviour
         }
 
         return newEnemy;
+    }
+
+    private void ApplyRiskScaling()
+    {
+        if (ChunkManager.Instance == null) return;
+        int risk = SectorRegistry.GetRiskLevel(ChunkManager.Instance.CurrentPlayerSector);
+        maxActiveEnemies = risk switch
+        {
+            0 => 1,
+            1 => 1,
+            2 => 2,
+            _ => 3
+        };
     }
 }

@@ -25,7 +25,7 @@ public class Sector : MonoBehaviour {
         if (newData.haveRepairStation == true)
         {
             GameObject repairStation = Instantiate(repairStationPrefab, transform);
-            repairStationPrefab.transform.localPosition = data.repairStationLocalPos;
+            repairStation.transform.localPosition = data.repairStationLocalPos;
         }
 
         // Rysujemy obwódki sektora

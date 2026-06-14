@@ -38,7 +38,32 @@ public class ShipStats : MonoBehaviour {
     public float baseCargoCapacity = 100f;
     public float currentMaxCargo;
 
-    [Header("--- PANCERZ STREFOWY ---")]
+    [SerializeField] private float MaxShield;
+    private float CurrentShield;
+
+    public float GetMaxShield() => MaxShield;
+    public void SetMaxShield(float value) => MaxShield = Mathf.Max(0f, value);
+    public void RefillShield() => CurrentShield = MaxShield;
+
+    public void AbsorbDamage(float damage, Vector3 hitPoint)
+    {
+        if (damage <= 0f) return;
+
+        float remaining = damage;
+        if (CurrentShield > 0f)
+        {
+            float absorbed = Mathf.Min(CurrentShield, remaining);
+            CurrentShield -= absorbed;
+            remaining -= absorbed;
+        }
+
+        if (remaining > 0f)
+        {
+            TakeDamage(remaining);
+            GameEvents.TriggerHullDamaged(remaining, hitPoint);
+        }
+    }
+
     public float frontArmorMultiplier = 0.5f;
     public float sideArmorMultiplier = 1.0f;
     public float rearArmorMultiplier = 1.5f;
@@ -51,13 +76,19 @@ public class ShipStats : MonoBehaviour {
         if (CurrentHP <= 0) CurrentHP = MaxHP;
         if (CurrentEnergy <= 0) CurrentEnergy = MaxEnergy;
         if (CurrentCargo <= 0) CurrentCargo = 0;
+        if (CurrentShield <= 0 && MaxShield > 0) CurrentShield = MaxShield;
 
-        DeveloperConsole.Instance.AddCommand("set_hp", SetHPCommand);
-        DeveloperConsole.Instance.AddCommand("set_max_hp", SetMaxHPCommand);
-        DeveloperConsole.Instance.AddCommand("set_energy", SetEnergyCommand);
-        DeveloperConsole.Instance.AddCommand("set_max_energy", SetMaxEnergyCommand);
-        DeveloperConsole.Instance.AddCommand("get_hp", GetHPCommand);
-        DeveloperConsole.Instance.AddCommand("get_energy", GetEnergyCommand);
+#if DEVELOPMENT_BUILD
+        if (DeveloperConsole.Instance != null)
+        {
+            DeveloperConsole.Instance.AddCommand("set_hp", SetHPCommand);
+            DeveloperConsole.Instance.AddCommand("set_max_hp", SetMaxHPCommand);
+            DeveloperConsole.Instance.AddCommand("set_energy", SetEnergyCommand);
+            DeveloperConsole.Instance.AddCommand("set_max_energy", SetMaxEnergyCommand);
+            DeveloperConsole.Instance.AddCommand("get_hp", GetHPCommand);
+            DeveloperConsole.Instance.AddCommand("get_energy", GetEnergyCommand);
+        }
+#endif
     }
 
     public void ResetData()
@@ -85,7 +116,10 @@ public class ShipStats : MonoBehaviour {
         else
             damage *= sideArmorMultiplier;
 
-        TakeDamage(damage);
+        if (CompareTag("Player"))
+            AbsorbDamage(damage, transform.position);
+        else
+            TakeDamage(damage);
     }
 
     public void TakeDamage(float damage)
@@ -124,6 +158,7 @@ public class ShipStats : MonoBehaviour {
         }
 
         EventBus.TriggerOnPlayerDeath();
+        GameEvents.TriggerPlayerDestroyed();
         if (GameManager.Instance != null)
             GameManager.Instance.TriggerGameOver();
     }

@@ -80,6 +80,30 @@ public class PlayerInventory : MonoBehaviour
             Debug.Log("BRAK MIEJSCA W ŁADOWNI!");
         }
     }
+    public int GetAmount(ResourceDefinition def)
+    {
+        if (def == null) return 0;
+        var stack = myItems.Find(s => s.definition == def);
+        return stack != null ? stack.amount : 0;
+    }
+
+    public bool RemoveResource(ResourceDefinition def, int amount)
+    {
+        if (def == null || amount <= 0) return false;
+        var stack = myItems.Find(s => s.definition == def);
+        if (stack == null || stack.amount < amount) return false;
+
+        stack.amount -= amount;
+        if (shipStats != null)
+            shipStats.SetCargo(Mathf.Max(0f, shipStats.CurrentCargo - def.weight * amount));
+
+        if (stack.amount <= 0)
+            myItems.Remove(stack);
+
+        RefreshUI();
+        return true;
+    }
+
     public void RefreshUI()
     {
         if (uiDisplay != null)

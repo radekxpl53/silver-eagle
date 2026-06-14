@@ -106,10 +106,22 @@ public class ShipController : MonoBehaviour
         CheckFuelWarning();
         ApplyDirectionalDamping();
 
-        if (rb.linearVelocity.magnitude > maxOverallSpeed)
+        if (rb.linearVelocity.magnitude > GetEffectiveMaxSpeed())
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxOverallSpeed;
+            rb.linearVelocity = rb.linearVelocity.normalized * GetEffectiveMaxSpeed();
         }
+    }
+
+    private float GetEffectiveMaxSpeed()
+    {
+        float loadRatio = stats.GetMaxCargo() > 0 ? stats.CurrentCargo / stats.GetMaxCargo() : 0f;
+        return loadRatio > 0.8f ? maxOverallSpeed * 0.7f : maxOverallSpeed;
+    }
+
+    private float GetFuelDrainMultiplier()
+    {
+        float loadRatio = stats.GetMaxCargo() > 0 ? stats.CurrentCargo / stats.GetMaxCargo() : 0f;
+        return loadRatio > 0.8f ? 1.5f : 1f;
     }
 
     private void ApplyCameraMode()
@@ -236,7 +248,7 @@ public class ShipController : MonoBehaviour
         bool isMoving = gasInput != 0 || turnInput != 0 || verticalInput != 0 || rollInput != 0 || (isFPPMode && Mouse.current != null && Mouse.current.delta.ReadValue().sqrMagnitude > 0.1f);
         if (isMoving && hasFuel)
         {
-            stats.UseEnergy(stats.NormalDrainRate * Time.fixedDeltaTime);
+            stats.UseEnergy(stats.NormalDrainRate * GetFuelDrainMultiplier() * Time.fixedDeltaTime);
         }
     }
 

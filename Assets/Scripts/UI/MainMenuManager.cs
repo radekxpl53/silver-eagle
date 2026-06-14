@@ -53,8 +53,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnNewGameClicked()
     {
-        //Debug.Log("Starting new game...");
-        
+        Restart.ResetData();
         SceneManager.LoadScene("GameManager");
     }
 

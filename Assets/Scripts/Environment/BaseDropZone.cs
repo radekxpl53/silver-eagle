@@ -34,17 +34,23 @@ public class BaseDropZone : MonoBehaviour
                     Debug.Log("Zatankowano");
                 }
 
-                if (shipStats.CurrentHP < shipStats.GetMaxHP())
+                if (shipStats.CurrentHP < shipStats.GetMaxHP() || shipStats.CurrentEnergy < shipStats.GetMaxEnergy())
                 {
                     float hpDiff = shipStats.GetMaxHP() - shipStats.CurrentHP;
-                    int cost = Mathf.CeilToInt(hpDiff * 0.5f);
+                    float energyDiff = shipStats.GetMaxEnergy() - shipStats.CurrentEnergy;
+                    int cost = Mathf.CeilToInt((hpDiff + energyDiff) * 0.5f);
 
-                    EconomyManager.Instance.SpendCredits(cost);
+                    if (!EconomyManager.Instance.SpendCredits(cost))
+                    {
+                        Debug.LogWarning("Brak kredytów na naprawę.");
+                        return;
+                    }
 
                     if (costText != null)
                         costText.text = "Cost: " + cost;
 
                     shipStats.Heal(hpDiff);
+                    shipStats.AddEnergy(energyDiff);
 
                     if (healInfoCanvas != null)
                     {

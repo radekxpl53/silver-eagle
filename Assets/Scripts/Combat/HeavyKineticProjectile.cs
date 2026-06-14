@@ -66,6 +66,14 @@ public class HeavyKineticProjectile : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(rb.linearVelocity.normalized);
 
         if (timer >= selfDestructTimeout && !hitTarget)
+            Recycle();
+    }
+
+    private void Recycle()
+    {
+        if (ProstPool.Instance != null)
+            ProstPool.Instance.Release(gameObject);
+        else
             Destroy(gameObject);
     }
 
@@ -80,13 +88,13 @@ public class HeavyKineticProjectile : MonoBehaviour
         if (stats != null && col.contactCount > 0)
         {
             stats.TakeZonedDamage(activeDamage, col.GetContact(0).normal);
-            Destroy(gameObject);
+            Recycle();
             return;
         }
 
         if (col.rigidbody != null && col.contactCount > 0)
             col.rigidbody.AddForceAtPosition(rb.linearVelocity * 100f, col.GetContact(0).point, ForceMode.Impulse);
 
-        Destroy(gameObject);
+        Recycle();
     }
 }

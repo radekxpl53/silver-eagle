@@ -63,12 +63,12 @@ public class HeavyKineticLauncher : MonoBehaviour
 
         Vector3 shooterVelocity = parentRb != null ? parentRb.linearVelocity : Vector3.zero;
 
-        var go = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(shootDirection));
-        go.GetComponent<HeavyKineticProjectile>().Launch(
-            shootDirection,
-            shooterVelocity,
-            ownerTransform,
-            dynamicDamage);
+        GameObject go = ProstPool.Instance != null
+            ? ProstPool.Instance.Get(spawnPos, Quaternion.LookRotation(shootDirection))
+            : Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(shootDirection));
+
+        var proj = go.GetComponent<HeavyKineticProjectile>();
+        proj.Launch(shootDirection, shooterVelocity, ownerTransform, dynamicDamage);
 
         Collider projCollider = go.GetComponent<Collider>();
         if (projCollider == null) return;
