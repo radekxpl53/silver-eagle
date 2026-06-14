@@ -45,6 +45,15 @@ public class UI_ShipStatus : MonoBehaviour
         cargoText.text = Math.Round(shipStats.CurrentCargo) + "/" + shipStats.GetMaxCargo();
 
         credits.text = "Credits: " + economyManager.Credits;
+
+        // Propagate stats to diegetic display
+        if (CockpitDisplayManager.Instance != null)
+        {
+            CockpitDisplayManager.Instance.SetHP(shipStats.CurrentHP, shipStats.GetMaxHP());
+            CockpitDisplayManager.Instance.SetEnergy(shipStats.CurrentEnergy, shipStats.GetMaxEnergy());
+            CockpitDisplayManager.Instance.SetCargo(shipStats.CurrentCargo, shipStats.GetMaxCargo());
+            CockpitDisplayManager.Instance.SetCredits(economyManager.Credits);
+        }
     }
     void Update()
     {

@@ -371,8 +371,8 @@ public void StartMinigame() {
         isMining = false;
 
         if (message == "WYDOBYTO!") {
+            GameEvents.TriggerMiningComplete();
 
-            
             string summary = "WYDOBYTO:";
             if (MiningData.currentAsteroidLoot != null) {
                 foreach (ResourceStack stack in MiningData.currentAsteroidLoot) {

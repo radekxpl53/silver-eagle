@@ -102,6 +102,13 @@ public class PauseMenu : MonoBehaviour
         controlsPanel.SetActive(true);
     }
 
+    public void SaveGame()
+    {
+        if (SaveDataJSON.Instance != null)
+            SaveDataJSON.Instance.SaveData();
+        Debug.Log("Zapisano grę!");
+    }
+
     private void OnDestroy()
     {
         mainMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);

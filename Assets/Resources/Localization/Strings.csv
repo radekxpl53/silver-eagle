@@ -1,0 +1,68 @@
+Key,pl,en
+UI_HP,Pancerz,Hull
+UI_Energy,Energia,Energy
+UI_Cargo,Ładunek,Cargo
+UI_Credits,Kredyty,Credits
+TUTORIAL_1,WASD lot - użyj WASD do sterowania statkiem,WASD flight - use WASD keys to maneuver
+TUTORIAL_2,Podleć do asteroidy i naciśnij E aby rozpocząć wydobycie,Fly near an asteroid and press E to lock on
+TUTORIAL_3,Ukończ minigrę aby zebrać surowce,Complete the mining game to harvest resources
+TUTORIAL_4,Sprzedaj surowce w strefie skupu,Sell harvested resources in the Sell Zone
+TUTORIAL_5,Otwórz mapę sektorów klawiszem M,Open the sector map with M key
+TUTORIAL_COMPLETE,Samouczek ukończony. Bezpiecznych lotów!,Tutorial completed. Safe flights!
+MENU_NEW_GAME,Nowa Gra,New Game
+MENU_CONTINUE,Kontynuuj,Continue
+MENU_PAUSE,Pauza,Pause
+MENU_SAVE_GAME,Zapisz grę,Save Game
+MENU_SETTINGS,Ustawienia,Settings
+MENU_SETTINGS_MUSIC,Głośność Muzyki,Music Volume
+MENU_SETTINGS_SFX,Głośność SFX,SFX Volume
+MENU_CONTROLS,Sterowanie,Controls
+MENU_QUIT,Wyjdź,Quit
+MENU_CONFIRM_OVERWRITE,Czy chcesz nadpisać zapis gry?,Do you want to overwrite save game?
+MENU_YES,Tak,Yes
+MENU_NO,Nie,No
+MENU_CREDITS,Autorzy,Credits
+DEATH_TITLE,Zniszczenie Statku,Ship Destroyed
+DEATH_REPAIR,Koszt naprawy kadłuba: ,Hull repair cost: 
+DEATH_CARGO_LOST,Utracono cały ładunek!,All cargo lost!
+DEATH_RESPAWN,Naciśnij R aby powrócić do stacji,Press R to respawn at station
+SEC_A1,Sektor A1,Sector A1
+SEC_A2,Sektor A2,Sector A2
+SEC_A3,Sein Pfeiser,Sein Pfeiser
+SEC_A4,Erad'os,Erad'os
+SEC_A5,Sektor A5,Sector A5
+SEC_A6,Keimos,Keimos
+SEC_B1,Sektor B1,Sector B1
+SEC_B2,Sektor B2,Sector B2
+SEC_B3,Sektor B3,Sector B3
+SEC_B4,Sektor B4,Sector B4
+SEC_B5,Rubieże etap 0,Rubieze Borderlands
+SEC_B6,Sektor B6,Sector B6
+SEC_C1,Sektor C1,Sector C1
+SEC_C2,Sektor C2,Sector C2
+SEC_C3,Sektor C3,Sector C3
+SEC_C4,Sektor C4,Sector C4
+SEC_C5,Piraci etap 2,Pirate Cove
+SEC_C6,Sektor C6,Sector C6
+SEC_D1,Sektor D1,Sector D1
+SEC_D2,Sektor D2,Sector D2
+SEC_D3,Sektor D3,Sector D3
+SEC_D4,Sektor D4,Sector D4
+SEC_D5,Rod etap 3,The Rod
+SEC_D6,Sektor D6,Sector D6
+SEC_E1,Sektor E1,Sector E1
+SEC_E2,Uran etap 4,Uranus Outpost
+SEC_E3,Sektor E3,Sector E3
+SEC_E4,Sektor E4,Sector E4
+SEC_E5,Sektor E5,Sector E5
+SEC_E6,Sektor E6,Sector E6
+SEC_F1,Sektor F1,Sector F1
+SEC_F2,Sektor F2,Sector F2
+SEC_F3,Sektor F3,Sector F3
+SEC_F4,Sektor F4,Sector F4
+SEC_F5,Mrainesden,Mrainesden
+SEC_F6,Sektor F6,Sector F6
+MSG_PATROL,Patrol w pobliżu!,Patrol nearby!
+MSG_SPEED_LIMIT,Ograniczenie prędkości aktywne.,Speed limit active.
+MSG_LAWLESS,Brak ochrony prawnej. SOS niedostępne!,Lawless zone. SOS unavailable!
+MSG_DISARM,Wyłącz uzbrojenie w strefie kontrolnej!,Disarm weapons in control zone!

@@ -16,6 +16,8 @@ public class SellSystem : MonoBehaviour
     {
         economyManager = EconomyManager.Instance;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
         inventory = player.GetComponent<PlayerInventory>();
         shipStats = player.GetComponent<ShipStats>();
         playerInteract = player.GetComponent<PlayerInteract>();
@@ -25,6 +27,9 @@ public class SellSystem : MonoBehaviour
 
     void Update()
     {
+        if (Keyboard.current == null || playerInteract == null || shipStats == null || inventory == null || economyManager == null)
+            return;
+
         // wciśnij C aby sprzedać
         if (Keyboard.current.cKey.wasPressedThisFrame && playerInteract.canSell && shipStats.CurrentCargo > 0f)
         {
@@ -43,7 +48,7 @@ public class SellSystem : MonoBehaviour
             inventory.myItems.Clear();
             shipStats.SetCargo(0);
             inventory.RefreshUI();
-
+            GameEvents.TriggerResourcesSold();
         }
     }
 

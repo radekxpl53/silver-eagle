@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
+  m_Name: Sector_C2
+  m_EditorClassIdentifier: SilverEagle::SectorDefinition
+  gridPosition: {x: 2, y: 1}
+  sectorName: Sector C2
+  territory: 3
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Joint Transit Authority
+  profileText: Sector C2 exploration zone.
+  riskAnalysisText: 'Risk Level: High. Hostile scanning and frequent combat.'
+  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
+  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  crtLogEntries:
+  - '[LOG] Entering Sector C2'
+  - '[LOG] Security protocols: Tranzyt'
+  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  miningComposition: []
+  miningThreatLevel: 2
+  miningThermalHint: Thermal levels nominal.
+  miningSafetyMessage: 'Safety rating: DANGEROUS.'
+  patrolPresence: 0
+  shopTaxPercent: 0

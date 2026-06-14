@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
+  m_Name: Sector_A6
+  m_EditorClassIdentifier: SilverEagle::SectorDefinition
+  gridPosition: {x: 0, y: 5}
+  sectorName: Keimos
+  territory: 2
+  leadingStage: 0
+  riskLevel: 0
+  jurisdictionText: No Legal Jurisdiction (Rubieze)
+  profileText: Safe starting system. Rich in basic silicates and iron ores.
+  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
+  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
+  crewNote: 'Korey: ''Everything is quiet here. Best place to calibrate the mining
+    lasers.'''
+  crtLogEntries:
+  - '[LOG] Entering Sector A6'
+  - '[LOG] Security protocols: Rubieze'
+  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  miningComposition: []
+  miningThreatLevel: 0
+  miningThermalHint: Thermal levels unstable. Danger of overheating.
+  miningSafetyMessage: 'Safety rating: EXCELLENT.'
+  patrolPresence: 0
+  shopTaxPercent: 0

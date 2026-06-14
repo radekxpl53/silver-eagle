@@ -194,7 +194,7 @@ public class ChunkManager : MonoBehaviour
         int amountPerType = totalUnits / typesCount;
 
         for (int i = 0; i < typesCount; i++) {
-            int targetStage = SectorStageResolver.RollLootStage(SectorRegistry.GetLeadingStage(targetSector));
+            int targetStage = SectorStageResolver.RollLootStage(stage);
 
             ResourceDefinition res = resourceDB.GetRandomResource(Mathf.Clamp(targetStage, 0, 4));
             if (res != null) {

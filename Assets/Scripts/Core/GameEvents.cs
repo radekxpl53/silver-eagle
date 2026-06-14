@@ -12,6 +12,9 @@ public static class GameEvents
     public static event Action<float, Vector3> OnHullDamaged;
     public static event Action OnPlayerDestroyed;
     public static event Action<EnemyAI> OnEnemyKilled;
+    public static event Action OnMiningComplete;
+    public static event Action OnResourcesSold;
+    public static event Action OnMapToggled;
 
     public static void TriggerSectorEntered(Vector2Int grid, SectorDefinition def) =>
         OnSectorEntered?.Invoke(grid, def);
@@ -39,4 +42,13 @@ public static class GameEvents
 
     public static void TriggerEnemyKilled(EnemyAI enemy) =>
         OnEnemyKilled?.Invoke(enemy);
+
+    public static void TriggerMiningComplete() =>
+        OnMiningComplete?.Invoke();
+
+    public static void TriggerResourcesSold() =>
+        OnResourcesSold?.Invoke();
+
+    public static void TriggerMapToggled() =>
+        OnMapToggled?.Invoke();
 }
