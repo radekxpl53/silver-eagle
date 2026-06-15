@@ -60,6 +60,8 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
+        isInteractingWithUI = StationUiInput.BlocksWeaponInput;
+
         if (Keyboard.current != null && Keyboard.current.vKey.wasPressedThisFrame)
         {
             isFPPMode = !isFPPMode;
@@ -83,10 +85,12 @@ public class ShipController : MonoBehaviour
             previousLoadPercent = currentLoadPercent;
         }
 
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && launcher != null)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && launcher != null
+            && !StationUiInput.BlocksWeaponInput)
             launcher.TryFire();
 
-        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && plasmaCannon != null)
+        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && plasmaCannon != null
+            && !StationUiInput.BlocksWeaponInput)
             plasmaCannon.TryFire();
 
         ChangeAudioFilter();
@@ -268,7 +272,15 @@ public class ShipController : MonoBehaviour
             (isFPPMode && Mouse.current != null && Mouse.current.delta.ReadValue().sqrMagnitude > 0.1f);
 
         if (isMoving && hasFuel)
-            stats.UseEnergy(stats.NormalDrainRate * GetFuelDrainMultiplier() * Time.fixedDeltaTime);
+        {
+            float drain = 0f;
+            if (gasInput != 0f)
+                drain += stats.NormalDrainRate * GetFuelDrainMultiplier();
+            if (turnInput != 0f || pitchInput != 0f || rollInput != 0f)
+                drain += stats.NormalDrainRate * 0.35f;
+            if (drain > 0f)
+                stats.UseEnergy(drain * Time.fixedDeltaTime);
+        }
     }
 
     private void CheckFuelWarning()

@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_E2
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 4, y: 1}
+  gridPosition: {x: 1, y: 4}
   sectorName: Uranus Outpost
-  territory: 1
-  leadingStage: 1
-  riskLevel: 1
-  jurisdictionText: Ariandia Corporate Coalition
-  profileText: Deep gas giant orbit. Dangerous radioactive zones.
-  riskAnalysisText: 'Risk Level: Low. Minimal local pirate groups.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Korey: ''Radiation levels are high. Don''t linger near the gas giant.'''
+  territory: 2
+  leadingStage: 4
+  riskLevel: 4
+  jurisdictionText: Złowroga Pustka.
+  profileText: Ekstremalny Deep Space. Strefa Anomalyjna.
+  riskAnalysisText: Poziom 4 (Krytyczny). Mordercze środowisko, gniazda najcięższych jednostek wroga.
+  oreForecastText: Uran, Obca Biomasa, Niestabilne Izotopy.
+  crewNote: 'Czy myśmy postradali zmysły? Moje skanery wykazują potężne promieniowanie uranu i sygnatury... biologiczne? Obca Biomasa? Ogólne Porozumienie zabrania badania takich anomalii bez wsparcia korporacyjnego. Jeśli drony nas tu nie zabiją, zrobi to to cholerne promieniowanie.'
   crtLogEntries:
-  - '[LOG] Entering Sector E2'
-  - '[LOG] Security protocols: Ariandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: KRYTYCZNE ZAGROŻENIE ŚRODOWISKOWE. Poziom promieniowania przekracza normy statku klasy CMR.'
+  - '[LOG PRAWNY]: Obszar kwarantanny. Wydobycie nieautoryzowane.'
+  - '[SKANER WOJSKOWY]: Niezidentyfikowane zakłócenia wielkiego kalibru. Tarcze na poziomie maksymalnym zalecane natychmiast.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
-  patrolPresence: 1
+  miningThreatLevel: 3
+  miningThermalHint: Średnia temperatura plazmy: EKSTREMALNA.
+  miningSafetyMessage: Zagrożenie skażeniem i gwałtowną eksplozją na poziomie 90%. Zaledwie sekunda błędu w minigrze wywoła śmiertelny Thermal Shock. Wymagane doskonałe chłodzenie.
+  patrolPresence: 0
   shopTaxPercent: 0

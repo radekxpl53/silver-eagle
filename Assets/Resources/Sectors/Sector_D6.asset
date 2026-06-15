@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_D6
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 3, y: 5}
+  gridPosition: {x: 5, y: 3}
   sectorName: Sector D6
-  territory: 3
-  leadingStage: 2
-  riskLevel: 2
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector D6 exploration zone.
-  riskAnalysisText: 'Risk Level: Moderate. Travel in armed groups recommended.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 1
+  leadingStage: 1
+  riskLevel: 1
+  jurisdictionText: Przekazanie jurysdykcji.
+  profileText: Punkt kontrolny Republiki Ariandyjskiej.
+  riskAnalysisText: Poziom 1. Surowe prawo celne Ariandii.
+  oreForecastText: Nikiel, Kobalt, Lit, Siarka.
+  crewNote: 'Zmieniły się kody transponderów na ariandyjskie. Wojsko skanuje naszą ładownię na odległość. Mam nadzieję, że moje gigantyczne długi u syndykatów z UnTF tu nie dotarły, bo z miejsca wydadzą mnie egzekutorom.".'
   crtLogEntries:
-  - '[LOG] Entering Sector D6'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Połączenie z siecią Republiki Ariandyjskiej ustanowione.'
+  - '[LOG PRAWNY]: Ariandia pamięta ofiary I Wojny Galaktycznej. Bezwzględny zakaz wwozu technologii należącej dawniej do UnTF.'
+  - '[SKANER WOJSKOWY]: Autoryzacja udana. Wykryto ariandyjskie jednostki celne.'
   miningComposition: []
   miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
-  patrolPresence: 0
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-NISKA.
+  miningSafetyMessage: Temperatury w normie. Uwaga na reaktywne opary siarki mogące uszkodzić czujniki optyczne wiertła.".
+  patrolPresence: 1
   shopTaxPercent: 0

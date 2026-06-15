@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_B5
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 1, y: 4}
-  sectorName: Rubieze Borderlands
+  gridPosition: {x: 4, y: 1}
+  sectorName: Rubieże Borderlands
   territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Outer rim border region, high asteroid density.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Eliana: ''Keep an eye on the sensors. Rubieze isn''t known for its hospitality.'''
+  leadingStage: 0
+  riskLevel: 0
+  jurisdictionText: Brak. Terytorium niczyje poza Korytarzem Tranzytowym.
+  profileText: Wyeksploatowane cmentarzysko asteroid (Etap 0).
+  riskAnalysisText: Poziom 0. Sektor zbyt ubogi, by przyciągnąć piratów. Całkowity brak wojska.
+  oreForecastText: Brudny Lód, Złom Ferromagnetyczny, Węgiel.
+  crewNote: 'Serio kapitan? Wlecieliśmy w Szarą Strefę, terytorium absolutnego zbiegostwa, dom piratów... po to, żeby kopać w brudnym lodzie? Przecież tu jest nudniej niż na hydro-uprawach w moim rodzinnym domu.'
   crtLogEntries:
-  - '[LOG] Entering Sector B5'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Ostrzeżenie: Opuszczono terytorium Republiki. Wejście w Rubieże.'
+  - '[LOG PRAWNY]: Brak ochrony prawnej. Działasz na własne ryzyko.'
+  - '[SKANER WOJSKOWY]: Złowroga cisza. Brak sygnatur cieplnych w promieniu 100 000 kilometrów. Duże zagęszczenie śmieci orbitalnych.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
+  miningThreatLevel: 0
+  miningThermalHint: Średnia temperatura plazmy: BARDZO NISKA.
+  miningSafetyMessage: Wydobycie trywialne. Utrzymanie wskaźników w szerokiej strefie tolerancji nie powinno stanowić problemu dla żadnego operatora.
   patrolPresence: 0
   shopTaxPercent: 0

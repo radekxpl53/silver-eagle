@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class CustomSectorSpawner : MonoBehaviour
@@ -6,58 +5,14 @@ public class CustomSectorSpawner : MonoBehaviour
     public AIArchetype[] availableArchetypes;
     public GameObject enemyPrefab;
 
-    [Header("Pojedynczy wróg")]
+    [Header("Pojedynczy wróg — tylko ambush po wydobyciu")]
     public int maxActiveEnemies = 1;
-    public float respawnDelay = 25f;
     public float minSpawnDistanceFromPlayer = 80f;
 
-    private float nextSpawnTime;
-
-    private void OnEnable()
+    private GameObject ResolveEnemyPrefab()
     {
-        EventBus.OnEnemyDeath += OnEnemyDeath;
-    }
-
-    private void OnDisable()
-    {
-        EventBus.OnEnemyDeath -= OnEnemyDeath;
-    }
-
-    private void Start()
-    {
-        nextSpawnTime = 0f;
-        StartCoroutine(SpawnWhenSectorReady());
-    }
-
-    private IEnumerator SpawnWhenSectorReady()
-    {
-        yield return null;
-
-        ApplyRiskScaling();
-
-        PatrolWaypointManager pwm = FindFirstObjectByType<PatrolWaypointManager>();
-        if (pwm != null) pwm.RefreshFromChunkManager();
-
-        TrySpawnEnemy();
-    }
-
-    private void Update()
-    {
-        if (Time.time < nextSpawnTime) return;
-        TrySpawnEnemy();
-    }
-
-    private void OnEnemyDeath(EnemyAI _)
-    {
-        nextSpawnTime = Time.time + respawnDelay;
-    }
-
-    private void TrySpawnEnemy()
-    {
-        if (CountActiveEnemies() >= maxActiveEnemies) return;
-
-        ManualSpawnInsideSector();
-        nextSpawnTime = float.MaxValue;
+        if (enemyPrefab != null) return enemyPrefab;
+        return Resources.Load<GameObject>("AI/EnemyWroga");
     }
 
     private int CountActiveEnemies()
@@ -68,68 +23,21 @@ public class CustomSectorSpawner : MonoBehaviour
         return FindObjectsByType<EnemyAI>(FindObjectsSortMode.None).Length;
     }
 
-    private void ManualSpawnInsideSector()
+    /// <summary>10% szans po zebraniu surowca — spawn na przeciwnym końcu sektora.</summary>
+    public bool TrySpawnAmbushAtOppositeEdge(float chance = 0.1f)
     {
+        if (Random.value > chance) return false;
+        if (CountActiveEnemies() >= maxActiveEnemies) return false;
+
         GameObject prefab = ResolveEnemyPrefab();
-        if (prefab == null) return;
+        if (prefab == null) return false;
 
         Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
         Vector3 playerPos = player != null ? player.position : Vector3.zero;
 
-        Vector3 center = ChunkManager.Instance != null
-            ? ChunkManager.Instance.GetSectorWorldCenter()
-            : playerPos;
-
-        float half = ChunkManager.Instance != null
-            ? ChunkManager.Instance.GetSectorHalfExtent() * 0.85f
-            : 170f;
-
-        Vector3 spawnPosition = FindSpawnPosition(center, half, playerPos);
-        Vector3 lookTarget = player != null ? playerPos : center;
-
-        AIArchetype chosen = availableArchetypes != null && availableArchetypes.Length > 0
-            ? availableArchetypes[Random.Range(0, availableArchetypes.Length)]
-            : null;
-
-        SpawnEnemyAt(prefab, spawnPosition, lookTarget, chosen != null ? new[] { chosen } : availableArchetypes);
-    }
-
-    private Vector3 FindSpawnPosition(Vector3 center, float half, Vector3 playerPos)
-    {
-        Vector3 away = center - playerPos;
-        away.y = 0f;
-        if (away.sqrMagnitude < 1f)
-            away = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-        away.Normalize();
-
-        for (int attempt = 0; attempt < 16; attempt++)
-        {
-            float dist = Random.Range(half * 0.55f, half * 0.9f);
-            Vector3 candidate = center + away * dist;
-            candidate += new Vector3(Random.Range(-30f, 30f), 0f, Random.Range(-30f, 30f));
-
-            if (ChunkManager.Instance != null)
-                candidate = ChunkManager.Instance.ClampToSector(candidate, null, 10f);
-
-            candidate.y = playerPos.y;
-
-            if (Vector3.Distance(candidate, playerPos) >= minSpawnDistanceFromPlayer)
-                return candidate;
-
-            away = Quaternion.Euler(0f, Random.Range(30f, 90f), 0f) * away;
-        }
-
-        Vector3 fallback = ChunkManager.Instance != null
-            ? ChunkManager.Instance.ClampToSector(center + away * half * 0.7f, null, 10f)
-            : center + away * half * 0.7f;
-        fallback.y = playerPos.y;
-        return fallback;
-    }
-
-    private GameObject ResolveEnemyPrefab()
-    {
-        if (enemyPrefab != null) return enemyPrefab;
-        return Resources.Load<GameObject>("AI/EnemyWroga");
+        Vector3 spawnPosition = GetOppositeEdgePosition(playerPos);
+        SpawnEnemyAt(prefab, spawnPosition, playerPos, availableArchetypes);
+        return true;
     }
 
     public static GameObject SpawnEnemyAt(GameObject prefab, Vector3 spawnPosition, Vector3 lookTarget, AIArchetype[] archetypes)
@@ -160,16 +68,22 @@ public class CustomSectorSpawner : MonoBehaviour
         return newEnemy;
     }
 
-    private void ApplyRiskScaling()
+    public static Vector3 GetOppositeEdgePosition(Vector3 playerPos)
     {
-        if (ChunkManager.Instance == null) return;
-        int risk = SectorRegistry.GetRiskLevel(ChunkManager.Instance.CurrentPlayerSector);
-        maxActiveEnemies = risk switch
-        {
-            0 => 1,
-            1 => 1,
-            2 => 2,
-            _ => 3
-        };
+        if (ChunkManager.Instance == null)
+            return playerPos + Vector3.forward * 150f;
+
+        Vector3 center = ChunkManager.Instance.GetSectorWorldCenter();
+        float half = ChunkManager.Instance.GetSectorHalfExtent() * 0.88f;
+
+        Vector3 toPlayer = playerPos - center;
+        toPlayer.y = 0f;
+        if (toPlayer.sqrMagnitude < 1f)
+            toPlayer = Vector3.forward;
+
+        Vector3 spawn = center - toPlayer.normalized * half;
+        spawn += new Vector3(Random.Range(-25f, 25f), 0f, Random.Range(-25f, 25f));
+        spawn.y = playerPos.y;
+        return ChunkManager.Instance.ClampToSector(spawn, null, 12f);
     }
 }

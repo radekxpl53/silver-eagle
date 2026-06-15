@@ -20,7 +20,23 @@ public class AISceneBootstrap : MonoBehaviour
         EnsureObstacleRegistry();
         EnsurePatrolWaypointManager();
         EnsureSectorSpawner();
+        EnsureCombatSystems();
         CleanupLegacyEnemy();
+    }
+
+    private void EnsureCombatSystems()
+    {
+        if (FindFirstObjectByType<CombatPromptSystem>() == null)
+        {
+            var go = new GameObject("CombatPromptSystem");
+            go.AddComponent<CombatPromptSystem>();
+        }
+
+        if (FindFirstObjectByType<PostMiningAmbushSpawner>() == null)
+        {
+            var go = new GameObject("PostMiningAmbushSpawner");
+            go.AddComponent<PostMiningAmbushSpawner>();
+        }
     }
 
     private void EnsurePlayerSetup()
@@ -33,6 +49,17 @@ public class AISceneBootstrap : MonoBehaviour
 
         if (player.GetComponent<PlayerMarker>() == null)
             player.AddComponent<PlayerMarker>();
+
+        if (player.GetComponent<SharedUIManager>() == null)
+            player.AddComponent<SharedUIManager>();
+        if (player.GetComponent<CombatHUD>() == null)
+            player.AddComponent<CombatHUD>();
+        if (player.GetComponent<CombatAimHUD>() == null)
+            player.AddComponent<CombatAimHUD>();
+        if (player.GetComponent<CombatAimSystem>() == null)
+            player.AddComponent<CombatAimSystem>();
+        if (player.GetComponent<MinimapHUD>() == null)
+            player.AddComponent<MinimapHUD>();
     }
 
     private void EnsureObstacleRegistry()

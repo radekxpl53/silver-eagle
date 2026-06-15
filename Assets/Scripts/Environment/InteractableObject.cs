@@ -1,7 +1,6 @@
 using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +13,9 @@ public class InteractableObject : MonoBehaviour {
     public BeltSavedData myBelt;
 
     public float distanceBetweenObjects;
+
+    [SerializeField] private float maxDistanceFromBeltCenter = 120f;
+    [SerializeField] private float distanceCheckInterval = 2f;
 
     private float timer;
 
@@ -40,7 +42,7 @@ public class InteractableObject : MonoBehaviour {
         if (parentArea == null) return;
 
         timer += Time.deltaTime;
-        if (timer >= 2f)
+        if (timer >= distanceCheckInterval)
         {
             distanceBetweenObjects = Vector3.Distance(transform.position, parentArea.transform.position);
             Debug.DrawLine(transform.position, parentArea.transform.position, Color.green);
@@ -49,15 +51,18 @@ public class InteractableObject : MonoBehaviour {
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        GUI.color = Color.black;
-        //Handles.Label(transform.position - (transform.position - parentArea.transform.position) / 2, distanceBetweenObjects.ToString());
+        if (parentArea == null) return;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, parentArea.transform.position);
+        Gizmos.DrawWireSphere(parentArea.transform.position, maxDistanceFromBeltCenter);
     }
 
     void CheckDistance()
     {
-        if (distanceBetweenObjects > 60)
+        if (distanceBetweenObjects > maxDistanceFromBeltCenter)
         {
             if (myData != null)
             {

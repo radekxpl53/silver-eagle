@@ -12,24 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_A6
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 0, y: 5}
+  gridPosition: {x: 5, y: 0}
   sectorName: Keimos
-  territory: 2
+  territory: 0
   leadingStage: 0
   riskLevel: 0
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Safe starting system. Rich in basic silicates and iron ores.
-  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Korey: ''Everything is quiet here. Best place to calibrate the mining
-    lasers.'''
+  jurisdictionText: Pełna kontrola państwowa. Zgodność z Ogólnym Porozumieniem potwierdzona.
+  profileText: Strefa Startowa / Wewnętrzny Korytarz Tranzytowy.
+  riskAnalysisText: Poziom 0 (Bezpieczny). Stała obecność wojskowych patroli Republiki. Brak odnotowanej aktywności pirackiej.
+  oreForecastText: Brudny Lód, Złom Ferromagnetyczny, Krzemiany, Pył Regolitowy.
+  crewNote: 'Znam na pamięć trasy tych patroli. Wojsko chroni tu grube ryby, a nas, zwykłe sępy z PMU, kontrolują na każdym kroku. Eliana, trzymaj nas z dala od głównych węzłów komunikacyjnych. Nie chcę, żeby żandarmeria Republiki zaczęła węszyć przy naszym transponderze.'
   crtLogEntries:
-  - '[LOG] Entering Sector A6'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Autoryzacja pomyślna. Witaj w granicach Republiki Cermandyjskiej.'
+  - '[LOG PRAWNY]: Przypomnienie: Jednostki PMU operują na licencjach warunkowych. Wymagane bezwzględne posłuszeństwo wobec patroli wojskowych.'
+  - '[SKANER WOJSKOWY]: Przestrzeń czysta. Zarejestrowano sygnatury: 8 okrętów policyjne, 18 powolnych statków cywilnych.'
   miningComposition: []
   miningThreatLevel: 0
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: EXCELLENT.'
-  patrolPresence: 0
+  miningThermalHint: Średnia temperatura plazmy: NISKA.
+  miningSafetyMessage: Zalecane standardowe procedury. Bazowe chłodzenie statku w pełni wystarczające do obróbki cieplnej.
+  patrolPresence: 1
   shopTaxPercent: 0

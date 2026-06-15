@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_F5
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 5, y: 4}
+  gridPosition: {x: 4, y: 5}
   sectorName: Mrainesden
-  territory: 0
-  leadingStage: 0
-  riskLevel: 0
-  jurisdictionText: Cermandia High Imperial Council
-  profileText: Cermandia military outpost. Restricted airspace.
-  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Eliana: ''Mrainesden garrison is always watching. Keep weapons hot anyway.'''
+  territory: 1
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Granica państwowa Republiki Ariandyjskiej.
+  profileText: Ufortyfikowana strefa wydobywcza. Dom dla korporacji MacroxGalactic Inc.
+  riskAnalysisText: Poziom 2. Brak piratów. Surowe kontrole wojskowe z racji wojennej traumy po Koroksiańskiej Wściekłości.
+  oreForecastText: Wolfram, Kwarc Przemysłowy, Srebro, Złoto.
+  crewNote: 'To tutaj zbudowali naszego Silver Eagle, aż 64 lata temu. Niesamowite, że ten wrak wciąż lata. Ariandia straciła miliony przez wojny i do dziś nie ufają obcym. Ograniczcie komunikację radiową do minimum.'
   crtLogEntries:
-  - '[LOG] Entering Sector F5'
-  - '[LOG] Security protocols: Cermandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Witamy w granicach Republiki Ariandyjskiej. Wyłącz uzbrojenie (Canon Laser / Plasma Canon).'
+  - '[LOG PRAWNY]: Zarządzenie lokalne: Prywatne Jednostki Górnicze (PMU) mają zakaz dokowania bez zgody służb celnych. Oddaj szacunek ofiarom.'
+  - '[SKANER WOJSKOWY]: Rozbudowana sieć obronna. 5 krążowników klasy ciężkiej w sektorze.'
   miningComposition: []
-  miningThreatLevel: 0
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: EXCELLENT.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-WYSOKA.
+  miningSafetyMessage: Zwiększona twardość strukturalna kwarcu. Zoptymalizuj kąt natarcia wiertła, by zapobiec przegrzaniu układów statku.
   patrolPresence: 1
   shopTaxPercent: 0

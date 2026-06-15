@@ -20,16 +20,33 @@ public class Sector : MonoBehaviour {
         {
             GameObject shop = Instantiate(shopPrefab, transform);
             shop.transform.localPosition = data.shopLocalPos;
+            EnsureServiceZone(FindZoneObject(shop, "SellZone"), StationServiceZone.ServiceType.Shop);
         }
 
         if (newData.haveRepairStation == true)
         {
             GameObject repairStation = Instantiate(repairStationPrefab, transform);
             repairStation.transform.localPosition = data.repairStationLocalPos;
+            EnsureServiceZone(FindZoneObject(repairStation, "RepairZone"), StationServiceZone.ServiceType.Repair);
         }
 
-        // Rysujemy obwÛdki sektora
+        // Rysujemy obwùdki sektora
         //DrawSectorBorder(size);
+    }
+
+    private static GameObject FindZoneObject(GameObject station, string childName)
+    {
+        if (station == null) return null;
+        Transform child = station.transform.Find(childName);
+        return child != null ? child.gameObject : station;
+    }
+
+    private static void EnsureServiceZone(GameObject station, StationServiceZone.ServiceType type)
+    {
+        if (station == null) return;
+        var zone = station.GetComponent<StationServiceZone>();
+        if (zone == null) zone = station.AddComponent<StationServiceZone>();
+        zone.Configure(type);
     }
 
         //private void DrawSectorBorder(float size) {
@@ -49,21 +66,21 @@ public class Sector : MonoBehaviour {
 
         //    float half = size / 2f;
         //    Vector3[] corners = new Vector3[8];
-        //    corners[0] = new Vector3(-half, -half, -half); // Lewy DÛ≥ PrzÛd
-        //    corners[1] = new Vector3(half, -half, -half);  // Prawy DÛ≥ PrzÛd
-        //    corners[2] = new Vector3(half, half, -half);   // Prawy GÛra PrzÛd
-        //    corners[3] = new Vector3(-half, half, -half);  // Lewy GÛra PrzÛd
-        //    corners[4] = new Vector3(-half, -half, half);  // Lewy DÛ≥ Ty≥
-        //    corners[5] = new Vector3(half, -half, half);   // Prawy DÛ≥ Ty≥
-        //    corners[6] = new Vector3(half, half, half);    // Prawy GÛra Ty≥
-        //    corners[7] = new Vector3(-half, half, half);   // Lewy GÛra Ty≥
+        //    corners[0] = new Vector3(-half, -half, -half); // Lewy Dù Przùd
+        //    corners[1] = new Vector3(half, -half, -half);  // Prawy Dù Przùd
+        //    corners[2] = new Vector3(half, half, -half);   // Prawy Gùra Przùd
+        //    corners[3] = new Vector3(-half, half, -half);  // Lewy Gùra Przùd
+        //    corners[4] = new Vector3(-half, -half, half);  // Lewy Dù Tyù
+        //    corners[5] = new Vector3(half, -half, half);   // Prawy Dù Tyù
+        //    corners[6] = new Vector3(half, half, half);    // Prawy Gùra Tyù
+        //    corners[7] = new Vector3(-half, half, half);   // Lewy Gùra Tyù
 
         //    Vector3[] path = new Vector3[] {
-        //        corners[0], corners[1], corners[2], corners[3], corners[0], // Przednia úciana
-        //        corners[4], corners[5], corners[1],                         // DÛ≥
+        //        corners[0], corners[1], corners[2], corners[3], corners[0], // Przednia ùciana
+        //        corners[4], corners[5], corners[1],                         // Dù
         //        corners[5], corners[6], corners[2],                         // Prawy bok
-        //        corners[6], corners[7], corners[3],                         // GÛra
-        //        corners[7], corners[4]                                      // Ty≥ i lewy bok
+        //        corners[6], corners[7], corners[3],                         // Gùra
+        //        corners[7], corners[4]                                      // Tyù i lewy bok
         //    };
 
         //    line.positionCount = path.Length;

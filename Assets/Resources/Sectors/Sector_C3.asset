@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
   gridPosition: {x: 2, y: 2}
   sectorName: Sector C3
-  territory: 3
+  territory: 2
   leadingStage: 3
   riskLevel: 3
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector C3 exploration zone.
-  riskAnalysisText: 'Risk Level: High. Hostile scanning and frequent combat.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  jurisdictionText: Całkowite bezprawie.
+  profileText: Głęboki Kosmos (Deep Space).
+  riskAnalysisText: Poziom 3 (Wysoki). Zagłębie najgorszych z najgorszych, wyrzutków i pirackich dronów.
+  oreForecastText: Rod, Diamenty Przemysłowe.
+  crewNote: 'Wchodzimy w Etap 3. Chłodziwa silnika zaczynają się gotować na samą myśl o wydobyciu Rodu. Jeśli ten statek znowu odniesie obrażenia od odłamków po wybuchu asteroidy, złoże wam wypowiedzenie.'
   crtLogEntries:
-  - '[LOG] Entering Sector C3'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Silne anomalie termiczne w sektorze. Systemy podtrzymywania życia zwiększają pobór mocy.'
+  - '[LOG PRAWNY]: Brak sieci. Protokół offline.'
+  - '[SKANER WOJSKOWY]: Ostrzeżenie: Wykryto chmary autonomicznych dronów bojowych polujących na sępy z PMU.'
   miningComposition: []
   miningThreatLevel: 2
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: DANGEROUS.'
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA (ok. 3800°C).
+  miningSafetyMessage: KRYTYCZNE RYZYKO. Niestabilność rośnie gwałtownie przy najmniejszym wahaniu lasera. Thermal Shock nieuchronny bez precyzyjnej korekty.
   patrolPresence: 0
   shopTaxPercent: 0

@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_E3
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 4, y: 2}
+  gridPosition: {x: 2, y: 4}
   sectorName: Sector E3
-  territory: 1
-  leadingStage: 1
-  riskLevel: 1
-  jurisdictionText: Ariandia Corporate Coalition
-  profileText: Sector E3 exploration zone.
-  riskAnalysisText: 'Risk Level: Low. Minimal local pirate groups.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Szara Strefa.
+  profileText: Bezkresne pustkowia (Deep Space).
+  riskAnalysisText: Poziom 3 (Wysoki). Otwarta przestrzeń ułatwia działanie pirackich rójek dronowych.
+  oreForecastText: Diamenty Przemysłowe, Void Crystals, Rod.
+  crewNote: 'Moje radary wariują od promieniowania tych skał. Nie potrafię odróżnić sygnatur bogatych złóż od zbliżających się rakiet. Musimy zebrać to, co najważniejsze i czym prędzej wracać do warsztatu naprawczego.'
   crtLogEntries:
-  - '[LOG] Entering Sector E3'
-  - '[LOG] Security protocols: Ariandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Utrata połączenia z przekaźnikami centralnymi. Operowanie wyłącznie na instrumentach pokładowych.'
+  - '[LOG PRAWNY]: Brak autorytetów prawnych.'
+  - '[SKANER WOJSKOWY]: Znaczna aktywność cieplna dronów bojowych na kursie przechwytującym.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
-  patrolPresence: 1
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA.
+  miningSafetyMessage: Krytyczne naprężenia termiczne. Każda sekunda poza normą dodaje 30% niestabilności (Topnienie Surowca/Thermal Shock).
+  patrolPresence: 0
   shopTaxPercent: 0

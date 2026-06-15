@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_F4
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 5, y: 3}
-  sectorName: Sector F4
-  territory: 0
-  leadingStage: 0
-  riskLevel: 0
-  jurisdictionText: Cermandia High Imperial Council
-  profileText: Sector F4 exploration zone.
-  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  gridPosition: {x: 3, y: 5}
+  sectorName: Ne'Ariandias
+  territory: 1
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Zmilitaryzowana granica Republiki Ariandyjskiej.
+  profileText: Zewnętrzny węzeł obronny.
+  riskAnalysisText: Poziom 2. Piraci nie mają tu wstępu. Bardzo rygorystyczne kontrole wojskowe z racji napięć po wygranej, ale okupionej ofiarami wojnie z UnTF.
+  oreForecastText: Pallad, Wolfram, Złoto.
+  crewNote: 'Wreszcie trochę cywilizacji. Ariandczycy może i są przewrażliwieni na punkcie bezpieczeństwa, ale ich korporacja MacroxGalactic zrobiła ten statek. Tu części zamienne i chłodziwa przynajmniej nie śmierdzą gwiezdnym kurzem z Rubieży.'
   crtLogEntries:
-  - '[LOG] Entering Sector F4'
-  - '[LOG] Security protocols: Cermandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Autoryzacja kodów Ariandii pomyślna. Włącz transponder na częstotliwość kontroli lotów.'
+  - '[LOG PRAWNY]: Zakaz manewrów o wysokiej prędkości. Ograniczony dostęp dla członków ''rodzin z wyboru'' bez oficjalnych więzów krwi.'
+  - '[SKANER WOJSKOWY]: Brak dronów bojowych. Czyste niebo. Zbliżają się kontrole celne.'
   miningComposition: []
-  miningThreatLevel: 0
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: EXCELLENT.'
+  miningThreatLevel: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-WYSOKA.
+  miningSafetyMessage: Zalecane standardowe procedury obróbki dla metali ciężkich. Oczekiwane umiarkowane trudności z chłodzeniem lasera.
   patrolPresence: 1
   shopTaxPercent: 0

@@ -27,9 +27,15 @@ public static class EnemyLootDropper
 
             int amount = Random.Range(5, 20);
             if (inRange && inventory != null)
+            {
                 inventory.AddResource(res, amount);
+            }
             else
-                Debug.Log($"[Loot] {res.Name} x{amount} @ {position} (poza zasięgiem)");
+            {
+                Vector3 offset = Random.insideUnitSphere * 4f;
+                offset.y = Mathf.Abs(offset.y);
+                ResourcePickup.Spawn(res, amount, position + offset);
+            }
         }
     }
 
@@ -40,6 +46,7 @@ public static class EnemyLootDropper
     }
 }
 
+/// <summary>Hybrid spawn: 70% leadingStage, 20% stage-1, 10% stage+1 (clamp 0-4).</summary>
 public static class SectorStageResolver
 {
     public static int RollLootStage(int leadingStage)

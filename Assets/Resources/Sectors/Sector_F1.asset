@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_F1
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 5, y: 0}
+  gridPosition: {x: 0, y: 5}
   sectorName: Sector F1
-  territory: 0
-  leadingStage: 0
-  riskLevel: 0
-  jurisdictionText: Cermandia High Imperial Council
-  profileText: Sector F1 exploration zone.
-  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 4
+  riskLevel: 4
+  jurisdictionText: Krańce znanej galaktyki.
+  profileText: Martwy róg mapy.
+  riskAnalysisText: Poziom 4 (Krytyczny). Brak ucieczki, odcięcie od wszystkich stacji dokujących i warsztatów naprawczych.
+  oreForecastText: Uran, Obca Biomasa, Kontrabanda.
+  crewNote: 'Udało się. Jesteśmy na absolutnym skraju. Powtarzam: jesteśmy wolnymi górnikami PMU i polegamy tylko na sobie. Ładujemy te najdroższe śmieci do oporu, unikamy zderzeń i wracamy spłacić nasze długi. Załoga na stanowiska!'
   crtLogEntries:
-  - '[LOG] Entering Sector F1'
-  - '[LOG] Security protocols: Cermandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Dotarto do fizycznej granicy zbadanych sektorów. Utrata namiarów powrotnych.'
+  - '[LOG PRAWNY]: Brak danych.'
+  - '[SKANER WOJSKOWY]: Wykryto kolosalne sygnatury wroga. Wszystkie systemy obronne przeciążone. Przygotować do starcia.'
   miningComposition: []
-  miningThreatLevel: 0
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: EXCELLENT.'
-  patrolPresence: 1
+  miningThreatLevel: 3
+  miningThermalHint: Średnia temperatura plazmy: EKSTREMALNA.
+  miningSafetyMessage: Materia wysoce toksyczna i nieprzewidywalna termicznie. Wymagane bezbłędne utrzymanie wskaźników w celu przetrwania operacji wydobywczej.
+  patrolPresence: 0
   shopTaxPercent: 0

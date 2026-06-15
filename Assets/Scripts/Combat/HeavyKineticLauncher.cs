@@ -51,12 +51,7 @@ public class HeavyKineticLauncher : MonoBehaviour
         if (ownerTransform.CompareTag("Player"))
         {
             dynamicDamage = (stats.GetMaxHP() * 0.85f) / 6f;
-
             shootDirection = PlayerWeaponAim.GetDirection(spawnPos, ownerTransform);
-            
-            float angleDown = Vector3.Angle(shootDirection, -ownerTransform.up);
-            if (angleDown < 45f)
-                return;
         }
 
         lastShot = Time.time;

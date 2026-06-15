@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_C2
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 2, y: 1}
+  gridPosition: {x: 1, y: 2}
   sectorName: Sector C2
-  territory: 3
-  leadingStage: 3
-  riskLevel: 3
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector C2 exploration zone.
-  riskAnalysisText: 'Risk Level: High. Hostile scanning and frequent combat.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Szara Strefa.
+  profileText: Wewnętrzne złoża galaktyczne.
+  riskAnalysisText: Poziom 2. Potencjalne pułapki na prywatne jednostki górnicze.
+  oreForecastText: Złoto, Wolfram, Pallad.
+  crewNote: 'Dużo tu złota. Ktoś rzeźbi w złocie? Prędzej opchniemy to w jakimś warsztacie za naprawę kadłuba. Trzymajcie się mocno, bo jak tylko włączymy wiertła, piraci zlecą się do nas jak muchy do zepsutych hydro-upraw.'
   crtLogEntries:
-  - '[LOG] Entering Sector C2'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Wejście w strefę gęstych skał. Aktywacja reflektorów poszukiwawczych.'
+  - '[LOG PRAWNY]: Odmowa dostępu do bazy danych Ogólnego Porozumienia.'
+  - '[SKANER WOJSKOWY]: Zarejestrowano echa radarowe zniszczonych statków PMU. Zalecana wysoka ostrożność.'
   miningComposition: []
   miningThreatLevel: 2
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: DANGEROUS.'
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-WYSOKA.
+  miningSafetyMessage: Obecność twardego wolframu. Zwiększ wydajność wiertła, uważając na ryzyko zapłonu wewnętrznych układów statku.
   patrolPresence: 0
   shopTaxPercent: 0

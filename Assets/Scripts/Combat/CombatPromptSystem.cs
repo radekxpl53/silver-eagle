@@ -32,8 +32,10 @@ public class CombatPromptSystem : MonoBehaviour
     {
         if (enemyDetected) return;
         enemyDetected = true;
+
+        Transform enemy = FindNearestEnemy(player != null ? player.position : Vector3.zero);
         Debug.Log("[Combat] Wróg — walcz/uciekaj");
-        GameEvents.TriggerCombatPromptShown(player);
+        GameEvents.TriggerCombatPromptShown(enemy != null ? enemy : player);
         GameEvents.TriggerCombatStarted();
     }
 
@@ -44,7 +46,6 @@ public class CombatPromptSystem : MonoBehaviour
         GameEvents.TriggerCombatEnded();
     }
 
-    /// <summary>Stub dla UI (Prompt B): fight=true pozostaje w walce, false kończy prompt.</summary>
     public void AnswerCombatPrompt(bool fight)
     {
         GameEvents.TriggerCombatPromptAnswered(fight);
@@ -53,5 +54,25 @@ public class CombatPromptSystem : MonoBehaviour
             enemyDetected = false;
             GameEvents.TriggerCombatEnded();
         }
+    }
+
+    private static Transform FindNearestEnemy(Vector3 from)
+    {
+        EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+        Transform best = null;
+        float bestDist = float.MaxValue;
+
+        foreach (EnemyAI enemy in enemies)
+        {
+            if (enemy == null) continue;
+            float d = Vector3.Distance(from, enemy.transform.position);
+            if (d < bestDist)
+            {
+                bestDist = d;
+                best = enemy.transform;
+            }
+        }
+
+        return best;
     }
 }

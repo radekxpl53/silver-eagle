@@ -152,11 +152,24 @@ public class CockpitDisplayManager : MonoBehaviour, IDiegeticDisplay
 
         if (sectorNameText != null) sectorNameText.text = sector.sectorName;
         if (sectorTerritoryText != null) sectorTerritoryText.text = $"Territory: {sector.territory}";
-        if (sectorJurisdictionText != null) sectorJurisdictionText.text = $"Jurisdiction: {sector.jurisdictionText}";
+        if (sectorJurisdictionText != null) sectorJurisdictionText.text = sector.jurisdictionText;
         if (sectorProfileText != null) sectorProfileText.text = sector.profileText;
-        if (sectorRiskText != null) sectorRiskText.text = $"Risk Level: {sector.riskLevel}/4 ({sector.miningThreatLevel})";
-        if (sectorOreText != null) sectorOreText.text = $"Ore Forecast: {sector.oreForecastText}";
+        if (sectorRiskText != null) sectorRiskText.text = $"{sector.riskAnalysisText} | Mining: {sector.miningThreatLevel}";
+        if (sectorOreText != null) sectorOreText.text = sector.oreForecastText;
         if (crewNoteText != null) crewNoteText.text = sector.crewNote;
+    }
+
+    public void BindBriefingFields(TextMeshProUGUI name, TextMeshProUGUI territory, TextMeshProUGUI jurisdiction,
+        TextMeshProUGUI profile, TextMeshProUGUI risk, TextMeshProUGUI ore, TextMeshProUGUI crew, TextMeshProUGUI crt)
+    {
+        sectorNameText = name;
+        sectorTerritoryText = territory;
+        sectorJurisdictionText = jurisdiction;
+        sectorProfileText = profile;
+        sectorRiskText = risk;
+        sectorOreText = ore;
+        crewNoteText = crew;
+        crtLogText = crt;
     }
 
     public void ShowCRTLog(string[] entries)

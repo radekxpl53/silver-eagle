@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_C4
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 2, y: 3}
+  gridPosition: {x: 3, y: 2}
   sectorName: Sector C4
-  territory: 3
-  leadingStage: 3
-  riskLevel: 3
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector C4 exploration zone.
-  riskAnalysisText: 'Risk Level: High. Hostile scanning and frequent combat.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Szara Strefa.
+  profileText: Obszar dawnych bitew z okresu I Galaktycznej Wojny.
+  riskAnalysisText: Poziom 2. Pola minowe i ukryte jednostki pirackie.
+  oreForecastText: Platyna, Srebro, Złom (Wraki).
+  crewNote: 'Pełno tu wraków z wielkiej wojny. Kto wie, może znajdę tu jakąś cenną, starożytną rzeźbę przestrzenną? Słyszałem w holofilmach, że rzeźby to najdroższy towar w galaktyce! Aha, no i podobno roi się tu od dronów, więc lepiej nie zdejmujcie palca ze spustu.'
   crtLogEntries:
-  - '[LOG] Entering Sector C4'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Ostrzeżenie kolizyjne. Duże zagęszczenie odłamków wielkogabarytowych.'
+  - '[LOG PRAWNY]: Brak danych.'
+  - '[SKANER WOJSKOWY]: Wykryto wrogie drony autonomiczne. Celują w ładownie Prywatnych Jednostek Górniczych.'
   miningComposition: []
-  miningThreatLevel: 2
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: DANGEROUS.'
+  miningThreatLevel: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA.
+  miningSafetyMessage: Sygnał stabilny. Zagrożenie Thermal Shock umiarkowane przy standardowej operacji.
   patrolPresence: 0
   shopTaxPercent: 0

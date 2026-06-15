@@ -3,6 +3,11 @@ using UnityEngine.InputSystem;
 
 public class SellSystem : MonoBehaviour
 {
+    public static float LastSaleGross { get; private set; }
+    public static float LastSaleTax { get; private set; }
+    public static float LastSaleNet { get; private set; }
+    public static float LastSaleTaxPercent { get; private set; }
+
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private EconomyManager economyManager;
     [SerializeField] private ShipStats shipStats;
@@ -36,14 +41,22 @@ public class SellSystem : MonoBehaviour
             }
 
             float taxPercent = GetCurrentSectorTaxPercent();
+            float grossTotal = 0f;
             float totalCredits = 0f;
 
             foreach (var item in inventory.myItems)
             {
                 if (item?.definition == null) continue;
                 float gross = item.amount * item.definition.basePrice;
+                grossTotal += gross;
                 totalCredits += gross * (1f - taxPercent / 100f);
             }
+
+            float taxPaid = grossTotal - totalCredits;
+            LastSaleGross = grossTotal;
+            LastSaleTax = taxPaid;
+            LastSaleNet = totalCredits;
+            LastSaleTaxPercent = taxPercent;
 
             economyManager.AddCredits(totalCredits);
             inventory.myItems.Clear();

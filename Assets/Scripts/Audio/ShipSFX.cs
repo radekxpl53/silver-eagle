@@ -36,28 +36,28 @@ public class ShipSFX : MonoBehaviour
 
     bool IsApplyingThrust()
     {
-        if (GameManager.Instance.currentState != GameState.Mining)
-        {
-            var kb = Keyboard.current;
-            if (kb == null) return false;
-            return kb.wKey.isPressed || kb.sKey.isPressed || kb.spaceKey.isPressed || kb.shiftKey.isPressed;
-        }
-        return false;
+        var gm = GameManager.Instance;
+        if (gm == null || gm.currentState == GameState.Mining) return false;
+
+        var kb = Keyboard.current;
+        if (kb == null) return false;
+        return kb.wKey.isPressed || kb.sKey.isPressed || kb.spaceKey.isPressed || kb.shiftKey.isPressed;
     }
 
     bool IsRotating()
     {
-        if (GameManager.Instance.currentState != GameState.Mining)
-        {
-            var kb = Keyboard.current;
-            if (kb == null) return false;
-            return kb.aKey.isPressed || kb.dKey.isPressed;
-        }
-        return false;
+        var gm = GameManager.Instance;
+        if (gm == null || gm.currentState == GameState.Mining) return false;
+
+        var kb = Keyboard.current;
+        if (kb == null) return false;
+        return kb.aKey.isPressed || kb.dKey.isPressed;
     }
 
     void Update()
     {
+        if (GameManager.Instance == null) return;
+
         bool currentlyThrusting = IsApplyingThrust();
         bool currentlyRotating = IsRotating();
 

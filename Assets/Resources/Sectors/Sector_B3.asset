@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_B3
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 1, y: 2}
+  gridPosition: {x: 2, y: 1}
   sectorName: Sector B3
   territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector B3 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Terytorium wyłączone z Ogólnego Porozumienia.
+  profileText: Zewnętrzny pas minerałów.
+  riskAnalysisText: Poziom 2. Potwierdzona obecność piratów. Cermandyjskie organy władzy nie reagują na wezwania SOS.
+  oreForecastText: Platyna, Złoto, Wolfram.
+  crewNote: 'Wlecieliśmy w strefę, w której znikają statki. Może w końcu ustrzelę jakiegoś drona łupieżczego? Działonowy podobno musi uważać, by nie przegrzać broni, więc zobaczymy, ile wytrzymają nasze stare wieżyczki.'
   crtLogEntries:
-  - '[LOG] Entering Sector B3'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Opuszczono terytorium państwowe. Wejście w Rubieże.'
+  - '[LOG PRAWNY]: Działasz na własne ryzyko. Przestrzeń niczyja.'
+  - '[SKANER WOJSKOWY]: Wykryto słabe sygnatury w tle. Potencjalna aktywność wrogich, nieoznakowanych jednostek.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
+  miningThreatLevel: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA.
+  miningSafetyMessage: Zalecane stałe monitorowanie paska temperatury. Obecność twardego wolframu wydłuża czas ekstrakcji.
   patrolPresence: 0
   shopTaxPercent: 0

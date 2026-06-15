@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
   gridPosition: {x: 4, y: 4}
   sectorName: Sector E5
-  territory: 1
-  leadingStage: 1
-  riskLevel: 1
-  jurisdictionText: Ariandia Corporate Coalition
-  profileText: Sector E5 exploration zone.
-  riskAnalysisText: 'Risk Level: Low. Minimal local pirate groups.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Przedmurze Ariandii. Teren sporny de facto pod presją celników.
+  profileText: Zewnętrzny pas minerałów.
+  riskAnalysisText: Poziom 2. Patrole graniczne Ariandii ścierają się tu z sępami z PMU i dronami.
+  oreForecastText: Platyna, Pallad, Osmium, Srebro.
+  crewNote: 'Zmniejszamy ciąg. Zbliżamy się do suwerennej przestrzeni Ariandii. Z jednej strony szczypią nas drony z Rubieży, z drugiej – skanery celne żuków z Ariandii szukają pretekstu do wlepienia nam grzywny za kontrabandę.'
   crtLogEntries:
-  - '[LOG] Entering Sector E5'
-  - '[LOG] Security protocols: Ariandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Odbieranie ariandyjskich sygnałów nawigacyjnych. Zbliżanie do strefy kontrolowanej.'
+  - '[LOG PRAWNY]: Przygotuj ładownie do potencjalnej inspekcji celnej.'
+  - '[SKANER WOJSKOWY]: Ostrzał w oddali. Zarejestrowano niszczenie bezzałogowych dronów przez regularną armię.'
   miningComposition: []
   miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
-  patrolPresence: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-WYSOKA.
+  miningSafetyMessage: Obróbka skomplikowana. Zwrócić uwagę na stabilność rdzenia przed przystąpieniem do odwiertu.
+  patrolPresence: 0
   shopTaxPercent: 0

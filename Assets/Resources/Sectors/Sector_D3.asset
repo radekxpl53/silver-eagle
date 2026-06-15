@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_D3
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 3, y: 2}
+  gridPosition: {x: 2, y: 3}
   sectorName: Sector D3
-  territory: 3
-  leadingStage: 2
-  riskLevel: 2
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector D3 exploration zone.
-  riskAnalysisText: 'Risk Level: Moderate. Travel in armed groups recommended.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Brak.
+  profileText: Wrakowiska i Niestabilne Pola (Deep Space).
+  riskAnalysisText: Poziom 3 (Wysoki). Brak wsparcia, ekstremalne natężenie nieoznakowanych jednostek.
+  oreForecastText: Void Crystals, Hel-3.
+  crewNote: 'Nie jesteśmy tu sami. Przestrzeń roi się od sępów takich jak my, a piraci tylko na to czekają. Przygotujcie Plasma Canon. Z każdą toną Helu-3 jesteśmy wolniejsi i bardziej ociężali, a w takich warunkach jeden zły manewr oznacza naszą zgubę.'
   crtLogEntries:
-  - '[LOG] Entering Sector D3'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Niebezpieczne natężenie cząstek subatomowych w pobliżu kryształów próżniowych (Void Crystals).'
+  - '[LOG PRAWNY]: Sygnał radiowy zagłuszony.'
+  - '[SKANER WOJSKOWY]: Wykryto zmasowany atak dronów w sąsiednich kwadrantach. Podniesiono gotowość tarcz.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA.
+  miningSafetyMessage: Materia wysoce niestabilna. Zmniejszona strefa tolerancji. Zaleca się wymianę bezpieczników tarcz przed rozpoczęciem ekstrakcji.
   patrolPresence: 0
   shopTaxPercent: 0

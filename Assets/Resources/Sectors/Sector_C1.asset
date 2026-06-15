@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_C1
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 2, y: 0}
+  gridPosition: {x: 0, y: 2}
   sectorName: Sector C1
-  territory: 3
-  leadingStage: 3
-  riskLevel: 3
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector C1 exploration zone.
-  riskAnalysisText: 'Risk Level: High. Hostile scanning and frequent combat.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 4
+  riskLevel: 4
+  jurisdictionText: Brak. Terytorium nieobjęte Ogólnym Porozumieniem.
+  profileText: Deep Space (Zewnętrzne krawędzie).
+  riskAnalysisText: Poziom 4 (Krytyczny). Notoryczna aktywność nieoznakowanych dronów łupieżczych. Zalecany pełny przegląd systemów obronnych (Tarcze / Plasma Cannon).
+  oreForecastText: Uran, Niestabilne Izotopy, Skroplony Wodór. Niska szansa na złoża podstawowe.
+  crewNote: 'Sygnał z tego sektora jest zaszumiony, ale widzę gęste zgrupowania masy. Będzie gorąco, kapitanie. Byle tylko nasze chłodzenie wytrzymało to, co tam wygrzebiemy.'
   crtLogEntries:
-  - '[LOG] Entering Sector C1'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: OSTRZEŻENIE SYSTEMOWE. Opuszczasz bezpieczny korytarz tranzytowy.'
+  - '[LOG PRAWNY]: Brak autoryzacji państwowej. Przestrzeń niczyja. Służby ratunkowe i wojska nie reagują na wezwania w tym obszarze.'
+  - '[SKANER WOJSKOWY]: Wykryto anomalie radarowe. Zbliżają się wrogie sygnatury cieplne. Przygotuj się do ewentualnych manewrów unikowych.'
   miningComposition: []
   miningThreatLevel: 2
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: DANGEROUS.'
+  miningThermalHint: Średnia temperatura plazmy: WYSOKA.
+  miningSafetyMessage: Uwaga: Przekroczenie limitu temperatury grozi gwałtownym pęknięciem obiektu (Thermal Shock) i krytycznym uszkodzeniem kadłuba statku.
   patrolPresence: 0
   shopTaxPercent: 0

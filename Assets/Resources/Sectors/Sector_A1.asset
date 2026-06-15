@@ -17,18 +17,18 @@ MonoBehaviour:
   territory: 2
   leadingStage: 4
   riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector A1 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  jurisdictionText: Całkowite bezprawie.
+  profileText: Zewnętrzne krawędzie mapy.
+  riskAnalysisText: Poziom 4 (Krytyczny). Mordercze środowisko, wysokie stężenie wrogich sygnatur.
+  oreForecastText: Uran, Niestabilne Izotopy, Skroplony Wodór.
+  crewNote: 'Kąty mapy... dalej nie ma już nic. Tylko promieniowanie i drony, które chcą nas przerobić na złom. Szczerze? Zaczynam tęsknić za hydro-uprawami w moim rodzinnym domu na prowincji Ariandii.'
   crtLogEntries:
-  - '[LOG] Entering Sector A1'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: KRYTYCZNE ZAGROŻENIE ŚRODOWISKOWE. Poziom promieniowania przekracza normy.'
+  - '[LOG PRAWNY]: Obszar kwarantanny. Wydobycie nieautoryzowane.'
+  - '[SKANER WOJSKOWY]: Niezidentyfikowane zakłócenia wielkiego kalibru. Tarcze na poziomie maksymalnym zalecane natychmiast.'
   miningComposition: []
   miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
+  miningThermalHint: Średnia temperatura plazmy: EKSTREMALNA.
+  miningSafetyMessage: Zagrożenie gwałtowną eksplozją na poziomie 90%. Zaledwie sekunda błędu w minigrze wywoła śmiertelny Thermal Shock.
   patrolPresence: 0
   shopTaxPercent: 0

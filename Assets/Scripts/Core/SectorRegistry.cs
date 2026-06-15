@@ -21,6 +21,9 @@ public static class SectorRegistry
 
     public static SectorDefinition GetDefinition(Vector2Int grid)
     {
+        var fromDb = SectorContentDatabase.Instance.GetSector(grid);
+        if (fromDb != null) return fromDb;
+
         EnsureLoaded();
         return _cache != null && _cache.TryGetValue(grid, out var def) ? def : null;
     }

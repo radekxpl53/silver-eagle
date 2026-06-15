@@ -49,9 +49,15 @@ public class CameraTPP : MonoBehaviour
     void LateUpdate()
     {
         if (target == null) return;
-        if (GameManager.Instance.currentState != GameState.Mining)
+        if (GameManager.Instance == null) return;
+
+        GameState state = GameManager.Instance.currentState;
+        if (state == GameState.GameOver || state == GameState.Menu)
+            return;
+
+        if (state != GameState.Mining)
         {
-            if (Mouse.current != null)
+            if (Mouse.current != null && !StationProximity.RequiresCursor)
             {
                 // --- OBRÓT ---
                 Vector2 mouseDelta = Mouse.current.delta.ReadValue();

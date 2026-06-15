@@ -15,20 +15,20 @@ MonoBehaviour:
   gridPosition: {x: 1, y: 1}
   sectorName: Sector B2
   territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector B2 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Terytorium wyłączone z Ogólnego Porozumienia.
+  profileText: Ukryty pas cieni (obszar podwyższonych zakłóceń).
+  riskAnalysisText: Poziom 2. Zmniejszona aktywność wroga ze względu na trudności nawigacyjne.
+  oreForecastText: Platyna, Srebro, Osmium.
+  crewNote: 'To ''oko cyklonu''. Wokół roi się od piratów, ale ten konkretny sektor generuje tyle statycznego szumu, że drony łupieżcze tracą tu orientację. Nasz Silver Eagle lata na starych, analogowych systemach z V Epoki, więc my sobie poradzimy.'
   crtLogEntries:
-  - '[LOG] Entering Sector B2'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Błąd synchronizacji. Wizja optyczna zredukowana o 40%.'
+  - '[LOG PRAWNY]: Brak nadzoru.'
+  - '[SKANER WOJSKOWY]: Brak wyraźnych sygnatur cieplnych. Możliwe ukryte drony w trybie pasywnym.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
+  miningThreatLevel: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA.
+  miningSafetyMessage: Warunki wydobycia stabilne. Wymagane delikatne operowanie laserem w celu zapobieżenia topnieniu szlachetnych kruszców.
   patrolPresence: 0
   shopTaxPercent: 0

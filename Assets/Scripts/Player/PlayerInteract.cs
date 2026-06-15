@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour {
-    public float range = 20f;
+    public float range = 25f;
     public ShipStats shipStats;
     public bool canSell;
     [SerializeField] private GameObject contextCanvas;
@@ -19,9 +19,19 @@ public class PlayerInteract : MonoBehaviour {
 
     void Update()
     {
-        if (GameManager.Instance.currentState == GameState.Exploration)
+        var gm = GameManager.Instance;
+        if (gm == null) return;
+
+        if (StationProximity.RequiresCursor)
         {
-            //Debug.Log("Naciśnięto klawisz G");
+            if (contextCanvas != null)
+                contextCanvas.SetActive(false);
+            return;
+        }
+
+        if (gm.currentState == GameState.Exploration)
+        {
+            if (contextCanvas == null) return;
 
             Ray rayRight = new Ray(transform.position, transform.right);
             Ray rayLeft = new Ray(transform.position, -transform.right);
@@ -31,39 +41,24 @@ public class PlayerInteract : MonoBehaviour {
             Debug.DrawRay(transform.position, -transform.right * range, Color.yellow, 2f);
 
             bool foundAsteroid = false;
-            
-            if (Physics.Raycast(rayRight, out hit, range))  // <- Kacper miał racje, outy są mega
+
+            if (Physics.Raycast(rayRight, out hit, range))
             {
                 if (hit.collider.CompareTag("Asteroid"))
-                {
-                    //TryStartMining(hit);
                     foundAsteroid = true;
-                }
-                else
-                {
-                    //Debug.Log("Prawy laser trafił w: " + hit.collider.tag);
-                }
             }
-            if (!foundAsteroid && Physics.Raycast(rayLeft, out hit, range)) 
+            if (!foundAsteroid && Physics.Raycast(rayLeft, out hit, range))
             {
                 if (hit.collider.CompareTag("Asteroid"))
-                {
-                    //TryStartMining(hit);
                     foundAsteroid = true;
-                }
-                else
-                {
-                    //Debug.Log("Lewy laser trafił w: " + hit.collider.tag);
-                }
             }
 
             if (foundAsteroid)
             {
-                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby wydobyć surowce naciśnij 'G'";
+                SetContextText("Aby wydobyć surowce naciśnij 'G'");
                 contextCanvas.SetActive(true);
-                
-                // sprawdz klawisz
-                if (Keyboard.current.gKey.wasPressedThisFrame)
+
+                if (Keyboard.current != null && Keyboard.current.gKey.wasPressedThisFrame)
                 {
                     TryStartMining(hit);
                     contextCanvas.SetActive(false);
@@ -76,19 +71,26 @@ public class PlayerInteract : MonoBehaviour {
 
             if (canSell)
             {
-                contextCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aby sprzedać surowce naciśnij 'C'";
+                SetContextText("Aby sprzedać surowce naciśnij 'C'");
                 contextCanvas.SetActive(true);
             }
         }
     }
 
+    private void SetContextText(string message)
+    {
+        if (contextCanvas == null) return;
+        var label = contextCanvas.GetComponentInChildren<TextMeshProUGUI>();
+        if (label != null) label.text = message;
+    }
+
     void TryStartMining(RaycastHit hit) {
-        Debug.Log("Laser w coś trafił: " + hit.collider.name);
+        var gm = GameManager.Instance;
+        if (gm == null) return;
 
-        if (hit.collider.CompareTag("Asteroid") && GameManager.Instance.currentState == GameState.Exploration) {
-            
+        if (hit.collider.CompareTag("Asteroid") && gm.currentState == GameState.Exploration) {
+
             Asteroid target = hit.collider.GetComponent<Asteroid>();
-
             InteractableObject io = hit.collider.GetComponent<InteractableObject>();
             if (target != null) {
                 MiningAnalysisHelper.EmitAnalysisReady(target);
@@ -101,19 +103,14 @@ public class PlayerInteract : MonoBehaviour {
                 MiningData.currentArea = io.parentArea;
 
                 SceneManager.LoadScene("MiningScene", LoadSceneMode.Additive);
-
-                // Zmieniamy stan gry na Mining
-                GameManager.Instance.ChangeState(GameState.Mining);
+                gm.ChangeState(GameState.Mining);
             }
             else {
                 Debug.LogError("Obiekt ma tag Asteroid, ale brakuje mu skryptu Asteroid.cs!");
             }
         }
-        else if (GameManager.Instance.currentState == GameState.Mining) {
+        else if (gm.currentState == GameState.Mining) {
             Debug.Log("Przecież już kopiesz lol");
-        }
-        else {
-            Debug.Log("Trafiony obiekt nie ma tagu 'Asteroid'. Ma tag: " + hit.collider.tag);
         }
     }
 
@@ -122,6 +119,7 @@ public class PlayerInteract : MonoBehaviour {
         if (other.CompareTag("SellZone"))
         {
             canSell = true;
+            StationProximity.SetActive(StationServiceZone.ServiceType.Shop, true);
         }
     }
 
@@ -130,6 +128,7 @@ public class PlayerInteract : MonoBehaviour {
         if (other.CompareTag("SellZone"))
         {
             canSell = false;
+            StationProximity.SetActive(StationServiceZone.ServiceType.Shop, false);
         }
     }
 }

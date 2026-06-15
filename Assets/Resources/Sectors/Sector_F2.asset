@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_F2
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 5, y: 1}
+  gridPosition: {x: 1, y: 5}
   sectorName: Sector F2
-  territory: 0
-  leadingStage: 0
-  riskLevel: 0
-  jurisdictionText: Cermandia High Imperial Council
-  profileText: Sector F2 exploration zone.
-  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 4
+  riskLevel: 4
+  jurisdictionText: Krańce znanej galaktyki V Epoki.
+  profileText: Granica absolutna (Deep Space).
+  riskAnalysisText: Poziom 4 (Krytyczny). Terytorium wyrzutków. Ekstremalne warunki górnicze.
+  oreForecastText: Skroplony Wodór, Uran, Kontrabanda.
+  crewNote: 'Tu trafiają ci, którzy uciekają przed systemem. Tacy jak ja, z tym że ci kolesie są kompletnie bezwzględni. Znajdziemy tu najdroższe złoża i ukrytą kontrabandę. Załadujcie pełen pancerz. Jeśli Silver Eagle ma być naszą jedyną ''rodziną'', musimy o niego walczyć.'
   crtLogEntries:
-  - '[LOG] Entering Sector F2'
-  - '[LOG] Security protocols: Cermandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Wykryto niestabilne złoża Skroplonego Wodoru. Ryzyko reakcji łańcuchowej.'
+  - '[LOG PRAWNY]: Systemy offline. Całkowity brak komunikacji.'
+  - '[SKANER WOJSKOWY]: Wykryto sygnatury wrogów. Zalecana ucieczka lub natychmiastowe użycie dział Plasma Canon.'
   miningComposition: []
-  miningThreatLevel: 0
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: EXCELLENT.'
-  patrolPresence: 1
+  miningThreatLevel: 3
+  miningThermalHint: Średnia temperatura plazmy: EKSTREMALNA.
+  miningSafetyMessage: Nadzwyczajne ryzyko. Asteroida niezwykle niestabilna termicznie (Skroplony Wodór). Wymagane bezbłędne utrzymanie lasera w strefie tolerancji w celu zdobycia wartościowej kontrabandy.
+  patrolPresence: 0
   shopTaxPercent: 0

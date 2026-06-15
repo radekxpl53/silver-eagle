@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_A2
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 0, y: 1}
+  gridPosition: {x: 1, y: 0}
   sectorName: Sector A2
   territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector A2 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Całkowite bezprawie.
+  profileText: Zewnętrzny skraj Deep Space.
+  riskAnalysisText: Poziom 3 (Wysoki). Otwarty teren polowań dla zaawansowanych, autonomicznych dronów bojowych.
+  oreForecastText: Rod, Hel-3, Void Crystals.
+  crewNote: 'Moja dawna jednostka ''Espadon'' zrównałaby te pirackie drony z pyłem, ale my mamy tylko tę starą łajbę z odzysku. Jeśli stracimy tu tarcze, nikt z Cermandii nie przyjdzie nam z pomocą. Pełna moc na radary.'
   crtLogEntries:
-  - '[LOG] Entering Sector A2'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: KRYTYCZNE OSTRZEŻENIE. Znaczne oddalenie od korytarzy tranzytowych. Zasilanie awaryjne w gotowości.'
+  - '[LOG PRAWNY]: Brak jakichkolwiek uregulowań.'
+  - '[SKANER WOJSKOWY]: Wykryto wzmożony ruch wrogich jednostek. Pirackie drony formują szyk przechwytujący.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA (ok. 3800°C).
+  miningSafetyMessage: Krytyczne naprężenia cieplne. Przekroczenie limitu tolerancji poskutkuje natychmiastowym zjawiskiem Thermal Shock. Utrzymaj chłodzenie.
   patrolPresence: 0
   shopTaxPercent: 0

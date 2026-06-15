@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_B6
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 1, y: 5}
+  gridPosition: {x: 5, y: 1}
   sectorName: Sector B6
-  territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector B6 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 0
+  leadingStage: 0
+  riskLevel: 0
+  jurisdictionText: Korytarz Tranzytowy powołany na mocy Ogólnego Porozumienia.
+  profileText: Wewnętrzna ścieżka handlowa.
+  riskAnalysisText: Poziom 0. Rejon patrolowany przez siły Republiki.
+  oreForecastText: Złom Ferromagnetyczny, Boksyt, Krzemiany.
+  crewNote: 'Miały być bitwy laserowe i piraci, a jedyne co tu widzę, to sterty zamarzniętego brudu i celników wlepiających mandaty za brak przeglądu.".'
   crtLogEntries:
-  - '[LOG] Entering Sector B6'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Opuszczono system macierzysty. Wejście w cermandyjski korytarz tranzytowy.'
+  - '[LOG PRAWNY]: Nakaz trzymania się wyznaczonego kursu. Zbliżenie się do granic Szarej Strefy będzie traktowane jako naruszenie warunków licencji PMU.'
+  - '[SKANER WOJSKOWY]: Czysto. Zarejestrowano 2 niszczyciele Republiki.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
-  patrolPresence: 0
+  miningThreatLevel: 0
+  miningThermalHint: Średnia temperatura plazmy: NISKA.
+  miningSafetyMessage: Wydobycie standardowe. Twardość skał w normie dla wierteł klasy podstawowej.".
+  patrolPresence: 1
   shopTaxPercent: 0

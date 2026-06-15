@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_A3
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 0, y: 2}
+  gridPosition: {x: 2, y: 0}
   sectorName: Sein Pfeiser
-  territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector A3 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 0
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Zmilitaryzowana strefa wewnętrzna.
+  profileText: Centralny węzeł wydobywczy dla technologii państwowych.
+  riskAnalysisText: Poziom 2. Bardzo wysokie zagęszczenie cermandyjskiej policji i wojska. Aktywność piracka zerowa.
+  oreForecastText: Osmium, Srebro, Kwarc Przemysłowy.
+  crewNote: 'Te sektory to biurokratyczny koszmar. Muszę nieustannie fałszować nasze logi księgowe, żeby cermandyjski urząd skarbowy nie zajął Silver Eagle''a na poczet naszych długów.'
   crtLogEntries:
-  - '[LOG] Entering Sector A3'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Wykryto zmasowane patrole. Transponder w trybie ciągłego nadawania autoryzacji.'
+  - '[LOG PRAWNY]: Obowiązuje bezwzględne pierwszeństwo dla rządowych okrętów logistycznych.'
+  - '[SKANER WOJSKOWY]: Przestrzeń zabezpieczona. Wykryto 4 krążowniki i 12 jednostek patrolowych Cermandii.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
-  patrolPresence: 0
+  miningThreatLevel: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-WYSOKA.
+  miningSafetyMessage: Umiarkowane ryzyko przegrzania wiertła przy twardszych złożach osmium. Wymagana kalibracja układu.
+  patrolPresence: 1
   shopTaxPercent: 0

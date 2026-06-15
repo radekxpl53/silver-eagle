@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: Sector_F6
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
   gridPosition: {x: 5, y: 5}
-  sectorName: Sector F6
-  territory: 0
-  leadingStage: 0
-  riskLevel: 0
-  jurisdictionText: Cermandia High Imperial Council
-  profileText: Sector F6 exploration zone.
-  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  sectorName: Ariandia Core
+  territory: 1
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Rdzenny system solarny Republiki Ariandyjskiej.
+  profileText: Węzeł centralny, port macierzysty korporacji Vagra.
+  riskAnalysisText: Poziom 2. Pełna dominacja wojskowa państwa.
+  oreForecastText: Pallad, Wolfram, Osmium, Kwarc Przemysłowy.
+  crewNote: 'Jesteśmy w centrum Ariandii. Zrzucamy ładunek w kapsule do frakcji handlowej i odlatujemy, zanim któryś z tutejszych biurokratów zechce przyjrzeć się mojej wojskowej kartotece dezertera.".'
   crtLogEntries:
-  - '[LOG] Entering Sector F6'
-  - '[LOG] Security protocols: Cermandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: System Ariandia Central. Autoryzacja potwierdzona.'
+  - '[LOG PRAWNY]: Zakaz nieautoryzowanego zrzutu elektrośmieci pod groźbą konfiskaty sprzętu górniczego.'
+  - '[SKANER WOJSKOWY]: Zarejestrowano wzmożony ruch w pobliżu warsztatu naprawczego. Mnóstwo statków handlowych PMU.'
   miningComposition: []
-  miningThreatLevel: 0
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: EXCELLENT.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-WYSOKA.
+  miningSafetyMessage: Wykryto niezwykle twarde struktury (Wolfram). Tolerancja błędu maleje. Znaczące ryzyko wystąpienia Thermal Shock przy przegrzaniu.".
   patrolPresence: 1
   shopTaxPercent: 0

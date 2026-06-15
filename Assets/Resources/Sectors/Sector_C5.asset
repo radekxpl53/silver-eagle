@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_C5
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 2, y: 4}
+  gridPosition: {x: 4, y: 2}
   sectorName: Pirate Cove
-  territory: 3
-  leadingStage: 3
-  riskLevel: 3
-  jurisdictionText: Joint Transit Authority
-  profileText: Frequent raider sightings and unstable debris fields.
-  riskAnalysisText: 'Risk Level: High. Hostile scanning and frequent combat.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Buford: ''Pirates love this sector. Double check shield capacity.'''
+  territory: 2
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Szara Strefa. Zignorowano protokoły dyplomatyczne.
+  profileText: Wewnętrzne Rubieże. Pas wzbogaconych asteroid.
+  riskAnalysisText: Poziom 2. Potwierdzona aktywność autonomicznych dronów łupieżczych. Ryzyko ataku z zaskoczenia.
+  oreForecastText: Platyna, Złoto, Srebro, Wolfram.
+  crewNote: 'Liczby nie kłamią. Ten sektor obfituje w metale szlachetne, ale sygnały radarowe są mocno zniekształcone. Za dużo statycznego szumu. Obstawiam, że piraci celowo zakłócają pasmo, maskując swoje drony.'
   crtLogEntries:
-  - '[LOG] Entering Sector C5'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Uwaga: Silne zakłócenia elektromagnetyczne w pasach asteroid.'
+  - '[LOG PRAWNY]: Brak danych.'
+  - '[SKANER WOJSKOWY]: Wykryto niezidentyfikowane pakiety danych. Możliwa synchronizacja rójki dronów bojowych. Zalecane naładowanie tarcz.'
   miningComposition: []
-  miningThreatLevel: 2
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: DANGEROUS.'
+  miningThreatLevel: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA.
+  miningSafetyMessage: Twarde struktury krystaliczne. Wymagane stałe monitorowanie paska temperatury w celu uniknięcia topnienia kruszcu.
   patrolPresence: 0
   shopTaxPercent: 0

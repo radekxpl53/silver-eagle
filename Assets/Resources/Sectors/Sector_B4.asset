@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_B4
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 1, y: 3}
+  gridPosition: {x: 3, y: 1}
   sectorName: Sector B4
   territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector B4 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Terytorium nieobjęte Ogólnym Porozumieniem.
+  profileText: Niestabilne pasy asteroid.
+  riskAnalysisText: Poziom 2. Potwierdzona obecność nieoznakowanych dronów bojowych.
+  oreForecastText: Wolfram, Pallad, Osmium.
+  crewNote: 'Oddaliliśmy się od Korytarzy Tranzytowych. Z radarów zniknęły sygnatury wojska. Syndykaty, u których mam długi, często korzystają z tych szlaków, żeby ominąć cło. Mam złe przeczucia, kapitanie.'
   crtLogEntries:
-  - '[LOG] Entering Sector B4'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Silne promieniowanie tła. Praca sensorów ograniczona do 60%.'
+  - '[LOG PRAWNY]: Obszar wyjęty spod prawa. Brak gwarancji ochrony.'
+  - '[SKANER WOJSKOWY]: Wykryto przerywane sygnały z systemów maskujących. Drony łupieżcze w trybie uśpienia.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA-WYSOKA.
+  miningSafetyMessage: Ekstremalna twardość skał (Wolfram). Spowolniony proces odwiertu. Utrzymuj temperaturę, aby uniknąć uszkodzeń mechanicznych wiertła.
   patrolPresence: 0
   shopTaxPercent: 0

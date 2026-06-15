@@ -1,16 +1,16 @@
-using System.IO;
 using UnityEngine;
 
 public class Restart : MonoBehaviour
 {
     public static void ResetData()
     {
-        if (File.Exists(SaveDataJSON.SavePath))
-            File.Delete(SaveDataJSON.SavePath);
-
+        SaveDataJSON.DeleteSaveFile();
         PlayerData.Instance.ResetData();
         if (EconomyManager.Instance != null)
+        {
             EconomyManager.Instance.SetCredits(0);
+            EconomyManager.Instance.SetDebt(0);
+        }
     }
 
     private ShipStats shipStats;

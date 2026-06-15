@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_E4
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 4, y: 3}
+  gridPosition: {x: 3, y: 4}
   sectorName: Sector E4
-  territory: 1
-  leadingStage: 1
-  riskLevel: 1
-  jurisdictionText: Ariandia Corporate Coalition
-  profileText: Sector E4 exploration zone.
-  riskAnalysisText: 'Risk Level: Low. Minimal local pirate groups.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Terytorium sporne. Cienie przed wojną.
+  profileText: Niestabilny korytarz "Deep Space".
+  riskAnalysisText: Poziom 3 (Wysoki). Sępy z PMU są tu głównym celem dla zorganizowanych grup przestępczych.
+  oreForecastText: Void Crystals, Hel-3, Rod.
+  crewNote: 'Piraci nie atakują statków Republiki, boją się regularnej armii. Dlatego całą wojnę zastępczą prowadzą tutaj, wypuszczając swoje drony na nas – pozbawionych flagi górników z PMU. Nie oszczędzajcie plazmy z naszych dział, to będzie długa zmiana.'
   crtLogEntries:
-  - '[LOG] Entering Sector E4'
-  - '[LOG] Security protocols: Ariandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Systemy uzbrojenia w trybie gotowości. Odnotowano rezonans kryształów próżniowych (Void Crystals).'
+  - '[LOG PRAWNY]: Brak sieci. Protokół offline.'
+  - '[SKANER WOJSKOWY]: Skanowanie taktyczne wykryło zmasowany atak dronów. Wytrzymałość pancerza może zostać wystawiona na próbę.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
-  patrolPresence: 1
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA.
+  miningSafetyMessage: Niestabilne struktury krystaliczne (Void Crystals). Każda sekunda poza strefą tolerancji drastycznie zwiększa współczynnik niestabilności asteroidy (powyżej 30%/sek).
+  patrolPresence: 0
   shopTaxPercent: 0

@@ -105,14 +105,8 @@ public class ChunkManager : MonoBehaviour
                 {
                     newData.haveShop = true;
                     newData.haveRepairStation = true;
-                    float limit = (sectorSize / 2f);
                     Vector3 shopLocalPosition = GenerateRandomCords();
-                    Vector3 repairStationLocalPosition = GenerateRandomCords();
-
-                    if (Vector3.Distance(shopLocalPosition, repairStationLocalPosition) < 300)
-                    {
-                        repairStationLocalPosition = GenerateRandomCords();
-                    }
+                    Vector3 repairStationLocalPosition = GenerateSeparatedStationPosition(shopLocalPosition, 300f);
 
                     newData.repairStationLocalPos = repairStationLocalPosition;
                     newData.shopLocalPos = shopLocalPosition;
@@ -154,16 +148,28 @@ public class ChunkManager : MonoBehaviour
         mapDisplay.GenerateMapUI();
     }
 
+    public const float StationBorderMargin = 40f;
+
     public Vector3 GenerateRandomCords()
     {
-        float limit = (sectorSize / 2f);
-        Vector3 randomCords = new Vector3(
+        float limit = Mathf.Max(10f, (sectorSize / 2f) - StationBorderMargin);
+        return new Vector3(
             Random.Range(-limit, limit),
-            Random.Range(-limit, limit),
-            Random.Range(-limit, limit)
-        );
+            0f,
+            Random.Range(-limit, limit));
+    }
 
-        return randomCords;
+    private Vector3 GenerateSeparatedStationPosition(Vector3 otherPosition, float minSeparation)
+    {
+        const int maxAttempts = 32;
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            Vector3 candidate = GenerateRandomCords();
+            if (Vector3.Distance(candidate, otherPosition) >= minSeparation)
+                return candidate;
+        }
+
+        return GenerateRandomCords();
     }
 
     //public void DebugMapStats() {
@@ -225,6 +231,9 @@ public class ChunkManager : MonoBehaviour
         }
     }
 
+    private const float AsteroidMinSeparation = 36f;
+    private const float AsteroidSpawnRadius = 58f;
+
     // Generacja asteroid w pasie
     private void PopulateSectorWithBelts(SectorData targetSector) {
         float halfSector = sectorSize / 2f;
@@ -243,12 +252,42 @@ public class ChunkManager : MonoBehaviour
             int astCount = Random.Range(5, 11);
             for (int a = 0; a < astCount; a++) {
                 AsteroidSavedData ast = new AsteroidSavedData();
-                ast.localPos = new Vector3(Random.Range(-19f, 19f), Random.Range(-19f, 19f), Random.Range(-19f, 19f));
+                ast.localPos = GenerateAsteroidLocalPos(belt.asteroids);
                 ast.loot = PreGenerateLoot(targetSector.sectorStage);
                 belt.asteroids.Add(ast);
             }
             targetSector.belts.Add(belt);
         }
+    }
+
+    private static Vector3 GenerateAsteroidLocalPos(List<AsteroidSavedData> existing)
+    {
+        const int maxAttempts = 32;
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            Vector3 pos = new Vector3(
+                Random.Range(-AsteroidSpawnRadius, AsteroidSpawnRadius),
+                Random.Range(-AsteroidSpawnRadius * 0.35f, AsteroidSpawnRadius * 0.35f),
+                Random.Range(-AsteroidSpawnRadius, AsteroidSpawnRadius));
+
+            bool farEnough = true;
+            foreach (AsteroidSavedData other in existing)
+            {
+                if (Vector3.Distance(pos, other.localPos) < AsteroidMinSeparation)
+                {
+                    farEnough = false;
+                    break;
+                }
+            }
+
+            if (farEnough)
+                return pos;
+        }
+
+        return new Vector3(
+            Random.Range(-AsteroidSpawnRadius, AsteroidSpawnRadius),
+            0f,
+            Random.Range(-AsteroidSpawnRadius, AsteroidSpawnRadius));
     }
 
     // Rozruch

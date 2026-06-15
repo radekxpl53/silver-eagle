@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_D2
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 3, y: 1}
+  gridPosition: {x: 1, y: 3}
   sectorName: Sector D2
-  territory: 3
-  leadingStage: 2
-  riskLevel: 2
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector D2 exploration zone.
-  riskAnalysisText: 'Risk Level: Moderate. Travel in armed groups recommended.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Brak.
+  profileText: Powrót do "Deep Space".
+  riskAnalysisText: Poziom 3 (Wysoki). Otwarta aktywność piracka. Zwiększone ryzyko uszkodzeń środowiskowych.
+  oreForecastText: Diamenty Przemysłowe, Void Crystals, Hel-3.
+  crewNote: 'Znowu ten cholerny Hel-3 i kryształy próżniowe. Te skały są tak niestabilne, że wystarczy źle na nie spojrzeć, a rozlecą się na kawałki, niszcząc nasz kadłub. Szykujcie jednorazowe zestawy naprawcze, bo bez nich z tego nie wyjdziemy.'
   crtLogEntries:
-  - '[LOG] Entering Sector D2'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Niestabilność grawitacyjna. Włączanie kompensatorów masy.'
+  - '[LOG PRAWNY]: Strefa izolowana.'
+  - '[SKANER WOJSKOWY]: Wykryto zmasowane sygnatury wroga. Drony łupieżcze rozpoczęły procedurę namierzania.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA.
+  miningSafetyMessage: EKSTREMALNE RYZYKO THERMAL SHOCK. Wąska strefa tolerancji błędu. Odchylenia powyżej 10% skutkują natychmiastowym przerwaniem wydobycia i falą uderzeniową.
   patrolPresence: 0
   shopTaxPercent: 0

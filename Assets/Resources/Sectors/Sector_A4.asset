@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_A4
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 0, y: 3}
+  gridPosition: {x: 3, y: 0}
   sectorName: Erad'os
-  territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector A4 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 0
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Suwerenne terytorium państwowe. Ścisła kontrola.
+  profileText: Wewnętrzna strefa wydobywcza megakorporacji.
+  riskAnalysisText: Poziom 2. Brak piratów. Zagrożenie stwarzają restrykcyjne inspekcje korporacyjne i wojskowe.
+  oreForecastText: Platyna, Złoto, Srebro, Kwarc Przemysłowy.
+  crewNote: 'Jesteśmy głęboko w Cermandii. To tu bogacą się korporacyjne szychy, które spisały mój oddział ''Espadon'' na straty. Będą nas tu traktować jak najgorsze sępy. Wydobywamy tylko to, co musimy, i znikamy, zanim ktoś zacznie prześwietlać moje akta dezertera.'
   crtLogEntries:
-  - '[LOG] Entering Sector A4'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Autoryzacja w strefie premium Republiki. Ograniczenie prędkości do 30% mocy głównego napędu.'
+  - '[LOG PRAWNY]: Uwaga jednostki PMU. Wydobycie kruszców podlega 45-procentowemu podatkowi na rzecz odbudowy po I Wojnie Galaktycznej.'
+  - '[SKANER WOJSKOWY]: Wykryto 3 krążowniki wojskowe oraz zautomatyzowane boje celne.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
-  patrolPresence: 0
+  miningThreatLevel: 1
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA.
+  miningSafetyMessage: Cenne kruszce. Wrażliwość na Topnienie Surowca przy najmniejszych wahaniach temperatury. Kalibracja lasera krytyczna.
+  patrolPresence: 1
   shopTaxPercent: 45

@@ -1,23 +1,31 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapSectorButton : MonoBehaviour {
+public class MapSectorButton : MonoBehaviour
+{
     public Vector2Int gridPos;
     public TextMeshProUGUI InfoTextMapSector;
     public int cost = 500;
+
     public void OnClick()
     {
-        string x = ((char)('A' + gridPos[1])).ToString();
-        int y = gridPos[0] + 1;
-        string summary = $"Sektor: {x+y}";
-        Color color;
+        string label = SectorCoordinates.GridToLabel(gridPos);
+        SectorDefinition def = SectorContentDatabase.Instance.GetSector(gridPos);
         SectorData data = ChunkManager.Instance.allSectorData[gridPos];
-        if (EconomyManager.Instance.Credits - cost > 0)
+
+        string summary = def != null
+            ? $"Sektor {label}: {def.sectorName}\n{def.profileText}"
+            : $"Sektor {label}";
+        Color color = Color.white;
+
+        if (EconomyManager.Instance.Credits < cost)
+        {
+            summary = "Nie sta? Ci? na skan";
+            color = Color.red;
+        }
+        else
         {
             EconomyManager.Instance.SpendCredits(cost);
             if (data.hasAsteroidGroup)
@@ -26,23 +34,23 @@ public class MapSectorButton : MonoBehaviour {
                 foreach (string line in stats)
                 {
                     if (line.Length > 0)
-                    {
                         summary += $"\n+ {line}";
-                    }
                 }
                 color = Color.black;
-
             }
             else
             {
-                summary = "Ten sektor jest pusty";
+                summary += "\nTen sektor jest pusty";
                 color = Color.gray;
             }
-        } else
-        {
-            summary = "Nie staæ Ciê na skan";
-            color = Color.red;
+
+            if (def != null && CockpitDisplayManager.Instance != null)
+            {
+                CockpitDisplayManager.Instance.ShowSectorBriefing(def);
+                CockpitDisplayManager.Instance.ShowCRTLog(def.crtLogEntries);
+            }
         }
-            GameManager.Instance.ShowSectorInfo(summary, color);
+
+        GameManager.Instance.ShowSectorInfo(summary, color);
     }
 }

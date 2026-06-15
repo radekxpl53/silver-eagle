@@ -8,12 +8,15 @@ public class MapToggle : MonoBehaviour {
 
     private bool isOpen = false;
 
+    public static bool IsOpen { get; private set; }
+
     void Start() {
 
         if (map != null && info != null) {
             map.SetActive(false);
             info.SetActive(false);
             isOpen = false;
+            IsOpen = false;
         }
     }
 
@@ -22,13 +25,14 @@ public class MapToggle : MonoBehaviour {
 
 
         if (Keyboard.current.mKey.wasPressedThisFrame && GameManager.Instance.currentState == GameState.Exploration) {
-            //Debug.Log("NaciúniÍto M");
+            //Debug.Log("Naciùniùto M");
             ToggleMap();
         }
     }
 
     public void ToggleMap() {
         isOpen = !isOpen;
+        IsOpen = isOpen;
         map.SetActive(isOpen);
         info.SetActive(isOpen);
 
@@ -48,8 +52,11 @@ public class MapToggle : MonoBehaviour {
         }
         else {
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (!StationProximity.RequiresCursor)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
     }
 }

@@ -8,7 +8,6 @@ TagManager:
   - Shop
   - SellZone
   - RepairStation
-  - Player
   - Enemy
   layers:
   - Default

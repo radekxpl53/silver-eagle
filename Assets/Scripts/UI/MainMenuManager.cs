@@ -13,6 +13,9 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject controlsPanel;
+    [SerializeField] private GameObject confirmOverwritePanel;
+    [SerializeField] private Button confirmYesButton;
+    [SerializeField] private Button confirmNoButton;
 
     private EventInstance mainMusic;
 
@@ -27,6 +30,7 @@ public class MainMenuManager : MonoBehaviour
         mainMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
         controlsPanel.SetActive(false);
+        if (confirmOverwritePanel != null) confirmOverwritePanel.SetActive(false);
 
         if (loadGameButton != null)
             loadGameButton.interactable = SaveDataJSON.HasSaveFile();
@@ -45,10 +49,34 @@ public class MainMenuManager : MonoBehaviour
 
         if (quitButton != null)
             quitButton.onClick.AddListener(OnQuitClicked);
+
+        if (confirmYesButton != null)
+            confirmYesButton.onClick.AddListener(StartNewGameConfirmed);
+        if (confirmNoButton != null)
+            confirmNoButton.onClick.AddListener(HideOverwriteDialog);
     }
 
     private void OnNewGameClicked()
     {
+        if (SaveDataJSON.HasSaveFile() && confirmOverwritePanel != null)
+        {
+            mainMenuPanel.SetActive(false);
+            confirmOverwritePanel.SetActive(true);
+            return;
+        }
+
+        StartNewGameConfirmed();
+    }
+
+    private void HideOverwriteDialog()
+    {
+        if (confirmOverwritePanel != null) confirmOverwritePanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
+    }
+
+    private void StartNewGameConfirmed()
+    {
+        HideOverwriteDialog();
         Restart.ResetData();
         SaveDataJSON.PendingLoad = false;
         SceneManager.LoadScene("GameManager");

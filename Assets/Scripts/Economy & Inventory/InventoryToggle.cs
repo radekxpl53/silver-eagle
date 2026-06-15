@@ -8,6 +8,8 @@ public class InventoryToggle : MonoBehaviour
 
     private bool isOpen = false;
 
+    public static bool IsOpen { get; private set; }
+
     void Start()
     {
         
@@ -15,6 +17,7 @@ public class InventoryToggle : MonoBehaviour
         {
             inventoryPanel.SetActive(false);
             isOpen = false;
+            IsOpen = false;
         }
     }
 
@@ -31,7 +34,8 @@ public class InventoryToggle : MonoBehaviour
 
     public void ToggleInventory()
     {
-        isOpen = !isOpen; 
+        isOpen = !isOpen;
+        IsOpen = isOpen;
         inventoryPanel.SetActive(isOpen);
 
         if (isOpen)
@@ -46,9 +50,11 @@ public class InventoryToggle : MonoBehaviour
         }
         else
         {
-            
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (!StationProximity.RequiresCursor)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
     }
 }

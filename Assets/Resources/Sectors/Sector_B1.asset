@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_B1
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 1, y: 0}
+  gridPosition: {x: 0, y: 1}
   sectorName: Sector B1
   territory: 2
-  leadingStage: 4
-  riskLevel: 4
-  jurisdictionText: No Legal Jurisdiction (Rubieze)
-  profileText: Sector B1 exploration zone.
-  riskAnalysisText: 'Risk Level: Extreme. Full combat capability required.'
-  oreForecastText: Uranium (40%), Gold (30%), Heavy Isotopes (30%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Terytorium wyłączone z Ogólnego Porozumienia.
+  profileText: Niestabilna anomalia w Deep Space.
+  riskAnalysisText: Poziom 3 (Wysoki). Gniazda autonomicznych dronów łupieżczych.
+  oreForecastText: Rod, Void Crystals, Diamenty Przemysłowe.
+  crewNote: 'Niewielki spadek promieniowania względem sąsiednich sektorów, ale to wciąż strefa śmierci. Liczby mówią wprost – mamy 80% szans na spotkanie chmary dronów pirackich. Miejcie rękę na bezpiecznikach.'
   crtLogEntries:
-  - '[LOG] Entering Sector B1'
-  - '[LOG] Security protocols: Rubieze'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Uwaga. Wejście w pole kryształów próżniowych (Void Crystals).'
+  - '[LOG PRAWNY]: Brak autorytetów prawnych.'
+  - '[SKANER WOJSKOWY]: Znaczna aktywność cieplna dronów bojowych na kursie przechwytującym.'
   miningComposition: []
-  miningThreatLevel: 3
-  miningThermalHint: Thermal levels unstable. Danger of overheating.
-  miningSafetyMessage: 'Safety rating: HAZARDOUS. Retreat option advised.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA.
+  miningSafetyMessage: Krytyczne naprężenia termiczne. Każda sekunda poza normą drastycznie zwiększa współczynnik niestabilności asteroidy.
   patrolPresence: 0
   shopTaxPercent: 0

@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_D5
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 3, y: 4}
+  gridPosition: {x: 4, y: 3}
   sectorName: The Rod
-  territory: 3
-  leadingStage: 2
-  riskLevel: 2
-  jurisdictionText: Joint Transit Authority
-  profileText: Core mining station zone. Rich heavy metals.
-  riskAnalysisText: 'Risk Level: Moderate. Travel in armed groups recommended.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: "M\u0142ody: 'The mineral yields here are huge. We could make a fortune!'"
+  territory: 2
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Całkowite bezprawie.
+  profileText: Głęboki Kosmos (Deep Space).
+  riskAnalysisText: Poziom 3 (Wysoki). Domena najbardziej bezwzględnych wyrzutków. Wysokie nagromadzenie wrogich jednostek.
+  oreForecastText: Rod, Hel-3, Diamenty Przemysłowe, Void Crystals.
+  crewNote: 'Silnik już zaczyna wyć na samą myśl o tym sektorze. Rod? Chcecie kopać Rod? To gówno wymaga prawie 4000 stopni temperatury z lasera! Zepsujecie mi statek. Jedno małe przegrzanie i rozsadzi nam kadłub w drobny mak.'
   crtLogEntries:
-  - '[LOG] Entering Sector D5'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: KRYTYCZNE OSTRZEŻENIE. Wejście w strefę wysokiego ryzyka. Niestabilne pola grawitacyjne wokół dużych złóż.'
+  - '[LOG PRAWNY]: Błąd połączenia. Przekaźniki Ogólnego Porozumienia zniszczone.'
+  - '[SKANER WOJSKOWY]: Liczne sygnatury wroga w sektorze. Aktywacja procedur bojowych rekomendowana natychmiast.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA (ok. 3400°C - 4000°C).
+  miningSafetyMessage: EKSTREMALNE RYZYKO. Margines błędu krytycznie wąski. Wypadnięcie ze strefy tolerancji skutkuje wywołaniem zjawiska Thermal Shock.
   patrolPresence: 0
   shopTaxPercent: 0

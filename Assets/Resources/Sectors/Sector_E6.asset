@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_E6
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 4, y: 5}
+  gridPosition: {x: 5, y: 4}
   sectorName: Sector E6
   territory: 1
-  leadingStage: 1
-  riskLevel: 1
-  jurisdictionText: Ariandia Corporate Coalition
-  profileText: Sector E6 exploration zone.
-  riskAnalysisText: 'Risk Level: Low. Minimal local pirate groups.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  leadingStage: 2
+  riskLevel: 2
+  jurisdictionText: Strefa wysokiego bezpieczeństwa Ariandii.
+  profileText: Szlak dostawczy dla zaawansowanych metali.
+  riskAnalysisText: Poziom 2. Brak piratów, wysokie wymogi sprzętowe dotyczące wydobycia.
+  oreForecastText: Platyna, Srebro, Złoto.
+  crewNote: 'Ariandia… podczas I Galaktycznej Wojny stracili dziesiątki milionów ludzi, teraz są przewrażliwieni na punkcie bezpieczeństwa. Uważajcie na słowa, panowie. Zbieramy cenne metale i nie wchodzimy w drogę ich flocie.".'
   crtLogEntries:
-  - '[LOG] Entering Sector E6'
-  - '[LOG] Security protocols: Ariandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Wejście w strefę centralną.'
+  - '[LOG PRAWNY]: Wymagany hołd dla ofiar z Koalicji Bravorem. Obowiązuje ścisły protokół identyfikacyjny dla ''Sępów'' z PMU.'
+  - '[SKANER WOJSKOWY]: Czysto. Przestrzeń silnie zmilitaryzowana.'
   miningComposition: []
   miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
+  miningThermalHint: Średnia temperatura plazmy: ŚREDNIA.
+  miningSafetyMessage: Skan wskazuje cenne kruszce. Wymagany wysoce stabilny laser. Uwaga na nieodwracalne topnienie kruszcu (Topnienie Surowca) przy złej kalibracji temperatury.".
   patrolPresence: 1
   shopTaxPercent: 0

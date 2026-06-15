@@ -25,10 +25,8 @@ public class NarrativeDirector : MonoBehaviour
         string note = sector.crewNote;
         if (string.IsNullOrWhiteSpace(note))
         {
-            // Pick a random crew member and get sector enter bark
             CrewMember member = (CrewMember)Random.Range(0, 4);
             note = CrewBarks.GetBark(member, BarkEvent.SectorEnter);
-            sector.crewNote = note; // Cache it
         }
 
         if (CockpitDisplayManager.Instance != null)

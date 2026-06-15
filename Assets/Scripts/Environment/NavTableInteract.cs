@@ -122,13 +122,25 @@ public class NavTableInteract : MonoBehaviour
         }
     }
 
-    // Travel to selected sector
     public void JumpToSector(SectorDefinition sector)
     {
-        if (sector != null)
+        if (sector == null) return;
+
+        CloseMap();
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        FastTravelSystem fastTravel = player != null ? player.GetComponent<FastTravelSystem>() : null;
+
+        if (fastTravel != null && fastTravel.TryFastTravelToSector(sector.gridPosition))
+            return;
+
+        if (ChunkManager.Instance != null)
         {
-            CloseMap();
-            // Trigger transition using chunk/scene management
+            Vector3 dest = ChunkManager.Instance.GetSectorWorldCenter(sector.gridPosition);
+            ChunkManager.Instance.ForcePlayerToSector(sector.gridPosition, dest);
+        }
+        else
+        {
             GameEvents.TriggerSectorEntered(sector.gridPosition, sector);
         }
     }

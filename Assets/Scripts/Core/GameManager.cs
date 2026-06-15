@@ -124,8 +124,15 @@ public class GameManager : MonoBehaviour
 
         if (newState == GameState.Exploration || newState == GameState.Fighting || newState == GameState.Mining)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (!StationProximity.RequiresCursor)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                StationProximity.ApplyCursor();
+            }
         }
         else
         {

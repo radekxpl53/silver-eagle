@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_D1
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 3, y: 0}
+  gridPosition: {x: 0, y: 3}
   sectorName: Sector D1
-  territory: 3
-  leadingStage: 2
-  riskLevel: 2
-  jurisdictionText: Joint Transit Authority
-  profileText: Sector D1 exploration zone.
-  riskAnalysisText: 'Risk Level: Moderate. Travel in armed groups recommended.'
-  oreForecastText: Copper Ore (50%), Platinum (30%), Iron (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 4
+  riskLevel: 4
+  jurisdictionText: Złowroga Pustka.
+  profileText: Strefa zrzutów kontrabandy.
+  riskAnalysisText: Poziom 4 (Krytyczny). Terytorium najbardziej bezwzględnych wyrzutków i piratów.
+  oreForecastText: Kontrabanda, Obca Biomasa, Uran.
+  crewNote: 'Możemy tu znaleźć najdroższy towar w całej galaktyce. Przemycana kontrabanda, może nawet stare rzeźby przestrzenne z centralnych światów. Ale pamiętajcie – nikt tu nie trafił z wyboru, uciekają tu tylko tacy, którzy nie mają absolutnie nic do stracenia.'
   crtLogEntries:
-  - '[LOG] Entering Sector D1'
-  - '[LOG] Security protocols: Tranzyt'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: KRYTYCZNE OSTRZEŻENIE. Środowisko silnie toksyczne/radioaktywne.'
+  - '[LOG PRAWNY]: Systemy offline. Całkowity brak komunikacji.'
+  - '[SKANER WOJSKOWY]: Zarejestrowano nieznane obiekty na radarze. Sygnatury przypominają wojskowe drony z czasów I Galaktycznej Wojny.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
+  miningThreatLevel: 3
+  miningThermalHint: Średnia temperatura plazmy: EKSTREMALNA.
+  miningSafetyMessage: Operacja wysokiego ryzyka. Niestabilne izotopy i materiały biologiczne ulegną zniszczeniu (Topnienie Surowca) w przypadku braku optymalnej kalibracji lasera.
   patrolPresence: 0
   shopTaxPercent: 0

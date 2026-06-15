@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_E1
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 4, y: 0}
+  gridPosition: {x: 0, y: 4}
   sectorName: Sector E1
-  territory: 1
-  leadingStage: 1
-  riskLevel: 1
-  jurisdictionText: Ariandia Corporate Coalition
-  profileText: Sector E1 exploration zone.
-  riskAnalysisText: 'Risk Level: Low. Minimal local pirate groups.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 4
+  riskLevel: 4
+  jurisdictionText: Brak.
+  profileText: Zewnętrzny Cmentarz.
+  riskAnalysisText: Poziom 4 (Krytyczny). Ekstremalnie niebezpieczne warunki górnicze, skraje tolerancji sprzętowej statku klasy CMR.
+  oreForecastText: Niestabilne Izotopy, Skroplony Wodór.
+  crewNote: 'Ten statek był stary już dekady temu, zanim zaczęła się ta cała wojna z Zjednoczonymi Handlowymi Federacjami. Kto o zdrowych zmysłach ładuje się do sektora E-1 taką krypą? Jak silnik nam zgaśnie z powodu przegrzania chłodziwa, będziemy dryfować w tej ciemności aż do końca V Epoki.'
   crtLogEntries:
-  - '[LOG] Entering Sector E1'
-  - '[LOG] Security protocols: Ariandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Spadek wydajności reaktora. Próba kompensacji w środowisku ekstremalnego zimna i promieniowania.'
+  - '[LOG PRAWNY]: Jesteś zdany tylko na siebie.'
+  - '[SKANER WOJSKOWY]: Rój pirackich dronów aktywowany. Zbliżają się z ogromną prędkością.'
   miningComposition: []
-  miningThreatLevel: 1
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: MODERATE. Expect friction.'
-  patrolPresence: 1
+  miningThreatLevel: 3
+  miningThermalHint: Średnia temperatura plazmy: EKSTREMALNA.
+  miningSafetyMessage: Krytyczny poziom niestabilności. Gwałtowne pęknięcie struktury (Thermal Shock) gwarantowane w przypadku przekroczenia bariery tolerancji.
+  patrolPresence: 0
   shopTaxPercent: 0

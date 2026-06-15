@@ -32,7 +32,7 @@ public class ShipStats : MonoBehaviour {
     [SerializeField] private float rollForce = 120000f;
     [SerializeField] private float liftThrust = 120000f;
     [SerializeField] private float emergencySpeedMultiplier = 0.3f;
-    [SerializeField] private float normalDrainRate = 1f;
+    [SerializeField] private float normalDrainRate = 0.3f;
     [SerializeField] private float lowFuelThreshold = 40f;
 
     public float baseCargoCapacity = 100f;

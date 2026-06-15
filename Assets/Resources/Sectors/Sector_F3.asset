@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072b4103108e504fbd7ed812f0bd929, type: 3}
   m_Name: Sector_F3
   m_EditorClassIdentifier: SilverEagle::SectorDefinition
-  gridPosition: {x: 5, y: 2}
+  gridPosition: {x: 2, y: 5}
   sectorName: Sector F3
-  territory: 0
-  leadingStage: 0
-  riskLevel: 0
-  jurisdictionText: Cermandia High Imperial Council
-  profileText: Sector F3 exploration zone.
-  riskAnalysisText: 'Risk Level: Safe. High security patrol presence.'
-  oreForecastText: Iron Ore (80%), Silicates (20%)
-  crewNote: 'Crew: ''Standard sector protocol applies here.'''
+  territory: 2
+  leadingStage: 3
+  riskLevel: 3
+  jurisdictionText: Skraj galaktyki. Brak roszczeń terytorialnych.
+  profileText: Zewnętrzny pas asteroid (Deep Space).
+  riskAnalysisText: Poziom 3 (Wysoki). Ekstremalnie niebezpieczne warunki operacyjne. Zbiegowie używają tego obszaru do ucieczki z Ariandii.
+  oreForecastText: Hel-3, Rod.
+  crewNote: 'To koniec mapy. Nie ma tu absolutnie nikogo. Jeśli statek pęknie od zjawiska Thermal Shock, to w tych rejonach nawet zestawy naprawcze kadłuba mogą nam nie pomóc. Modlę się do silnika o bezawaryjną pracę.'
   crtLogEntries:
-  - '[LOG] Entering Sector F3'
-  - '[LOG] Security protocols: Cermandia'
-  - '[LOG] Sensor sweep: Scanning local celestial bodies...'
+  - '[SYSTEM STARTOWY]: Krańce znanej przestrzeni. Sygnał SOS nie zostanie odebrany przez żadną frakcję.'
+  - '[LOG PRAWNY]: Brak sieci.'
+  - '[SKANER WOJSKOWY]: Wykryto sygnatury wrogiego drona na 8 godzinie. Zalecane natychmiastowe ładowanie uzbrojenia.'
   miningComposition: []
-  miningThreatLevel: 0
-  miningThermalHint: Thermal levels nominal.
-  miningSafetyMessage: 'Safety rating: EXCELLENT.'
-  patrolPresence: 1
+  miningThreatLevel: 2
+  miningThermalHint: Średnia temperatura plazmy: BARDZO WYSOKA (powyżej 3500°C).
+  miningSafetyMessage: Utrata stabilności skutkuje gwałtownym pęknięciem asteroidy. Wygenerowane odłamki drastycznie uszkodzą wytrzymałość statku.
+  patrolPresence: 0
   shopTaxPercent: 0
